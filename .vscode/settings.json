@@ -1,0 +1,30 @@
+{
+  "markdownlint.config": {
+    "MD013": false,
+    "MD033": false
+  },
+  "cSpell.words": [
+    "Averager",
+    "CBASE",
+    "CMIXIN",
+    "COMPARATORS",
+    "Directionality",
+    "Draggables",
+    "Injectable",
+    "POJO",
+    "Packagr",
+    "SMIXIN",
+    "TBASE",
+    "TMIXIN",
+    "cacheable",
+    "coeff",
+    "deserialize",
+    "deserializing",
+    "lunr",
+    "mdast",
+    "pebula",
+    "quickthrough",
+    "sortables"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
+}

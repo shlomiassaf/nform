@@ -1,0 +1,169 @@
+{
+  "npmScope": "pebula",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "nform-demo-app": {
+      "tags": [
+        "type:app",
+        "nform-demo-app"
+      ]
+    },
+    "nform-demo-app-e2e": {
+      "tags": [
+        "type:e2e-app",
+        "parent:nform-demo-app"
+      ]
+    },
+    "apps-nform-shared": {
+      "tags": [
+        "type:child-app",
+        "parent:nform-demo-app"
+      ]
+    },
+    "apps-nform-concepts": {
+      "tags": [
+        "type:child-app",
+        "parent:nform-demo-app"
+      ]
+    },
+    "apps-nform-features": {
+      "tags": [
+        "type:child-app",
+        "parent:nform-demo-app"
+      ]
+    },
+    "apps-nform-stories": {
+      "tags": [
+        "type:child-app",
+        "parent:nform-demo-app"
+      ]
+    },
+    "apps-nform-demos": {
+      "tags": [
+        "type:child-app",
+        "parent:nform-demo-app"
+      ]
+    },
+    "nform": {
+      "tags": [
+        "name:nform",
+        "type:lib"
+      ]
+    },
+    "nform-sticky": {
+      "tags": [
+        "name:sticky",
+        "type:child-lib",
+        "parent:nform"
+      ]
+    },
+    "nform-detail-row": {
+      "tags": [
+        "name:detail-row",
+        "type:child-lib",
+        "parent:nform"
+      ]
+    },
+    "nform-block-ui": {
+      "tags": [
+        "name:block-ui",
+        "type:child-lib",
+        "parent:nform"
+      ]
+    },
+    "nform-drag": {
+      "tags": [
+        "name:drag",
+        "type:child-lib",
+        "parent:nform"
+      ]
+    },
+    "nform-transpose": {
+      "tags": [
+        "name:transpose",
+        "type:child-lib",
+        "parent:nform"
+      ]
+    },
+    "nform-target-events": {
+      "tags": [
+        "name:target-events",
+        "type:child-lib",
+        "parent:nform"
+      ]
+    },
+    "nform-material": {
+      "tags": [
+        "name:material",
+        "type:child-lib",
+        "parent:nform"
+      ]
+    },
+    "nform-material-selection-column": {
+      "tags": [
+        "name:selection-column",
+        "type:child-lib",
+        "parent:material"
+      ]
+    },
+    "nform-material-paginator": {
+      "tags": [
+        "name:paginator",
+        "type:child-lib",
+        "parent:material"
+      ]
+    },
+    "nform-material-sort": {
+      "tags": [
+        "name:sort",
+        "type:child-lib",
+        "parent:material"
+      ]
+    },
+    "nform-material-cell-tooltip": {
+      "tags": [
+        "name:cell-tooltip",
+        "type:child-lib",
+        "parent:material"
+      ]
+    },
+    "utils": {
+      "tags": [
+        "name:utils",
+        "type:lib"
+      ]
+    }
+  },
+  "nx-enforce-module-boundaries": [
+    true,
+    {
+      "allow": [],
+      "depConstraints": [
+        {
+          "sourceTag": "name:nform",
+          "onlyDependOnLibsWithTags": []
+        },
+        {
+          "sourceTag": "parent:nform",
+          "onlyDependOnLibsWithTags": [
+            "name:nform",
+            "parent:nform",
+            "parent:material"
+          ]
+        },
+        {
+          "sourceTag": "*",
+          "onlyDependOnLibsWithTags": [
+            "*"
+          ]
+        }
+      ]
+    }
+  ]
+}
