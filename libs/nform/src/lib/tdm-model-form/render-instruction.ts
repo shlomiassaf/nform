@@ -20,9 +20,7 @@ import { PropNotify } from '../prop-notify';
  *
  * @internal
  */
-export class RenderInstruction<
-  T extends keyof FormElementType = keyof FormElementType
-> implements RenderDef<T> {
+export class RenderInstruction<T extends keyof FormElementType = keyof FormElementType> implements RenderDef<T> {
   /**
    * A object used to mark changes in the instruction for ngFor iterations.
    *

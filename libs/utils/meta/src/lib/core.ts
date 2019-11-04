@@ -1,10 +1,10 @@
+import { Constructor } from '@pebula/utils';
 import { directMapper, TDMModelBase } from '@pebula/utils/meta/internal';
 
 export {
   // fw
   errors,
   Errors,
-  Constructor,
   TransformDir,
   TransformFn,
   TransformStrategy,
@@ -34,7 +34,7 @@ export { Type, Prop, Exclude, Relation, Identity } from './decorators';
 import './add/target-metadata';
 
 // public serialize / deserialize functions
-import { Constructor, MapperFactory, targetStore } from '@pebula/utils/meta/internal';
+import { MapperFactory, targetStore } from '@pebula/utils/meta/internal';
 
 /**
  * Serialize a class instance into a plain object.

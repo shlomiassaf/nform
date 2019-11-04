@@ -1,13 +1,5 @@
-import {
-  Directive,
-  Input,
-  Inject,
-  forwardRef,
-  TemplateRef,
-  SimpleChanges,
-  OnChanges
-} from '@angular/core';
-import { isString } from '@tdm/core/tdm';
+import { Directive, Input, TemplateRef, SimpleChanges, OnChanges } from '@angular/core';
+import { isString } from '@pebula/utils';
 
 import { FormElementType } from '../interfaces';
 import { RenderInstruction } from '../tdm-model-form/render-instruction';

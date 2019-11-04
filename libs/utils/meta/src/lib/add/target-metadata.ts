@@ -1,9 +1,5 @@
-import {
-  TargetMetadata,
-  DecoratorInfo,
-  PropMetadata,
-  isString
-} from '@pebula/utils/meta/internal';
+import { isString } from '@pebula/utils';
+import { TargetMetadata, DecoratorInfo, PropMetadata } from '@pebula/utils/meta/internal';
 import { Prop } from '../decorators';
 
 declare module '@pebula/utils/meta/internal/lib/metadata/target-metadata' {

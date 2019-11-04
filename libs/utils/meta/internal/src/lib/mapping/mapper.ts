@@ -1,5 +1,5 @@
+import { PropMetadata } from '../metadata/prop';
 import { PropertyContainer } from './prop-container';
-import { PropMetadata } from '../metadata';
 import { PlainObjectMapper } from './plain-object-mapper';
 
 export interface MapperFactory {

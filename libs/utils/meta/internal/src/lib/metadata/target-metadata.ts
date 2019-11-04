@@ -1,15 +1,7 @@
-import {
-  Constructor,
-  DualKeyMap,
-  BaseMetadata,
-  isString,
-  GLOBAL_KEY,
-  MetadataClassStatic
-} from '../fw';
-
-import { targetStore } from './target-store';
-// import { PropMetadata } from './prop';
+import { Constructor, isString } from '@pebula/utils';
+import { DualKeyMap, BaseMetadata, GLOBAL_KEY, MetadataClassStatic } from '../fw';
 import { TDMCollection } from '../model';
+import { targetStore } from './target-store';
 
 /**
  * The metadata store for a target.
@@ -22,10 +14,8 @@ import { TDMCollection } from '../model';
 export class TargetMetadata<T = any, Z = any> {
   protected config: DualKeyMap<Constructor<any>, TdmPropertyKey, any>;
 
-  constructor(
-    public readonly target: Z & Constructor<T>,
-    config: DualKeyMap<MetadataClassStatic, TdmPropertyKey, any>
-  ) {
+  constructor(public readonly target: Z & Constructor<T>,
+              config: DualKeyMap<MetadataClassStatic, TdmPropertyKey, any>) {
     this.config = config;
   }
 
@@ -45,16 +35,11 @@ export class TargetMetadata<T = any, Z = any> {
   /**
    * Get the whole map of non-single metadata class
    */
-  getMetaFor<T extends MetadataClassStatic, Z extends BaseMetadata>(
-    metaClass: T & Constructor<Z>
-  ): Map<TdmPropertyKey, Z> | undefined;
+  getMetaFor<T extends MetadataClassStatic, Z extends BaseMetadata>(metaClass: T & Constructor<Z>): Map<TdmPropertyKey, Z> | undefined;
   /**
    * Get metadata for a single value metadata class
    */
-  getMetaFor<T extends MetadataClassStatic, Z extends BaseMetadata>(
-    metaClass: T & Constructor<Z>,
-    single: true
-  ): Z | undefined;
+  getMetaFor<T extends MetadataClassStatic, Z extends BaseMetadata>(metaClass: T & Constructor<Z>, single: true): Z | undefined;
   /**
    * Get metadata for a non-single value metadata class
    */
@@ -117,7 +102,4 @@ export class TargetMetadata<T = any, Z = any> {
     return new TDMCollection<T>();
   }
 
-  // protected get<T, Z, P extends keyof T>(type: T & Constructor<Z>, key: P): Z {
-  //   return this.config.get(PropMetadata, key);
-  // }
 }

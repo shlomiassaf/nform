@@ -29,7 +29,6 @@ import {
   ContentChunkViewComponent,
   ExampleAssetFileViewComponent,
   NgCustomLogoComponent,
-  DemoActionRowComponent,
   AppSearchInput,
   AppSearchResults,
  } from './components';
@@ -50,7 +49,6 @@ const DECLARATION_EXPORT = [
   ExampleAssetFileViewComponent,
   NgCustomLogoComponent,
   NgEventsDirective,
-  DemoActionRowComponent,
   AppSearchInput,
   AppSearchResults,
   ContentChunkViewGhostDirective, ExampleViewGhostDirective,

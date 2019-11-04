@@ -1,6 +1,5 @@
-import { Mixin } from '@pebula/utils';
+import { Constructor, Mixin } from '@pebula/utils';
 import { targetStore } from '../metadata/target-store';
-import { Constructor } from '../fw';
 
 const TDMCollectionMark = Symbol('TDMCollection instance mark');
 const NON_EXTENDABLE_PROPS = ['constructor'];
@@ -67,9 +66,7 @@ export class TDMCollection<T /* extends ActiveRecord<any, any> */> extends Array
    * @param proto An object literal used as a mixin to the TDMCollection prototype.
    * @returns
    */
-  static factory<T>(
-    proto: any
-  ): typeof TDMCollection & Constructor<TDMCollection<T>> {
+  static factory<T>(proto: any): typeof TDMCollection & Constructor<TDMCollection<T>> {
     const clz = class RuntimeTDMCollection<T> extends TDMCollection<T> {
       constructor() {
         super();

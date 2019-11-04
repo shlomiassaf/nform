@@ -1,5 +1,4 @@
 import { TransformStrategy, NamingStrategyConfig } from '../fw';
-import { MapperFactory } from '../mapping';
 
 export interface ModelMetadataArgs {
   /**
@@ -66,7 +65,7 @@ export interface ModelMetadataArgs {
    */
   transformNameStrategy?: NamingStrategyConfig | undefined;
 
-  mapper?: MapperFactory;
+  mapper?: import('../mapping/mapper').MapperFactory;
 
   /**
    * If true will not build (process) the decorated class into a resource.

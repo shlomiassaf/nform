@@ -53,4 +53,4 @@ export { createControl } from './create-control';
 export { createChildFormEvent } from './create-child-form-event';
 
 // re-export common types from core.
-export { Prop, Model, Exclude, Type } from '@tdm/core';
+export { Prop, Model, Exclude, Type } from '@pebula/utils/meta';

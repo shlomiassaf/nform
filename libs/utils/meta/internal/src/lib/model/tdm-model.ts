@@ -1,5 +1,4 @@
-import { MixinFree } from '@pebula/utils';
-import { Constructor } from '../fw';
+import { MixinFree, Constructor } from '@pebula/utils';
 import { MapperFactory } from '../mapping/mapper';
 
 const TDMModelMark = Symbol('TDMModel instance mark');

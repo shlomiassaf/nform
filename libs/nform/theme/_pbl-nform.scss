@@ -1,5 +1,10 @@
-@mixin pbl-nform-theme($theme) {
-  @include _pbl-cdk-table-theme($theme);
+// Because `@pebula/nform` depends on the `@angular/cdk` and because all SCSS theme tools are in `@angular/material` we
+// must hard-copy some of them so that `@pebula/ngrid` does not require `@angular/material`
+@import './_material-theme-tools/typography';
+@import './_material-theme-tools/theming';
+@import './utils';
+
+@mixin pbl-ngrid-theme($theme) {
   @include pbl-ngrid-spacing($theme);
 
   $primary: map-get($theme, primary);
@@ -91,8 +96,6 @@
     height: 100%;
     border-right: 1px solid $border-color;
   }
-
-  @include pbl-ngrid-drag-plugin-theme($theme);
 }
 
 @mixin pbl-ngrid-spacing($theme) {
@@ -161,8 +164,6 @@
   @if $config == null {
     $config: pbl-typography-config();
   }
-
-  @include _pbl-cdk-table-typography($config);
 
   .pbl-ngrid-header-cell {
     font-size: pbl-font-size($config, caption);

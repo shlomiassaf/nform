@@ -1,0 +1,29 @@
+
+.form-wrapper-content {
+  z-index: 1;
+
+  .json-view {
+    padding: 15px;
+    overflow: auto;
+    width: 200px;
+  }
+}
+
+.form-wrapper-dynamic-form-container {
+  margin: 10px;
+}
+
+.form-control-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 15px 0;
+  z-index: 2;
+}
+
+.form-status-indicator {
+  width: 24px;
+  height: 24px;
+  margin: 0 15px;
+}

@@ -1,11 +1,5 @@
-import {
-  reflection,
-  isFunction,
-  Constructor,
-  BaseMetadata,
-  DecoratorInfo,
-  MetaClass
-} from '../fw';
+import { Constructor, isFunction } from '@pebula/utils';
+import { reflection, BaseMetadata, DecoratorInfo, MetaClass } from '../fw';
 
 export interface TypeDefinition {
   /**

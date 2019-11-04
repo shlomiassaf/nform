@@ -31,7 +31,7 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
-import { isFunction } from '@tdm/core/tdm';
+import { isFunction } from '@pebula/utils';
 import { FormElementType } from '../interfaces';
 import {
   FORM_CONTROL_COMPONENT,
@@ -94,13 +94,12 @@ type StateKeys = 'filter' | 'disabled' | 'hidden';
   selector: 'dynamic-form',
   templateUrl: './dynamic-form.component.html'
 })
-export class DynamicFormComponent<T = any>
-  implements PropNotifyHandler,
-    AfterContentInit,
-    AfterViewInit,
-    OnChanges,
-    DoCheck,
-    OnDestroy {
+export class DynamicFormComponent<T = any> implements PropNotifyHandler,
+                                                      AfterContentInit,
+                                                      AfterViewInit,
+                                                      OnChanges,
+                                                      DoCheck,
+                                                      OnDestroy {
   /**
    * The [[TDMModelForm]] instance that is used by the component
    * > This is created after a model is set.
@@ -115,10 +114,9 @@ export class DynamicFormComponent<T = any>
     return this.tdmForm && this.tdmForm.form;
   }
 
-  @ContentChildren(DynamicFormOverrideDirective)
-  overrides: QueryList<DynamicFormOverrideDirective>;
+  @ContentChildren(DynamicFormOverrideDirective) overrides: QueryList<DynamicFormOverrideDirective>;
 
-  @ViewChild('formElRef') formElRef: ElementRef;
+  @ViewChild('formElRef', { static: true }) formElRef: ElementRef;
 
   /**
    * The CSS class of the `form` element which is also the container of all rendered items.
@@ -384,21 +382,12 @@ export class DynamicFormComponent<T = any>
   private rendering$ = new BehaviorSubject<boolean>(false);
   private _ngNativeValidate: any = false;
   private slaveMode: boolean;
-  private outlets: Set<DynamicControlOutletDirective> = new Set<
-    DynamicControlOutletDirective
-  >();
-  private overrideMap = new Map<
-    RenderInstruction,
-    DynamicFormOverrideDirective
-  >();
-  private outletMap = new Map<
-    RenderInstruction,
-    DynamicControlOutletDirective
-  >();
+  private outlets: Set<DynamicControlOutletDirective> = new Set<DynamicControlOutletDirective>();
+  private overrideMap = new Map<RenderInstruction, DynamicFormOverrideDirective>();
+  private outletMap = new Map<RenderInstruction, DynamicControlOutletDirective>();
   private wildOverride: DynamicFormOverrideDirective;
   private rendererEvent$ = new EventEmitter<RendererEvent>();
   private renderInstructions: RenderInstruction[];
-
   private controlRenderer: DefaultRendererMap;
   private defaultControlRenderer: ControlRenderer;
 
@@ -412,13 +401,11 @@ export class DynamicFormComponent<T = any>
    */
   private codeOverrides: DynamicFormOverrideDirective[] = [];
 
-  constructor(
-    private tdmModelFormService: TDMModelFormService,
-    @Inject(FORM_CONTROL_COMPONENT) controlRenderer: DefaultRenderer,
-    private kvDiffers: KeyValueDiffers,
-    private itDiffers: IterableDiffers,
-    private renderer: Renderer2
-  ) {
+  constructor(private tdmModelFormService: TDMModelFormService,
+              @Inject(FORM_CONTROL_COMPONENT) controlRenderer: DefaultRenderer,
+              private kvDiffers: KeyValueDiffers,
+              private itDiffers: IterableDiffers,
+              private renderer: Renderer2) {
     this.renderState = this.rendering$.asObservable();
     this.rendererEvent = this.rendererEvent$.asObservable();
 
@@ -468,15 +455,11 @@ export class DynamicFormComponent<T = any>
     }
   }
 
-  getOverride(
-    item: RenderInstruction
-  ): DynamicFormOverrideDirective | undefined {
+  getOverride(item: RenderInstruction): DynamicFormOverrideDirective | undefined {
     return this.overrideMap.get(item);
   }
 
-  getOutlet(
-    item: RenderInstruction
-  ): DynamicControlOutletDirective | undefined {
+  getOutlet(item: RenderInstruction): DynamicControlOutletDirective | undefined {
     return this.outletMap.get(item);
   }
 
@@ -594,10 +577,7 @@ export class DynamicFormComponent<T = any>
     this.rendererEvent$.emit(event);
   }
 
-  onPropChange(
-    ri: RenderInstruction,
-    changes: PropChanges<RenderInstruction>
-  ): void {
+  onPropChange(ri: RenderInstruction, changes: PropChanges<RenderInstruction>): void {
     let markAsChanged: boolean;
     if (changes.required || changes.validators || changes.asyncValidators) {
       const control = this.tdmForm.get(ri.fullName);
@@ -793,10 +773,7 @@ export class DynamicFormComponent<T = any>
    * e.g. if user blocked 'address' and next item is 'address.name' or 'address.x.y.z' it will fail on the spot because
    * all of the address object is blocked. Current state is full check for all children of address.
    */
-  private isStaticPathContainsPath(
-    pathList: string[],
-    fullPath: string
-  ): boolean {
+  private isStaticPathContainsPath(pathList: string[], fullPath: string): boolean {
     const idx = pathList.findIndex(
       p => p === fullPath || fullPath.indexOf(p + '.') === 0
     );
@@ -879,10 +856,8 @@ export class DynamicFormComponent<T = any>
    * @param change
    * @param path
    */
-  private drillDownChange(
-    change: KeyValueChangeRecord<string, any>,
-    path: Array<string | number>
-  ): Array<KeyValueChangeRecord<string, any>> {
+  private drillDownChange(change: KeyValueChangeRecord<string, any>,
+                          path: Array<string | number>): Array<KeyValueChangeRecord<string, any>> {
     const result: Array<KeyValueChangeRecord<string, any>> = [];
     if (change.previousValue) {
       const differ = this.kvDiffers.find(change.previousValue).create();
@@ -977,9 +952,7 @@ export class DynamicFormComponent<T = any>
    * Note that a property path might point to a virtual RenderInstruction, such that does not actually render in the UI
    * but has children that does.
    */
-  private findRenderInstructionByKey(
-    dotProperty: string
-  ): LocalRenderInstruction | undefined {
+  private findRenderInstructionByKey(dotProperty: string): LocalRenderInstruction | undefined {
     for (let c of this.controls.value) {
       const fullPath = c.fullName;
       if (fullPath.indexOf(dotProperty) > -1) {

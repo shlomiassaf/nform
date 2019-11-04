@@ -1,17 +1,12 @@
-import {
-  targetStore,
-  MapExt,
-  Constructor,
-  MetaClass,
-  MetaClassInstanceDetails
-} from '@tdm/core/tdm';
+import { Constructor } from '@pebula/utils';
+import { targetStore, MapExt, MetaClass } from '@pebula/utils/meta/internal';
+
 import {
   FormModelMetadata,
   FormModelMetadataArgs,
   FormPropMetadata,
   FormPropMetadataArgs // leave for angular AOT compiler.
 } from './metadata/index';
-import { FormElementType } from '../interfaces';
 
 /** @internal */
 export let formModel: any = {};
@@ -21,20 +16,16 @@ formModel = MetaClass.decorator(FormModelMetadata, true);
  * @propertyDecorator static
  * @param metaArgs
  */
-export function FormModel(
-  metaArgs?: FormModelMetadataArgs
-): (target: Function) => any {
+export function FormModel(metaArgs?: FormModelMetadataArgs): (target: Function) => any {
   return formModel(metaArgs) as any;
 }
 
 // we need to export `FormProp` explicitly or else the type of the parameter "def" in the "d.ts" file will be set
 // to FormModelMetadataArgs<"form" | "none">
 export let formProp: any = {};
-formProp = MetaClass.decorator(FormPropMetadata);
+formProp = MetaClass.decorator(FormPropMetadata, true);
 
-export function FormProp(
-  def: FormPropMetadataArgs
-): (target: Object, key: TdmPropertyKey) => any {
+export function FormProp(def?: FormPropMetadataArgs): (target: Object, key: TdmPropertyKey) => any {
   return formProp(def) as any;
 }
 

@@ -1,0 +1,4 @@
+
+@mixin pbl-ngrid-material-theme($theme) {
+  @include pbl-ngrid-theme($theme);
+}

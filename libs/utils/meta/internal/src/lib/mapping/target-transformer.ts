@@ -1,10 +1,5 @@
-import {
-  LazyInit,
-  TransformDir,
-  NamingStrategyConfig,
-  isFunction,
-  array
-} from '../fw';
+import { isFunction } from '@pebula/utils';
+import { LazyInit, TransformDir, NamingStrategyConfig, array } from '../fw';
 import { PropMetadata, ExcludeMetadata, TargetMetadata } from '../metadata';
 
 import {

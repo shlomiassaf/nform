@@ -15,11 +15,9 @@ export const MODEL_PH = Symbol('ModelMetadata placeholder');
 
 // exporting to satisfy angular AOT
 /** @internal */
-export function extendSingle(
-  from: ModelMetadata,
-  to: ModelMetadata | undefined,
-  meta: { from: Constructor<any>; to: Constructor<any> }
-): ModelMetadata | undefined {
+export function extendSingle(from: ModelMetadata,
+                             to: ModelMetadata | undefined,
+                             meta: { from: Constructor<any>; to: Constructor<any> }): ModelMetadata | undefined {
   if (!to) {
     const tMeta = targetStore.getTargetMeta(meta.to);
     return (tMeta[MODEL_PH] = from.clone(meta.to));
@@ -147,8 +145,6 @@ export class ModelMetadata extends BaseMetadata implements ModelMetadataArgs {
 
 declare module '../../fw/metadata-framework/meta-class' {
   namespace MetaClass {
-    function get(
-      target: typeof ModelMetadata
-    ): MetaClassMetadata<ModelMetadataArgs, ModelMetadata>;
+    function get(target: typeof ModelMetadata): MetaClassMetadata<ModelMetadataArgs, ModelMetadata>;
   }
 }

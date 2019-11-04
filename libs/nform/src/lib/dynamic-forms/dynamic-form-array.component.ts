@@ -106,8 +106,7 @@ export class DynamicFormArrayComponent extends DynamicFormArray {
   @Input() item: RenderInstruction;
   @Input() tdmForm: TDMModelForm<any>;
 
-  @ViewChild('viewRef', { read: ViewContainerRef })
-  vcRef: ViewContainerRef;
+  @ViewChild('viewRef', { read: ViewContainerRef, static: true }) vcRef: ViewContainerRef;
 
   constructor(
     cfr: ComponentFactoryResolver,

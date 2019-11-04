@@ -5,18 +5,17 @@ import {
   FormArray,
   FormControl
 } from '@angular/forms';
+import { stringify, isNumber } from '@pebula/utils';
 
-import { stringify, isNumber } from '@tdm/core/tdm';
 import {
   FormModelMetadata,
   FormPropMetadata,
   NgFormsBoundMapper,
   NgFormsSerializeMapper
 } from '../core/index';
-import { createControl } from '../create-control';
-import { TDMModelFormService } from './tdm-model-form.service';
-import { RenderInstruction } from './render-instruction';
 import { PropNotifyHandler, PropChanges } from '../prop-notify';
+import { createControl } from '../create-control';
+import { RenderInstruction } from './render-instruction';
 
 export interface DynamicControlRenderContext {
   item: RenderInstruction;
@@ -24,13 +23,10 @@ export interface DynamicControlRenderContext {
   fArray?: FormArray | undefined;
   fControl?: FormControl | undefined;
   fGroup?: FormGroup | undefined;
-
   tdmOnControlContextInit?(): void;
 }
 
-function getFormIsNotArrayErrorMessage(
-  value: AbstractControl | undefined
-): string {
+function getFormIsNotArrayErrorMessage(value: AbstractControl | undefined): string {
   const got = value ? 'undefined' : stringify(value.constructor);
   return `A control can only be added to a form array instance, got ${got}`;
 }
@@ -39,9 +35,7 @@ function getFormIsNotArrayErrorMessage(
  * Takes a path and removes all array references.
  * returns a tuple [immidiate prop name, rest of the path]
  */
-function normalizeFormPath<T = any>(
-  path: Array<string | number> | string
-): [keyof T, string] {
+function normalizeFormPath<T = any>(path: Array<string | number> | string): [keyof T, string] {
   const isNumberRe = /^\d+$/;
   const pathArr = Array.isArray(path)
     ? path.filter(n => !isNumber(n))
@@ -67,17 +61,9 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
     this.onPropChange = value.onPropChange.bind(value);
   }
 
-  get model(): T {
-    return this._model;
-  }
-
-  get type(): Type<T> {
-    return this._type;
-  }
-
-  get ready(): boolean {
-    return this._ready;
-  }
+  get model(): T { return this._model; }
+  get type(): Type<T> { return this._type; }
+  get ready(): boolean { return this._ready; }
 
   /**
    * The render instructions for the TDMModel type of this instance.
@@ -100,12 +86,9 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
   private _model: T;
   private _ready: boolean;
 
-  constructor(protected modelFormService: TDMModelFormService) {}
+  constructor(protected modelFormService: import('./tdm-model-form.service').TDMModelFormService) {}
 
-  onPropChange(
-    ri: RenderInstruction,
-    changes: PropChanges<RenderInstruction>
-  ): void {} // tslint:disable-line
+  onPropChange(ri: RenderInstruction, changes: PropChanges<RenderInstruction>): void {} // tslint:disable-line
 
   /**
    * Retrieves a child control given the control's name or path.
@@ -142,10 +125,7 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
    */
   getValueModel(path: Array<string | number> | string): any | null;
   getValueModel(item: RenderInstruction, control: AbstractControl): any | null;
-  getValueModel(
-    path: Array<string | number> | string | RenderInstruction,
-    control?: AbstractControl
-  ): any | null {
+  getValueModel(path: Array<string | number> | string | RenderInstruction, control?: AbstractControl): any | null {
     const pathArr =
       path instanceof RenderInstruction
         ? path.getRuntimePath(control).split('.')
@@ -171,11 +151,7 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
    * @param value The value to apply on the control retrieved from path
    * @param options
    */
-  setValue(
-    path: Array<string | number> | string,
-    value: any,
-    options?: any
-  ): void {
+  setValue(path: Array<string | number> | string, value: any, options?: any): void {
     this.form.get(path).setValue(value, options);
   }
 
@@ -188,10 +164,7 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
    * When `patch` is true will perform a silent update without throwing when structure does not match.
    * Running this method is a identical to calling patchValue / setValue on the form with the model instance.
    */
-  sync(
-    patch: boolean = true,
-    options?: { onlySelf?: boolean; emitEvent?: boolean }
-  ): void {
+  sync(patch: boolean = true, options?: { onlySelf?: boolean; emitEvent?: boolean }): void {
     if (patch) {
       this.form.patchValue(this.model, options);
     } else {
@@ -299,11 +272,7 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
    * @param tryCreateNew When true and value is undefined or null, will try to create new value with the new keyword
    * using the type at the path.
    */
-  appendControl(
-    path: Array<string | number> | string,
-    value?: any,
-    tryCreateNew?: boolean
-  ): FormGroup | FormControl {
+  appendControl(path: Array<string | number> | string, value?: any, tryCreateNew?: boolean): FormGroup | FormControl {
     const formArray = this.form.get(path);
     if (formArray instanceof FormArray) {
       // we got the instance, now move to type metadata world where all array index references, if exist, must go out.
@@ -326,10 +295,7 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
    * @param query The index at the form array to remove at or a form control instance to remove from the form array.
    * @returns The removed control or undefined if nothing was removed.
    */
-  removeControl(
-    path: Array<string | number> | string,
-    query: number | AbstractControl
-  ): AbstractControl | undefined {
+  removeControl(path: Array<string | number> | string, query: number | AbstractControl): AbstractControl | undefined {
     const formArray = this.form.get(path);
     if (formArray instanceof FormArray) {
       const idx = isNumber(query) ? query : formArray.controls.indexOf(query);
@@ -353,11 +319,7 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
   setContext(instance: T, type: Type<T>): void;
   setContext(instance: T, formGroup: FormGroup): void;
   setContext(instance: T, type: Type<T>, formGroup: FormGroup): void;
-  setContext(
-    instance: T,
-    type?: Type<T> | FormGroup,
-    formGroup?: FormGroup
-  ): void {
+  setContext(instance: T, type?: Type<T> | FormGroup, formGroup?: FormGroup): void {
     if (type instanceof FormGroup) {
       formGroup = type;
       type = undefined;
@@ -416,10 +378,7 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
   /**
    * @internal
    */
-  bindRenderingData(
-    controlRenderer: DynamicControlRenderContext,
-    renderData: RenderInstruction
-  ): void {
+  bindRenderingData(controlRenderer: DynamicControlRenderContext, renderData: RenderInstruction): void {
     controlRenderer.tdmForm = this;
     controlRenderer.fGroup = renderData.flattened
       ? (this.form.get(renderData.flattened) as FormGroup)
@@ -460,11 +419,7 @@ export class TDMModelForm<T = any> implements PropNotifyHandler {
   /**
    * FormArray's require specific reset because `@angular/forms` logic does not match the array but the content only.
    */
-  private resetFormArray(
-    formArray: FormArray,
-    value: any,
-    staticPath: string
-  ): boolean {
+  private resetFormArray(formArray: FormArray, value: any, staticPath: string): boolean {
     if (formArray.dirty || formArray.length !== (value ? value.length : 0)) {
       formArray.controls.splice(0, formArray.controls.length);
       if (value) {

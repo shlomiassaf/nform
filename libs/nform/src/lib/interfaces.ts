@@ -11,9 +11,7 @@ export interface FormElementType {
 /**
  * Represents render definitions for an element
  */
-export interface RenderDef<
-  T extends keyof FormElementType = keyof FormElementType
-> {
+export interface RenderDef<T extends keyof FormElementType = keyof FormElementType> {
   /**
    * The order of the control in the form
    */

@@ -1,6 +1,6 @@
+import { Constructor } from '@pebula/utils';
 import {
   LazyInit,
-  Constructor,
   TransformFn,
   propAliasConfig,
   PropAliasConfig,
@@ -9,7 +9,6 @@ import {
   BaseMetadata,
   DecoratorInfo,
   MetaClass,
-  MetaClassMetadata
 } from '../fw';
 
 import { targetStore } from './target-store';

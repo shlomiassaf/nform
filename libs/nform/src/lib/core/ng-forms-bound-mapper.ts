@@ -1,12 +1,6 @@
 import { FormGroup } from '@angular/forms';
-import {
-  targetStore,
-  isString,
-  isNumber,
-  Constructor,
-  PlainObjectMapper,
-  TargetMetadata
-} from '@tdm/core/tdm';
+import { Constructor, isString, isNumber } from '@pebula/utils';
+import { targetStore, PlainObjectMapper, TargetMetadata } from '@pebula/utils/meta/internal';
 
 import {
   DeserializableForm,
@@ -53,8 +47,7 @@ class NgFormsBoundDeserializeMapper extends NgFormsDeserializeMapper {
  * This is a helper class for easy form management where one can use the same object to serialize
  * and deserialize the model while keeping a reference to the model data.
  */
-// tslint:disable-next-line
-export class NgFormsBoundMapper<T> {
+export class NgFormsBoundMapper<T = any> {
   private fg: FormGroup;
   private meta: TargetMetadata;
 

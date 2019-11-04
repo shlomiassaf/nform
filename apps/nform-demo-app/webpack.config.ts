@@ -105,7 +105,7 @@ function updateWebpackConfig(webpackConfig: Configuration): Configuration {
     return {
       ANGULAR_VERSION: JSON.stringify(angular.version),
       CDK_VERSION: JSON.stringify(cdk.version),
-      NFORM_VERSION: JSON.stringify(nform.version),
+      LIB_VERSION: JSON.stringify(nform.version),
       BUILD_VERSION: JSON.stringify(gitInfo.latest.short_hash),
     };
 

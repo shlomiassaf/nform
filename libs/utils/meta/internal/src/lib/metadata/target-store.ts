@@ -1,13 +1,17 @@
-import { Constructor, isUndefined } from '../fw/utils';
-import { KeySet, SetExt, MapExt, DualKeyMap } from '../fw/set-map-ext';
+import { Constructor, isUndefined } from '@pebula/utils';
 import {
+  KeySet,
+  SetExt,
+  MapExt,
+  DualKeyMap,
   MetaClass,
   MetadataClassStatic,
   MetaClassInstanceDetails,
-  GLOBAL_KEY
-} from '../fw/metadata-framework';
-import { targetEvents, TargetEvents } from '../fw/events';
-
+  GLOBAL_KEY,
+  targetEvents,
+  TargetEvents
+} from '../fw';
+import { register } from './helpers';
 import { TargetMetadata } from './target-metadata';
 
 /**
@@ -21,7 +25,7 @@ import { TargetMetadata } from './target-metadata';
  */
 export class TargetStore {
   /**
-   * register listeners for metadata lifecycle events on a target.
+   * register listeners for metadata life-cycle events on a target.
    * @returns
    */
   get on(): TargetEvents {
@@ -33,10 +37,7 @@ export class TargetStore {
    */
   protected locals: KeySet<any, any>;
   protected namedTargets: Map<string, Constructor<any>>;
-  protected targets: Map<
-    Constructor<any>,
-    DualKeyMap<MetadataClassStatic, TdmPropertyKey, any>
-  >;
+  protected targets: Map<Constructor<any>, DualKeyMap<MetadataClassStatic, TdmPropertyKey, any>>;
   protected builtTargets: Map<Constructor<any>, TargetMetadata>;
 
   protected constructor() {
@@ -260,7 +261,9 @@ export class TargetStore {
   }
 }
 
-export const targetStore: TargetStore = TargetStore.create();
-MetaClass.defaultRegistrator(meta => targetStore.setMetaFormFactory(meta));
-
-import './helpers';
+export const targetStore: TargetStore = (() => {
+  const ts = TargetStore.create();
+  MetaClass.defaultRegistrator(meta => targetStore.setMetaFormFactory(meta));
+  register(ts);
+  return ts;
+})();

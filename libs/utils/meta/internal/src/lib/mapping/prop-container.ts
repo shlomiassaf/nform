@@ -1,5 +1,6 @@
 import { array } from '../fw';
-import { ExcludeMetadata, PropMetadata } from '../metadata';
+import { PropMetadata } from '../metadata/prop';
+import { ExcludeMetadata } from '../metadata/exclude';
 
 /**
  * Mappings between properties of a plain object to a class

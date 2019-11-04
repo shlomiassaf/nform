@@ -27,11 +27,11 @@
         "apps/libs/*",
         "apps/libs/*/src/index.ts"
       ],
-      "@pebula/ngrid/lib/*": [
-        "libs/ngrid/src/lib/*"
+      "@pebula/nform/lib/*": [
+        "libs/nform/src/lib/*"
       ],
-      "@pebula/ngrid-material/lib/*": [
-        "libs/ngrid-material/src/lib/*"
+      "@pebula/nform-material/lib/*": [
+        "libs/nform-material/src/lib/*"
       ],
       "@pebula/*": [
         "libs/*/src/index.ts",

@@ -1,4 +1,5 @@
-import { isPrimitive, DualKeyMap } from '../../fw';
+import { isPrimitive } from '@pebula/utils';
+import { DualKeyMap } from '../../fw';
 import { PropMetadata, targetStore } from '../../metadata';
 import { MapperFactory, DeserializeMapper, SerializeMapper } from '../mapper';
 import {

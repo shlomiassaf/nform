@@ -1,17 +1,14 @@
+import { FormGroup, FormControl, AbstractControl, FormArray } from '@angular/forms';
 import {
-  FormGroup,
-  FormControl,
-  AbstractControl,
-  FormArray
-} from '@angular/forms';
-import {
-  targetStore,
   isUndefined,
   isFunction,
   isPrimitive,
   stringify,
-  directMapper,
   Constructor,
+} from '@pebula/utils';
+import {
+  targetStore,
+  directMapper,
   TypeMetadata,
   PropMetadata,
   PropertyContainer,
@@ -21,7 +18,7 @@ import {
   DeserializeMapper,
   DirectDeserializeMapper,
   PlainObjectMapper
-} from '@tdm/core/tdm';
+} from '@pebula/utils/meta/internal';
 
 import { FormModelMetadata, FormPropMetadata } from './metadata/index';
 import { objectToForm } from '../utils';
@@ -478,16 +475,9 @@ export class NgFormsSerializeMapper extends SerializeMapper {
    * new FormArray(items.map( item => createControl(MyType, 'myProp', item) ));
    * ```
    */
-  static createControl<T, Z>(
-    type: Z & Constructor<T>,
-    prop: keyof T | [keyof T, string],
-    value?: any,
-    tryCreateNew?: boolean
-  ): FormGroup | FormControl | FormControl {
+  static createControl<T, Z>(type: Z & Constructor<T>, prop: keyof T | [keyof T, string], value?: any, tryCreateNew?: boolean): FormGroup | FormControl {
     if (Array.isArray(value)) {
-      throw new Error(
-        'provided value is an array instance which is not allowed.'
-      );
+      throw new Error('provided value is an array instance which is not allowed.');
     }
     const formProp = deepGetFormProp(type, prop);
     if (tryCreateNew && (isUndefined(value) || value === null)) {
@@ -495,11 +485,7 @@ export class NgFormsSerializeMapper extends SerializeMapper {
         value = new formProp.rtType.ref();
       } catch (e) {} // tslint:disable-line
     }
-    return <any>new NgFormsSerializeMapper(undefined).createControl(
-      formProp,
-      value,
-      true
-    );
+    return new NgFormsSerializeMapper(undefined).createControl(formProp, value, true) as any;
   }
 
   static getFormProp: <T, Z>(type: Z & Constructor<T>, prop: keyof T | [keyof T, string]) => FormPropMetadata = deepGetFormProp;
@@ -574,12 +560,10 @@ export function deepGetFormProp<T, Z>(type: Z & Constructor<T>, prop: keyof T | 
     if (!targetStore.hasTarget(typeMeta.ref)) {
       // tslint:disable-next-line
       throw new Error(
-        `Error trying deep access with a "childForm" found in path section "${key}", "${
-          typeMeta.ref
-        }" is not a registered model`
+        `Error trying deep access with a "childForm" found in path section "${key}", "${typeMeta.ref}" is not a registered model`
       );
     }
-    return deepGetFormProp(typeMeta.ref, [path.shift(), path.join('.')]);
+    return deepGetFormProp(typeMeta.ref, [path.shift(), path.join('.')] as any);
   }
 
   return formProp;
