@@ -21,12 +21,11 @@ import { MetaService } from '@ngx-meta/core';
 
 import { UnRx } from '@pebula/utils';
 import { PageFileAsset } from '@pebula-internal/webpack-markdown-pages';
-import { ExampleViewComponent } from '../exapmle-view/example-view.component';
-import { ContentChunkViewComponent } from '../content-chunk-view/content-chunk-view.component';
 import { MarkdownDynamicComponentPortal } from '../markdown-dynamic-component-portal';
 import { MarkdownPagesService } from '../../services/markdown-pages.service';
 import { LocationService } from '../../services/location.service';
 import { MarkdownPageContainerComponent } from '../markdown-page-container/markdown-page-container.component';
+import { MarkdownPageViewerRenderAdapter, MarkdownPageViewerRenderInstructions } from './markdown-page-viewer-render-adapter';
 
 @Component({
   selector: 'pbl-markdown-page-viewer',
@@ -35,7 +34,7 @@ import { MarkdownPageContainerComponent } from '../markdown-page-container/markd
   host: {
     class: 'markdown-body',
     '[class.no-parent-container]': '!hasContainer',
-  }
+  },
 })
 @UnRx()
 export class MarkdownPageViewerComponent implements OnDestroy {
@@ -58,6 +57,7 @@ export class MarkdownPageViewerComponent implements OnDestroy {
               private _injector: Injector,
               private _viewContainerRef: ViewContainerRef,
               private _ngZone: NgZone,
+              private renderAdapter: MarkdownPageViewerRenderAdapter,
               @Optional() container: MarkdownPageContainerComponent) {
     this.hasContainer = !!container;
     route.data.pipe(UnRx(this)).subscribe( data => {
@@ -84,41 +84,40 @@ export class MarkdownPageViewerComponent implements OnDestroy {
 
   private updateDocument(url: string) {
     if (!url) {
-      this.meta.setTitle(``);
+      this.renderAdapter.beforeRenderPage();
       this._elementRef.nativeElement.innerHTML = '';
       return;
     }
     this.mdPages.getPage(url)
       .then( p => {
         this.page = p;
-        this.meta.setTitle(`NGrid: ${p.title}`);
+        this.renderAdapter.beforeRenderPage(p);
         this._elementRef.nativeElement.innerHTML = p.contents;
 
         if (typeof this._elementRef.nativeElement.getBoundingClientRect === 'function') {
-          this._loadComponents('pbl-example-view', ExampleViewComponent);
-          this._loadComponents('pbl-app-content-chunk', ContentChunkViewComponent);
+          for (const dyn of this.renderAdapter.dynamicComponents) {
+            this._loadComponents(dyn);
+          }
         }
-     
+
         this._ngZone.onStable.pipe(take(1)).subscribe(() => this.contentRendered.next());
       });
   }
 
-  private _loadComponents<T extends MarkdownDynamicComponentPortal>(componentName: string, componentClass: Type<T>) {
-    let exampleElements = this._elementRef.nativeElement.querySelectorAll(`[${componentName}]`);
+  private _loadComponents<T extends MarkdownDynamicComponentPortal>(instructions: MarkdownPageViewerRenderInstructions) {
+    let exampleElements = this._elementRef.nativeElement.querySelectorAll(`${instructions.selector}`);
 
     Array.prototype.slice.call(exampleElements).forEach((element: Element) => {
-      const ident = element.getAttribute(componentName);
+      const ident = element.getAttribute(instructions.identAttr);
       const containerClass = element.getAttribute('containerClass');
       const inputs = element.getAttribute('inputs');
-      const exampleStyle = element.getAttribute('exampleStyle');
 
-      const portalHost = new DomPortalHost(element, this._componentFactoryResolver, this._appRef, this._injector);
-      const cmpPortal = new ComponentPortal(componentClass, this._viewContainerRef);
+      const cfr = instructions.componentFactoryResolver || this._componentFactoryResolver;
+      const injector = instructions.injector || this._injector;
+      const portalHost = new DomPortalHost(element, cfr, this._appRef, injector);
+      const cmpPortal = new ComponentPortal(instructions.cmp, this._viewContainerRef, injector, cfr);
       const cmpRef = portalHost.attach(cmpPortal);
 
-      if (exampleStyle) {
-        (cmpRef.instance as any).exampleStyle = exampleStyle;
-      }
       if (inputs) {
         try {
           cmpRef.instance.inputParams = JSON.parse(inputs);
@@ -126,6 +125,8 @@ export class MarkdownPageViewerComponent implements OnDestroy {
       }
       cmpRef.instance.componentName = ident;
       cmpRef.instance.containerClass = containerClass;
+
+      this.renderAdapter.beforeRenderComponent(cmpRef.instance, instructions.cmp, element as HTMLElement);
       cmpRef.instance.render();
       cmpRef.changeDetectorRef.markForCheck();
       cmpRef.changeDetectorRef.detectChanges();

@@ -1,1 +1,1 @@
-export * from './lib/nform';
+export * from './lib/index';

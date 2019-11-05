@@ -18,7 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 
-import { PblNformModule } from '@pebula/nform';
+import { PblNFormModule } from '@pebula/nform';
 
 import { PblTocModule } from './toc.module';
 
@@ -31,6 +31,7 @@ import {
   NgCustomLogoComponent,
   AppSearchInput,
   AppSearchResults,
+  PblLedComponent,
  } from './components';
 
 import { NgEventsDirective } from './directives/ng-hooks';
@@ -51,6 +52,7 @@ const DECLARATION_EXPORT = [
   NgEventsDirective,
   AppSearchInput,
   AppSearchResults,
+  PblLedComponent,
   ContentChunkViewGhostDirective, ExampleViewGhostDirective,
 ]
 
@@ -66,7 +68,7 @@ const DECLARATION_EXPORT = [
     MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatMenuModule, MatCheckboxModule, MatListModule, MatTabsModule, MatToolbarModule, MatTooltipModule, MatProgressBarModule, MatProgressSpinnerModule,
     FlexModule, ExtendedModule,
 
-    PblNformModule,
+    PblNFormModule,
 
     PblTocModule,
   ],
@@ -74,9 +76,8 @@ const DECLARATION_EXPORT = [
     DECLARATION_EXPORT,
     PIPES_EXPORT,
 
-    PblNformModule
+    PblNFormModule
   ],
-  providers: [ ],
   entryComponents: [ ExampleViewComponent, ContentChunkViewComponent ],
 })
 export class PblDemoAppSharedModule {

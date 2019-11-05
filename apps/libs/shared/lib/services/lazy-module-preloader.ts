@@ -47,6 +47,7 @@ export class LazyModulePreloader extends PreloadAllModules {
             error => {
               b.next({ module: moduleType, error });
               this.onCompile.next(b.getValue());
+              throw error;
             }
           );
       }

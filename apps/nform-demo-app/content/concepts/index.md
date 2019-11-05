@@ -29,16 +29,30 @@ By the end of the tutorial you will be able to do the following:
 - And more, with cool examples
 
 <div fxLayout fxLayoutAlign="center center" fxLayoutWrap="wrap">
-  <tdm-markdown-view fxFlex="45%"
-                     [code]="(code | async | tdmCode:[{file: 'model.ts', section: 'DEMO-1'}])[0]"></tdm-markdown-view>
 
-  <div fxFlex="10%" class="center-text">
-    <mat-icon style="font-size: 48px">compare_arrows</mat-icon>
+<div style="display: flex">
+  <div style="flex: 1 1 auto">
+
+```typescript
+export class UIDeveloper {
+  name: string;
+
+  yearOfBirth: number;
+
+  gender: 'male' | 'female' | 'other';
+
+  framework: 'angular' | 'react' | 'vue' | 'ember' | 'knockout' | 'other';
+}
+```
+
   </div>
-  <div fxFlex="45%">
-    <dynamic-form [model]="model"></dynamic-form>
+
+  <div style="flex: 1 1 auto">
+    <div pbl-example-view="pbl-guide-intro-example" exampleStyle="flow"></div>
   </div>
 </div>
+
+<!-- <mat-icon style="font-size:` 48px">compare_arrows</mat-icon> -->
 
 ## Tutorial Structure
 
@@ -82,12 +96,7 @@ The tutorial contains a lot of examples, in most of them you'll find a
 container called the dashboard, this is an important tool, let's review
 it quickly:
 
-<form-wrapper title="I'm the dashboard"
-              [code]="code | async | tdmCode:[{title: 'Component'}, {title: 'Template'}, {title: 'Style'}, {title: 'Model', section: 'DEMO-2'}]">
-  <!--@tdm-example:TDM-DEMO-->
-  <dynamic-form [model]="model"></dynamic-form>
-  <!--@tdm-example:TDM-DEMO-->
-</form-wrapper>
+<div pbl-example-view="pbl-guide-intro-example"></div>
 
 Before we start rocking let's review the environment you're about to use.  
 The examples in this tutorial are all real time angular code, running
@@ -101,42 +110,11 @@ The dashboard is the top panel, above the form showcased in the example.
 
 Let's review what we can do with the dashboard:
 
-### Real time form status indicator LED.
+### Real time form status indicator LED
 
 The LED is located at the top left.
 
-<div fxLayout="row" fxLayoutAlign="space-around center">
-  <div fxLayout="column" fxLayoutAlign="center center">
-    <div class="led-sample">
-      <tdm-led color="green"></tdm-led>
-    </div>
-    <span>VALID</span>
-  </div>
-  <div fxLayout="column" fxLayoutAlign="center center">
-    <div class="led-sample">
-      <tdm-led color="red" blink></tdm-led>
-    </div>
-    <span>INVALID</span>
-  </div>
-  <div fxLayout="column" fxLayoutAlign="center center">
-    <div class="led-sample">
-      <tdm-led color="yellow"></tdm-led>
-    </div>
-    <span>DISABLED</span>
-  </div>
-  <div fxLayout="column" fxLayoutAlign="center center">
-    <div class="led-sample">
-      <tdm-led color="blue" blink></tdm-led>
-    </div>
-    <span>PENDING</span>
-  </div>
-  <div fxLayout="column" fxLayoutAlign="center center">
-    <div class="led-sample">
-      <tdm-led></tdm-led>
-    </div>
-    <span>NOT SET</span>
-  </div>
-</div>
+<div pbl-app-content-chunk="pbl-led-legend-chunk"></div>
 
 ### Source code view
 
@@ -154,7 +132,7 @@ Next to the source code button you will find the interaction menu.
 In the menu you will find some tools to help you interact with the
 example and inspect the current state:
 
-- **JSON Vie**
+- **JSON View**
   Toggle's (show/hide) real time JSON view of the model or the form.  
   Appears in the **right panel** (we will get to panels in a bit)
   > If you don't know the difference between JSON view of model and form

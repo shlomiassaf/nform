@@ -1,9 +1,11 @@
 export { bindNgModule, BindNgModule, Example, LiveExample, EXAMPLE_COMPONENTS, EXAMPLE_COMPONENT_LIST } from './lib/example/index';
 export * from './lib/pbl-demo-app-shared.module';
+export { MarkdownDynamicComponentPortal } from './lib/components/markdown-dynamic-component-portal';
 export { MarkdownPageContainerComponent } from './lib/components/markdown-page-container/markdown-page-container.component';
 export { MarkdownPageViewerComponent } from './lib/components/markdown-page-viewer/markdown-page-viewer.component';
-export { EXAMPLE_COMPONENTS_TOKEN } from './lib/components/exapmle-view/example-view.component';
-export { LiveContentChunk, CONTENT_CHUNKS_COMPONENTS } from './lib/components/content-chunk-view/content-chunk-view.component';
+export { MarkdownPageViewerRenderAdapter, MarkdownPageViewerRenderInstructions } from './lib/components/markdown-page-viewer/markdown-page-viewer-render-adapter';
+export { EXAMPLE_COMPONENTS_TOKEN, ExampleViewComponent } from './lib/components/exapmle-view/example-view.component';
+export { LiveContentChunk, CONTENT_CHUNKS_COMPONENTS, ContentChunkViewComponent } from './lib/components/content-chunk-view/content-chunk-view.component';
 export { MarkdownPagesService } from './lib/services/markdown-pages.service';
 export { MarkdownPagesMenuService } from './lib/services/markdown-pages-menu.service';
 export { LocationService } from './lib/services/location.service';

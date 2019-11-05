@@ -24,7 +24,7 @@ interface IAddress {
   zip: number;
 }
 
-declare module '@pebula/nform/lib/interfaces' {
+declare module '@pebula/nform/lib/types/form-element-type' {
   interface FormElementType {
     text: never;
   }

@@ -7,7 +7,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { PblNformModule, DefaultRenderer } from '@pebula/nform';
+import { PblNFormModule, DefaultRenderer } from '@pebula/nform';
 import { MaterialModule } from './material';
 import {
   GlobalMaterialFormControlDirective,
@@ -26,16 +26,16 @@ import {
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
-    PblNformModule
+    PblNFormModule
   ],
   exports: [
     GlobalMaterialFormControlDirective,
     MaterialFormControlRenderer,
-    PblNformModule
+    PblNFormModule
   ],
   entryComponents: [MaterialTemplateStoreComponent, MaterialFormControlRenderer]
 })
-export class MaterialDynamicFormsModule {
+export class PblNformMaterialModule {
   constructor(injector: Injector, cfr: ComponentFactoryResolver) {
     if (!storeContainer.store) {
       // we use a static store, there is no point of using DI if it's always the same store.
@@ -55,9 +55,9 @@ export class MaterialDynamicFormsModule {
     //   }
     // }
     return {
-      ngModule: MaterialDynamicFormsModule,
+      ngModule: PblNformMaterialModule,
       providers: [
-        ...PblNformModule.forRoot(
+        ...PblNFormModule.forRoot(
           defaultRenderer || MaterialFormControlRenderer
         ).providers
       ]

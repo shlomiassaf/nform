@@ -9,13 +9,8 @@ function normValidators(v: any): any[] {
 }
 
 // tslint:disable-next-line
-export function getValidators(
-  obj: {
-    validators: ValidatorFn | ValidatorFn[] | null;
-    asyncValidators: AsyncValidatorFn | AsyncValidatorFn[] | null;
-  },
-  builtIn?: BuiltInValidations
-): [ValidatorFn | null, AsyncValidatorFn | null] {
+export function getValidators(obj: { validators: ValidatorFn | ValidatorFn[] | null; asyncValidators: AsyncValidatorFn | AsyncValidatorFn[] | null; },
+                              builtIn?: BuiltInValidations): [ValidatorFn | null, AsyncValidatorFn | null] {
   const sync: ValidatorFn[] = normValidators(obj.validators);
   const async = normValidators(obj.asyncValidators);
 

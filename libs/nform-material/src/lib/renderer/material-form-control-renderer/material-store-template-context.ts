@@ -1,8 +1,8 @@
 import { TemplateRef } from '@angular/core';
-import { RenderInstruction, DynamicControlRenderContext, FormElementType } from '@pebula/nform';
+import { NFormRecordRef, NFormControlTemplateContext, FormElementType } from '@pebula/nform';
 
 export interface MaterialStoreInstance {
-  editSingleChildForm(context: DynamicControlRenderContext): void;
+  editSingleChildForm(context: NFormControlTemplateContext): void;
 
   addToList(): void;
 
@@ -10,16 +10,16 @@ export interface MaterialStoreInstance {
 
   removeFromList(): void;
 
-  hasError(errorName: string, ctx: DynamicControlRenderContext): boolean;
+  hasError(errorName: string, ctx: NFormControlTemplateContext): boolean;
 }
 
 export interface MaterialStoreTemplateContext {
-  $implicit: DynamicControlRenderContext;
+  $implicit: NFormControlTemplateContext;
   showLabels?: boolean;
   self: MaterialStoreInstance;
 }
 
 export interface TemplateStore {
   registerTemplate(name: keyof FormElementType, templateRef: TemplateRef<MaterialStoreTemplateContext>): void;
-  getTemplate(item: RenderInstruction): TemplateRef<MaterialStoreTemplateContext>;
+  getTemplate(item: NFormRecordRef): TemplateRef<MaterialStoreTemplateContext>;
 }

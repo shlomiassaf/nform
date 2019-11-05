@@ -5258,6 +5258,23 @@ crypto-random-string@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
 
+css-loader@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.2.0.tgz#bb570d89c194f763627fcf1f80059c6832d009b2"
+  dependencies:
+    camelcase "^5.3.1"
+    cssesc "^3.0.0"
+    icss-utils "^4.1.1"
+    loader-utils "^1.2.3"
+    normalize-path "^3.0.0"
+    postcss "^7.0.17"
+    postcss-modules-extract-imports "^2.0.0"
+    postcss-modules-local-by-default "^3.0.2"
+    postcss-modules-scope "^2.1.0"
+    postcss-modules-values "^3.0.0"
+    postcss-value-parser "^4.0.0"
+    schema-utils "^2.0.0"
+
 css-parse@1.7.x:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/css-parse/-/css-parse-1.7.0.tgz#321f6cf73782a6ff751111390fc05e2c657d8c9b"
@@ -5279,6 +5296,10 @@ cssauron@^1.4.0:
 cssesc@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-0.1.0.tgz#c814903e45623371a0477b40109aaafbeeaddbb4"
+
+cssesc@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
 
 cssom@0.3.x, "cssom@>= 0.3.2 < 0.4.0", cssom@^0.3.4:
   version "0.3.8"
@@ -7885,6 +7906,12 @@ iconv-lite@0.4.24, iconv-lite@^0.4.17, iconv-lite@^0.4.24, iconv-lite@^0.4.4, ic
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
+icss-utils@^4.0.0, icss-utils@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-4.1.1.tgz#21170b53789ee27447c2f47dd683081403f9a467"
+  dependencies:
+    postcss "^7.0.14"
+
 ieee754@^1.1.4:
   version "1.1.12"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.12.tgz#50bf24e5b9c8bb98af4964c941cdb0918da7b60b"
@@ -7977,6 +8004,10 @@ indent-string@^2.1.0:
 indent-string@^3.0.0, indent-string@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-3.2.0.tgz#4a5fd6d27cc332f37e5419a504dbb837105c9289"
+
+indexes-of@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/indexes-of/-/indexes-of-1.0.1.tgz#f30f716c8e2bd346c7b67d3df3915566a7c05607"
 
 indexof@0.0.1:
   version "0.0.1"
@@ -12355,6 +12386,43 @@ postcss-loader@3.0.0:
     postcss-load-config "^2.0.0"
     schema-utils "^1.0.0"
 
+postcss-modules-extract-imports@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-modules-extract-imports/-/postcss-modules-extract-imports-2.0.0.tgz#818719a1ae1da325f9832446b01136eeb493cd7e"
+  dependencies:
+    postcss "^7.0.5"
+
+postcss-modules-local-by-default@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/postcss-modules-local-by-default/-/postcss-modules-local-by-default-3.0.2.tgz#e8a6561be914aaf3c052876377524ca90dbb7915"
+  dependencies:
+    icss-utils "^4.1.1"
+    postcss "^7.0.16"
+    postcss-selector-parser "^6.0.2"
+    postcss-value-parser "^4.0.0"
+
+postcss-modules-scope@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/postcss-modules-scope/-/postcss-modules-scope-2.1.0.tgz#ad3f5bf7856114f6fcab901b0502e2a2bc39d4eb"
+  dependencies:
+    postcss "^7.0.6"
+    postcss-selector-parser "^6.0.0"
+
+postcss-modules-values@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/postcss-modules-values/-/postcss-modules-values-3.0.0.tgz#5b5000d6ebae29b4255301b4a3a54574423e7f10"
+  dependencies:
+    icss-utils "^4.0.0"
+    postcss "^7.0.6"
+
+postcss-selector-parser@^6.0.0, postcss-selector-parser@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/postcss-selector-parser/-/postcss-selector-parser-6.0.2.tgz#934cf799d016c83411859e09dcecade01286ec5c"
+  dependencies:
+    cssesc "^3.0.0"
+    indexes-of "^1.0.1"
+    uniq "^1.0.1"
+
 postcss-url@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/postcss-url/-/postcss-url-8.0.0.tgz#7b10059bd12929cdbb1971c60f61a0e5af86b4ca"
@@ -12392,6 +12460,14 @@ postcss@^7.0.0, postcss@^7.0.2:
 postcss@^7.0.1:
   version "7.0.13"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.13.tgz#42bf716413e8f1c786ab71dc6e722b3671b16708"
+  dependencies:
+    chalk "^2.4.2"
+    source-map "^0.6.1"
+    supports-color "^6.1.0"
+
+postcss@^7.0.14, postcss@^7.0.5, postcss@^7.0.6:
+  version "7.0.21"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.21.tgz#06bb07824c19c2021c5d056d5b10c35b989f7e17"
   dependencies:
     chalk "^2.4.2"
     source-map "^0.6.1"
@@ -15464,6 +15540,10 @@ union-value@^1.0.0:
     get-value "^2.0.6"
     is-extendable "^0.1.1"
     set-value "^0.4.3"
+
+uniq@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/uniq/-/uniq-1.0.1.tgz#b31c5ae8254844a3a8281541ce2b04b865a734ff"
 
 unique-filename@^1.1.0:
   version "1.1.0"

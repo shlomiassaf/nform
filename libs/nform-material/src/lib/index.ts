@@ -1,2 +1,2 @@
 export { MaterialFormControlRenderer } from './renderer/index';
-export { MaterialDynamicFormsModule } from './module';
+export { PblNformMaterialModule } from './module';

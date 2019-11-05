@@ -54,8 +54,8 @@ export class ExampleViewComponent extends MarkdownDynamicComponentPortal impleme
   exampleStyle: 'toolbar' | 'flow' = 'toolbar';
 
   constructor(lazyModuleStore: LazyModuleStoreService,
-              private exampleService: MarkdownCodeExamplesService,
-              @Inject(EXAMPLE_COMPONENTS_TOKEN) private exampleComponents: {[key: string]: LiveExample} ) {
+              protected exampleService: MarkdownCodeExamplesService,
+              @Inject(EXAMPLE_COMPONENTS_TOKEN) protected exampleComponents: {[key: string]: LiveExample} ) {
     super(lazyModuleStore);
   }
 

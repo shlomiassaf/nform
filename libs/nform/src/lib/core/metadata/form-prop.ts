@@ -8,7 +8,7 @@ import {
   TypeMetadataArgs,
   TypeMetadata
 } from '@pebula/utils/meta/internal';
-import { RenderDef, FormElementType } from '../../interfaces';
+import { RenderDef, FormElementType } from '../../types';
 
 export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof FormElementType> {
   /**
@@ -65,10 +65,10 @@ export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof Fo
    * Instructions for flattening the object referenced on this property.
    * The property must reference a JS object.
    *
-   * flatten properties does not require a render instructions.
+   * flatten properties does not require a render records.
    * When set, the property is treated as a plain object regardless of it's type so you can also send plain JS objects.
    *
-   * NOTE: [[FormPropMetadataArgs]] definitions in a flatten instruction might not support all features.
+   * NOTE: [[FormPropMetadataArgs]] definitions in a flatten record might not support all features.
    *       If you want to maximize use make sure to manually define the run-time types.
    */
   flatten?: { [key: string]: FormPropMetadataArgs };

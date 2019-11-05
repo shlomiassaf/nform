@@ -100,7 +100,7 @@
   <div class="dynamic-array">
     <mat-list class="dynamic-array-container">
       <ng-container *ngIf="ctx.item.isPrimitive">
-        <mat-list-item *forFormArray="let c of ctx.fArray; index as i; tdmForm: ctx.tdmForm; fGroup: ctx.fGroup; item: ctx.item">
+        <mat-list-item *forFormArray="let c of ctx.fArray; index as i; nForm: ctx.nForm; fGroup: ctx.fGroup; item: ctx.item">
           <div class="dynamic-list-item" [class.selected]="self.selectedItem === i">
             <div class="dynamic-list-item-control">
               <ng-container *ngTemplateOutlet="getTemplate(c.item); context: { $implicit: c, showLabels: false, self: self }"></ng-container>
@@ -113,7 +113,7 @@
       </ng-container>
 
       <ng-container *ngIf="ctx.item.isChildForm && ctx.item.identity">
-        <mat-list-item *forFormArray="let c of ctx.fArray; index as i; tdmForm: ctx.tdmForm; fGroup: ctx.fGroup; item: ctx.item">
+        <mat-list-item *forFormArray="let c of ctx.fArray; index as i; nForm: ctx.nForm; fGroup: ctx.fGroup; item: ctx.item">
           <div class="dynamic-list-item dynamic-list-item-ripple"
                mat-ripple
                [class.selected]="self.selectedItem === i"

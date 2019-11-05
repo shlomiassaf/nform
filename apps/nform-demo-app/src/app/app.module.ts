@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  BrowserModule,
-  HAMMER_GESTURE_CONFIG,
-  makeStateKey
-} from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, makeStateKey } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,16 +19,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { NxModule } from '@nrwl/angular';
 
+import { PblNformMaterialModule } from '@pebula/nform-material';
+import { PblNformDemoAppSharedModule } from '@pebula/apps/shared-nform';
+
 import {
   PblDemoAppSharedModule,
   MarkdownPageContainerComponent,
-  MarkdownPageViewerComponent,
   EXAMPLE_COMPONENTS,
   EXAMPLE_COMPONENTS_TOKEN,
   CONTENT_CHUNKS_COMPONENTS,
   LocationService,
   LazyModuleStoreService,
-  LazyModulePreloader
+  LazyModulePreloader,
 } from '@pebula/apps/shared';
 
 import {
@@ -54,7 +52,11 @@ export function EXAMPLE_COMPONENTS_FACTORY() {
 export const REQ_KEY = makeStateKey<string>('req');
 
 @NgModule({
-  declarations: [AppComponent, DemoHomePageComponent, RouterLinkActiveNotify],
+  declarations: [
+    AppComponent,
+    DemoHomePageComponent,
+    RouterLinkActiveNotify
+  ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     TransferHttpCacheModule,
@@ -67,11 +69,7 @@ export const REQ_KEY = makeStateKey<string>('req');
     NxModule.forRoot(),
     PblDemoAppSharedModule,
     AppContentChunksModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatListModule,
-    MatTooltipModule,
+    MatListModule, MatButtonModule, MatTooltipModule, MatIconModule, MatMenuModule,
     LazyCodePartsModule.forRoot(),
     RouterModule.forRoot(
       [
@@ -96,7 +94,9 @@ export const REQ_KEY = makeStateKey<string>('req');
       pageTracking: {
         autoTrackVirtualPages: true
       }
-    })
+    }),
+    PblNformDemoAppSharedModule.forRoot(),
+    PblNformMaterialModule.forRoot(),
   ],
   providers: [
     { provide: HAMMER_GESTURE_CONFIG, useClass: GestureConfig },
@@ -110,10 +110,7 @@ export const REQ_KEY = makeStateKey<string>('req');
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(
-    store: LazyModuleStoreService,
-    lazyPreloader: LazyModulePreloader
-  ) {
+  constructor(store: LazyModuleStoreService, lazyPreloader: LazyModulePreloader) {
     lazyPreloader.onCompile.subscribe(event => store.moduleRegistered(event));
   }
 }

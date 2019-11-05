@@ -1,0 +1,100 @@
+<div *ngIf="exampleStyle === 'toolbar'" fxLayout="column" class="mat-elevation-z3">
+  <mat-toolbar color="primary">
+    <mat-progress-bar *ngIf="showSpinner" mode="indeterminate"></mat-progress-bar>
+    <div fxFlex="nogrow">
+      <div class="form-status-indicator" [matTooltip]="'Form status: ' + (form?.statusChanges | async)">
+        <pbl-led [blink]="ledBlinking" [color]="ledColor"></pbl-led>
+      </div>
+    </div>
+    <span class="mat-h3" style="margin: 0" fxFlex="*">{{ exampleData?.title }}</span>
+    <button mat-icon-button matTooltip="View Source" (click)="viewSourceCode = !viewSourceCode">
+      <mat-icon>code</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Manage Form" [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [disabled]="jsonView" (click)="this.toggleJsonView()">&#x7b; JSON } View</button>
+      <button mat-menu-item matTooltip="Update form's value & Validity" (click)="dynForm.nForm.form.updateValueAndValidity()">
+        <mat-icon>sync</mat-icon>
+        <span>Sync Form</span>
+      </button>
+      <button mat-menu-item matTooltip="Commit form to model" (click)="onCommitToModel()">
+        <mat-icon>save</mat-icon>
+        <span>Commit</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+  <div fxLayout="column" class="section-code-and-component">
+    <div *ngIf="viewSourceCode">
+      <ng-container *ngTemplateOutlet="sourceCodeTab"></ng-container>
+    </div>
+    <div [class]="containerClass">
+      <ng-container *ngTemplateOutlet="formViewTab"></ng-container>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="exampleStyle === 'flow'" class="flow-style-container">
+  <div *ngIf="viewSourceCode" [@slideInOutRight]>
+    <ng-container *ngTemplateOutlet="sourceCodeTab"></ng-container>
+  </div>
+  <div *ngIf="!viewSourceCode" [@slideInOutLeft] class="flow-style-container">
+    <ng-container *ngTemplateOutlet="formViewTab"></ng-container>
+    <mat-spinner *ngIf="selectedPortal$ | async | negate"></mat-spinner>
+  </div>
+
+  <div class="flow-style-code-marker" matTooltip="View Source" (click)="viewSourceCode = !viewSourceCode">
+    <div class="flow-style-marker-thumb"></div>
+    <mat-icon>code</mat-icon>
+  </div>
+</div>
+
+<ng-template #sourceCodeTab>
+  <mat-tab-group *ngIf="sourceCode | async as assets; else noSourceCode">
+    <ng-container *ngFor="let asset of assets">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div fxLayout="column" fxLayoutAlign="center center" [matTooltip]="asset.file">
+            <span>{{asset.file}} [{{asset.lang.toUpperCase()}}]</span>
+          </div>
+        </ng-template>
+        <div [exampleAssetFileView]="asset" class="pbl-code-example"></div>
+      </mat-tab>
+    </ng-container>
+  </mat-tab-group>
+</ng-template>
+
+<ng-template #formViewTab>
+  <mat-drawer-container>
+    <mat-drawer mode="side" [opened]="rightDrawerOpened">
+      <ng-content></ng-content>
+    </mat-drawer>
+    <mat-drawer position="end" mode="side" [opened]="jsonView">
+      <div>
+        <button mat-icon-button (click)="jsonView = false"><mat-icon>close</mat-icon></button>
+        <div fxFlex></div>
+        <button mat-icon-button (click)="refreshJsonView()"><mat-icon>refresh</mat-icon></button>
+      </div>
+      <mat-tab-group>
+        <mat-tab label="Model">
+          <div class="json-view">
+            <pre><code [innerHtml]="modelJson"></code></pre>
+          </div>
+        </mat-tab>
+        <mat-tab label="Form">
+          <div class="json-view">
+            <pre><code [innerHtml]="formJson"></code></pre>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-drawer>
+    <mat-drawer-content>
+      <ng-template [cdkPortalOutlet]="selectedPortal$ | async" (attached)="attached($event)"></ng-template>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</ng-template>
+
+<ng-template #noSourceCode>
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-template>

@@ -9,26 +9,22 @@ import {
   ChangeDetectorRef,
   Optional
 } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 
 import {
-  RenderInstruction,
-  TDMModelForm,
-  DynamicControlRenderContext,
-  DynamicFormComponent,
-  createChildFormEvent
+  NFormRecordRef,
+  NForm,
+  NFormControlTemplateContext,
+  NFormComponent,
+  createChildFormEvent,
+  FormElementType
 } from '@pebula/nform';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { MaterialStoreTemplateContext, MaterialStoreInstance, TemplateStore } from './material-store-template-context';
 
-import {
-  MaterialStoreTemplateContext,
-  MaterialStoreInstance,
-  TemplateStore
-} from './material-store-template-context';
-
-declare module '@pebula/nform/lib/interfaces' {
+declare module '@pebula/nform/lib/types/render-def' {
   interface RenderDef<T extends keyof FormElementType = keyof FormElementType> {
     identity?: string;
   }
@@ -43,27 +39,25 @@ export const storeContainer: { store: TemplateStore } = { store: undefined };
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MaterialFormControlRenderer
-  implements MaterialStoreInstance, DynamicControlRenderContext, OnChanges {
+export class MaterialFormControlRenderer implements MaterialStoreInstance, NFormControlTemplateContext, OnChanges {
   // tslint:disable-line
   /**
-   * Optional, set if the provider tree where you render this template is not an ancestor of [[DynamicFormComponent]].
+   * Optional, set if the provider tree where you render this template is not an ancestor of [[NFormComponent]].
    * This is usually the case when using an override template with a template defined out of scope.
    */
-  @Input()
-  get dynForm(): DynamicFormComponent {
+  @Input() get dynForm(): NFormComponent {
     return this._dynForm;
   }
 
-  set dynForm(value: DynamicFormComponent) {
+  set dynForm(value: NFormComponent) {
     if (value) {
       this._dynForm = value;
     }
   }
 
   @Input() showLabels: boolean = true;
-  @Input() item: RenderInstruction;
-  @Input() tdmForm: TDMModelForm<any>;
+  @Input() item: NFormRecordRef;
+  @Input() nForm: NForm<any>;
 
   @Input() fArray: FormArray | undefined;
   @Input() fControl: FormControl | undefined;
@@ -73,11 +67,11 @@ export class MaterialFormControlRenderer
 
   selectedItem: number;
   self = this;
-  externalTdmForm: TDMModelForm<any>;
+  externalNForm: NForm<any>;
 
-  private _dynForm: DynamicFormComponent;
+  private _dynForm: NFormComponent;
 
-  constructor(@Optional() dynForm: DynamicFormComponent, private cdr: ChangeDetectorRef) {
+  constructor(@Optional() dynForm: NFormComponent, private cdr: ChangeDetectorRef) {
     if (dynForm) {
       this.dynForm = dynForm;
     }
@@ -97,8 +91,8 @@ export class MaterialFormControlRenderer
     if ('item' in change) {
       this.template = storeContainer.store.getTemplate(this.item);
       if (this.item.isChildForm && this.fControl instanceof FormGroup) {
-        const model = this.tdmForm.getValueModel(this.item, this.fControl);
-        this.externalTdmForm = this.tdmForm.createChildForm(
+        const model = this.nForm.getValueModel(this.item, this.fControl);
+        this.externalNForm = this.nForm.createChildForm(
           this.item.fullName,
           model,
           this.fControl
@@ -109,7 +103,7 @@ export class MaterialFormControlRenderer
           if (!this.fControl.value) {
             this.fControl.setValue([], { onlySelf: true });
           }
-          const data: RenderInstruction<'chips'>['data'] = (this.item.data || {}) as any;
+          const data: NFormRecordRef<'chips'>['data'] = (this.item.data || {}) as any;
           if (!data.separatorKeysCodes) {
             data.separatorKeysCodes = [ENTER, COMMA];
           }
@@ -119,14 +113,14 @@ export class MaterialFormControlRenderer
     }
   }
 
-  editSingleChildForm(context: DynamicControlRenderContext): void {
+  editSingleChildForm(context: NFormControlTemplateContext): void {
     const event = createChildFormEvent(context);
     if (event.isNew) {
-      event.context.fControl = <any>context.tdmForm.createControl(
+      event.context.fControl = context.nForm.createControl(
         context.item.fullName,
         null,
         true
-      );
+      ) as any;
       event.context.fGroup.setControl(
         context.item.name,
         event.context.fControl
@@ -139,7 +133,7 @@ export class MaterialFormControlRenderer
   addToList(): void {
     if (this.item.isPrimitive || this.item.isChildForm) {
       // we create a new control, `appendControl` will push the right one, either primitive or child form.
-      const newControl = this.tdmForm.appendControl(
+      const newControl = this.nForm.appendControl(
         this.item.fullName,
         null,
         this.item.isChildForm
@@ -165,7 +159,7 @@ export class MaterialFormControlRenderer
   removeFromList(): void {
     if (this.selectedItem >= 0) {
       if (this.item.isPrimitive || this.item.isChildForm) {
-        this.tdmForm.removeControl(this.item.fullName, this.selectedItem);
+        this.nForm.removeControl(this.item.fullName, this.selectedItem);
         this.fArray.markAsDirty();
       }
 
@@ -173,7 +167,7 @@ export class MaterialFormControlRenderer
     }
   }
 
-  hasError(errorName: string, ctx: DynamicControlRenderContext): boolean {
+  hasError(errorName: string, ctx: NFormControlTemplateContext): boolean {
     if (ctx.fControl) {
       return ctx.fControl.hasError(errorName);
     } else if (ctx.fArray) {

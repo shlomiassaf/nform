@@ -1,5 +1,5 @@
 import { ViewEncapsulation, Component, ViewChild, TemplateRef } from '@angular/core';
-import { FormElementType, RenderInstruction } from '@pebula/nform';
+import { FormElementType, NFormRecordRef } from '@pebula/nform';
 
 import {MaterialStoreTemplateContext, TemplateStore } from './material-store-template-context';
 
@@ -59,7 +59,7 @@ export class MaterialTemplateStoreComponent implements TemplateStore {
     this.customTemplates[name] = templateRef;
   }
 
-  getTemplate(item: RenderInstruction): TemplateRef<MaterialStoreTemplateContext> {
+  getTemplate(item: NFormRecordRef): TemplateRef<MaterialStoreTemplateContext> {
     if (this.customTemplates[item.vType]) {
       return this.customTemplates[item.vType];
     } else if (item.isArray) {

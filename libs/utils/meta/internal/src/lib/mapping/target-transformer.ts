@@ -30,10 +30,7 @@ export function namingStrategyMap(
 /**
  * @internal
  */
-export function getInstructions<T, Z>(
-  meta: TargetMetadata<T, Z>,
-  dir: TransformDir
-): CompiledTransformation {
+export function getInstructions<T, Z>(meta: TargetMetadata<T, Z>, dir: TransformDir): CompiledTransformation {
   // all excluded instructions for this type
   // this array will be filtered to hold only @Exclude without @Prop
   const excluded = meta
