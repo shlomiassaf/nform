@@ -57,12 +57,10 @@ import { MetaClassMetadata } from './meta-class';
  * to be set from the root.
  *
  * Consider a model that uses multiple extensions (http, ng-dynamic-forms, etc...) having to define all of the
- * different decorators over and over has an impact, both over the payload and the developer experiance.
+ * different decorators over and over has an impact, both over the payload and the developer experience.
  *
  */
-export interface ProxyHostMetadataArgs<
-  T extends MetadataClassStatic<any, any> = any
-> {
+export interface ProxyHostMetadataArgs<T extends MetadataClassStatic<any, any> = any> {
   /**
    * The proxy metadata class
    */
@@ -103,7 +101,7 @@ export interface MetaClassMetadataArgs<TMetaArgs = any, TMetaClass = any> {
    * When true, the metadata is saved under the global key.
    *
    * > Global key logic is implemented throughout the library, make sure to follow this logic when
-   * implementing custom behaviour (for example, overriding the default factory and/or register methods)
+   * implementing custom behavior (for example, overriding the default factory and/or register methods)
    * Since most custom implementation are metadata class specific this should be an issue.
    *
    *
@@ -132,14 +130,12 @@ export interface MetaClassMetadataArgs<TMetaArgs = any, TMetaClass = any> {
    * @param key
    * @param desc
    */
-  factory?(
-    this: MetaClassMetadata<TMetaArgs, TMetaClass>,
-    metaArgs: TMetaArgs,
-    target: Object | Function,
-    info: DecoratorInfo,
-    key?: TdmPropertyKey,
-    desc?: PropertyDescriptor
-  ): MetaClassInstanceDetails<TMetaArgs, TMetaClass> | undefined;
+  factory?(this: MetaClassMetadata<TMetaArgs, TMetaClass>,
+           metaArgs: TMetaArgs,
+           target: Object | Function,
+           info: DecoratorInfo,
+           key?: TdmPropertyKey,
+           desc?: PropertyDescriptor): MetaClassInstanceDetails<TMetaArgs, TMetaClass> | undefined;
 
   /**
    * Register the metadata instance.

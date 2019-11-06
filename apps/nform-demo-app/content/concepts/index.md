@@ -1,9 +1,9 @@
 ---
 title: Concepts
 path: concepts
-tooltip: How NGrid works
+tooltip: How NForm works
 type: topMenuSection
-ordinal: 0
+ordinal: 3
 searchGroup: content
 ---
 # NForm concepts
@@ -25,7 +25,7 @@ By the end of the tutorial you will be able to do the following:
 - Changing the type of a control on the fly and on demand
 - Work with arrays, get notified on add/remove/move requests and apply
 - Flatten nested objects in a model into a single level form  
-- Invoke and control child forms (model within a model) 
+- Invoke and control child forms (model within a model)
 - And more, with cool examples
 
 <div fxLayout fxLayoutAlign="center center" fxLayoutWrap="wrap">
@@ -48,7 +48,7 @@ export class UIDeveloper {
   </div>
 
   <div style="flex: 1 1 auto">
-    <div pbl-example-view="pbl-guide-intro-example" exampleStyle="flow"></div>
+    <div pbl-example-view="pbl-guide-intro-example" noToolbar></div>
   </div>
 </div>
 

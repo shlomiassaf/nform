@@ -17,7 +17,7 @@ hljs.registerLanguage('json', require(`highlight.js/lib/languages/json.js`));
   styleUrls: ['./example-form-view.component.scss'],
   host: {
     '[class.example-style-flow]': 'exampleStyle === "flow"',
-    '[class.example-style-toolbar]': 'exampleStyle === "toolbar"',
+    '[class.example-style-toolbar]': '!noToolbar && exampleStyle === "toolbar"',
   },
   animations: [
     trigger('slideInOutLeft', [
@@ -44,14 +44,16 @@ hljs.registerLanguage('json', require(`highlight.js/lib/languages/json.js`));
 export class PblExampleFormViewComponent extends ExampleViewComponent {
 
   form: AbstractControl;
-  @ContentChild(NFormComponent, { static: false }) dynForm: NFormComponent;
+  @ContentChild(NFormComponent, { static: false }) nFormCmp: NFormComponent;
 
   formJson: string;
   modelJson: string;
   showSpinner: boolean;
 
+  @Input() noToolbar: boolean;
   @Input() rightDrawerOpened: boolean;
   @Input() jsonView: boolean;
+  @Input() width: string = '60%';
 
   ledBlinking: boolean;
   ledColor: 'red' | 'blue' | 'yellow' | 'green';
@@ -64,7 +66,7 @@ export class PblExampleFormViewComponent extends ExampleViewComponent {
   }
 
   onCommitToModel(): void {
-    this.dynForm.nForm.commitToModel();
+    this.nFormCmp.nForm.commitToModel();
     this.refreshJsonView();
   }
 
@@ -75,9 +77,9 @@ export class PblExampleFormViewComponent extends ExampleViewComponent {
   }
 
   setNform(nform: NFormComponent): void {
-    this.dynForm = nform;
+    this.nFormCmp = nform;
     this.form = nform.form;
-    this.dynForm.valueChanges.pipe(debounceTime(150)).subscribe( v => this.refreshJsonView() );
+    this.nFormCmp.valueChanges.pipe(debounceTime(150)).subscribe( v => this.refreshJsonView() );
 
     this.form.statusChanges.subscribe( status => {
       switch (status) {
@@ -105,8 +107,8 @@ export class PblExampleFormViewComponent extends ExampleViewComponent {
 
   refreshJsonView(): void {
     if (this.jsonView) {
-      this.formJson = hljs.highlightAuto(JSON.stringify(this.dynForm.form.getRawValue(), null, 2), ['json']).value;
-      this.modelJson = hljs.highlightAuto(JSON.stringify(this.dynForm.nForm.model, null, 2), ['json']).value;
+      this.formJson = hljs.highlightAuto(JSON.stringify(this.nFormCmp.form.getRawValue(), null, 2), ['json']).value;
+      this.modelJson = hljs.highlightAuto(JSON.stringify(this.nFormCmp.nForm.model, null, 2), ['json']).value;
     }
   }
 }

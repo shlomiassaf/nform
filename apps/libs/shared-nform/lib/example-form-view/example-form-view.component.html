@@ -1,5 +1,5 @@
-<div *ngIf="exampleStyle === 'toolbar'" fxLayout="column" class="mat-elevation-z3">
-  <mat-toolbar color="primary">
+<div *ngIf="exampleStyle !== 'flow'" fxLayout="column" class="mat-elevation-z3">
+  <mat-toolbar *ngIf="!noToolbar" color="primary">
     <mat-progress-bar *ngIf="showSpinner" mode="indeterminate"></mat-progress-bar>
     <div fxFlex="nogrow">
       <div class="form-status-indicator" [matTooltip]="'Form status: ' + (form?.statusChanges | async)">
@@ -15,7 +15,7 @@
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item [disabled]="jsonView" (click)="this.toggleJsonView()">&#x7b; JSON } View</button>
-      <button mat-menu-item matTooltip="Update form's value & Validity" (click)="dynForm.nForm.form.updateValueAndValidity()">
+      <button mat-menu-item matTooltip="Update form's value & Validity" (click)="nFormCmp.nForm.form.updateValueAndValidity()">
         <mat-icon>sync</mat-icon>
         <span>Sync Form</span>
       </button>
@@ -90,7 +90,9 @@
       </mat-tab-group>
     </mat-drawer>
     <mat-drawer-content>
-      <ng-template [cdkPortalOutlet]="selectedPortal$ | async" (attached)="attached($event)"></ng-template>
+      <div style="padding: 16px 24px;">
+        <ng-template [cdkPortalOutlet]="selectedPortal$ | async" (attached)="attached($event)"></ng-template>
+      </div>
     </mat-drawer-content>
   </mat-drawer-container>
 </ng-template>

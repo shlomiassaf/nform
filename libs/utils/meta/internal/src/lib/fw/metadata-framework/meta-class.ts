@@ -55,9 +55,7 @@ export class MetaClassMetadata<TMetaArgs = any, TMetaClass = any, Z = any> {
       }
 
       if (metaArgs.proxy) {
-        const proxy: ProxyHostMetadataArgs & {
-          metaClass: MetaClassMetadata;
-        } = <any>metaArgs.proxy;
+        const proxy: ProxyHostMetadataArgs & { metaClass: MetaClassMetadata; } = metaArgs.proxy as any;
         proxy.metaClass = this;
         MetaClass.get(metaArgs.proxy.host).proxyTo.push(proxy);
       }
@@ -65,9 +63,7 @@ export class MetaClassMetadata<TMetaArgs = any, TMetaClass = any, Z = any> {
       if (metaArgs.extend) {
         if (metaArgs.single === true) {
           // TODO: make error message clear;
-          throw new Error(
-            'Extending a single class is done using extendSingle'
-          );
+          throw new Error('Extending a single class is done using extendSingle');
         }
         if (isString(metaArgs.extend)) {
           this.extend = extendHelpers[metaArgs.extend];
@@ -108,36 +104,19 @@ export class MetaClassMetadata<TMetaArgs = any, TMetaClass = any, Z = any> {
     if (allowOn && allowOn.length > 0) {
       if (info.type === 'class') {
         if (allowOn.indexOf('class') === -1) {
-          throw new Error(
-            `Metadata class ${stringify(
-              this.target
-            )} can not decorate a class (${stringify(target)})`
-          );
+          throw new Error(`Metadata class ${stringify(this.target)} can not decorate a class (${stringify(target)})`);
         }
       } else if (info.isStatic) {
         if (allowOn.indexOf('staticMember') === -1) {
-          throw new Error(
-            `Metadata class ${stringify(
-              this.target
-            )} can not decorate a static member (${stringify(target)}#${key.toString()})`
-          );
+          throw new Error(`Metadata class ${stringify(this.target)} can not decorate a static member (${stringify(target)}#${key.toString()})`);
         }
       } else if (info.type === 'param') {
         if (allowOn.indexOf('param') === -1) {
-          throw new Error(
-            `Metadata class ${stringify(
-              this.target
-            )} can not decorate a param (${stringify(target)}#${key.toString()})`
-          );
+          throw new Error(`Metadata class ${stringify(this.target)} can not decorate a param (${stringify(target)}#${key.toString()})`);
         }
       } else {
         if (allowOn.indexOf('member') === -1) {
-          throw new Error(
-            `Metadata class ${stringify(
-              this.target
-            )} can not decorate an instance member ` +
-              `(${stringify(target.constructor)}.${key.toString()})`
-          );
+          throw new Error(`Metadata class ${stringify(this.target)} can not decorate an instance member ` +`(${stringify(target.constructor)}.${key.toString()})`);
         }
       }
     }
@@ -324,12 +303,8 @@ export function getMetaClass<TMetaArgs = any, TMetaClass = any>(
   return store.get(target);
 }
 
-export function MetaClass<TMetaArgs, TMetaClass = any, Z = any>(
-  metaArgs?: MetaClassMetadataArgs<TMetaArgs, TMetaClass>
-) {
-  return (
-    target: Z & MetadataClassStatic<TMetaArgs, TMetaClass>
-  ): Z & MetadataClassStatic<TMetaArgs, TMetaClass> | void => {
+export function MetaClass<TMetaArgs, TMetaClass = any, Z = any>(metaArgs?: MetaClassMetadataArgs<TMetaArgs, TMetaClass>) {
+  return (target: Z & MetadataClassStatic<TMetaArgs, TMetaClass>): Z & MetadataClassStatic<TMetaArgs, TMetaClass> | void => {
     store.set(target, MetaClassMetadata.create(target, metaArgs));
   };
 }

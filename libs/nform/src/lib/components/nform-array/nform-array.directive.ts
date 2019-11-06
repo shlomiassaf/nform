@@ -26,7 +26,7 @@ const forFormArrayContextKeys: Array<keyof ForFormArrayDirective> = [
   'item',
   'nForm',
   'fGroup',
-  'dynForm'
+  'nFormCmp'
 ];
 
 @Directive({
@@ -34,7 +34,7 @@ const forFormArrayContextKeys: Array<keyof ForFormArrayDirective> = [
 })
 export class NFormArrayDirective extends NFormArray {
   // tslint:disable
-  @Input('nFormArrayDynForm') dynForm: NFormComponent;
+  @Input('nFormArrayNFormCmp') nFormCmp: NFormComponent;
   @Input('nFormArrayFArray') fArray: FormArray;
   @Input('nFormArrayFGroup') fGroup: FormGroup;
   @Input('nFormArrayItem') item: NFormRecordRef;
@@ -43,8 +43,8 @@ export class NFormArrayDirective extends NFormArray {
 
   vcRef: ViewContainerRef;
 
-  constructor(vcRef: ViewContainerRef, cfr: ComponentFactoryResolver, dynForm: NFormComponent<any>) {
-    super(cfr, dynForm);
+  constructor(vcRef: ViewContainerRef, cfr: ComponentFactoryResolver, nFormCmp: NFormComponent<any>) {
+    super(cfr, nFormCmp);
     this.vcRef = vcRef;
   }
 }
@@ -59,7 +59,7 @@ export class ForFormArrayDirective extends NgForOf<NFormControlTemplateContext>
   @Input('forFormArrayTrackBy')
   ngForTrackBy: TrackByFunction<NFormControlTemplateContext>;
 
-  @Input('forFormArrayDynForm') dynForm: NFormComponent;
+  @Input('forFormArrayNFormCmp') nFormCmp: NFormComponent;
   @Input('forFormArrayFGroup') fGroup: FormGroup;
   @Input('forFormArrayItem') item: NFormRecordRef;
   @Input('forFormArrayNForm') nForm: NForm<any>;
@@ -83,7 +83,7 @@ export class ForFormArrayDirective extends NgForOf<NFormControlTemplateContext>
   constructor(tRef: TemplateRef<NgForOfContext<NFormControlTemplateContext>>,
               private differs: IterableDiffers,
               vcRef: ViewContainerRef,
-              @Optional() dynForm: NFormComponent<any>) {
+              @Optional() nFormCmp: NFormComponent<any>) {
     super(vcRef, tRef, differs);
   }
 

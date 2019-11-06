@@ -1,0 +1,14 @@
+<div fxFlexLayout="row">
+  <div fxFlex="60%">
+    <h2>(A) Hero Form</h2>
+    <pbl-nform #nForm [model]="model"></pbl-nform>
+    <button (click)="nForm.nForm.commitToModel()">COMMIT</button>
+  </div>
+  <div fxFlex="40%">
+    <h2>(B) Hero class instance</h2>
+    <pre>{{ model | json }}</pre>
+    <h2>(C) Raw form value</h2>
+    <pre>{{ nForm.form.getRawValue() | json }}</pre>
+  </div>
+</div>
+

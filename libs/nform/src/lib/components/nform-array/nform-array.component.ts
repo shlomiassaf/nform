@@ -11,7 +11,7 @@ import { NFormArray } from './nform-array';
   templateUrl: './nform-array.component.html'
 })
 export class NFormArrayComponent extends NFormArray {
-  @Input() dynForm: NFormComponent;
+  @Input() nFormCmp: NFormComponent;
   @Input() fArray: FormArray;
   @Input() fGroup: FormGroup;
   @Input() item: NFormRecordRef;
@@ -19,7 +19,7 @@ export class NFormArrayComponent extends NFormArray {
 
   @ViewChild('viewRef', { read: ViewContainerRef, static: true }) vcRef: ViewContainerRef;
 
-  constructor(cfr: ComponentFactoryResolver, dynForm: NFormComponent<any>) {
-    super(cfr, dynForm);
+  constructor(cfr: ComponentFactoryResolver, nFormCmp: NFormComponent<any>) {
+    super(cfr, nFormCmp);
   }
 }

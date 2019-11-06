@@ -3,9 +3,7 @@ import { MetaClassMetadata, MetaClass, getMetaClass } from './meta-class';
 
 declare module './meta-class' {
   namespace MetaClass {
-    function get<TMetaArgs, TMetaClass>(
-      target: MetadataClassStatic<TMetaArgs, TMetaClass>
-    ): MetaClassMetadata<TMetaArgs, TMetaClass>;
+    function get<TMetaArgs, TMetaClass>(target: MetadataClassStatic<TMetaArgs, TMetaClass>): MetaClassMetadata<TMetaArgs, TMetaClass>;
   }
 }
 

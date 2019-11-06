@@ -185,19 +185,19 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
    *
    * A slave does not handle form state, it only handles internal rendering and this is why only filter and
    * override are supported, hidden and disabled are derived by the form state...
-   * @param dynForm
+   * @param nFormCmp
    */
-  @Input() set slaveOf(dynForm: NFormComponent<T>) {
+  @Input() set slaveOf(nFormCmp: NFormComponent<T>) {
     if (this.slaveMode === true) {
       return; // TODO: warn? error? slave mode can only be set once.
     } else if (this.slaveMode === false) {
       throw new Error('Slave mode does not work when setting a model');
     }
-    this.nForm = dynForm.nForm;
-    this.instance = dynForm.instance;
-    this.type = dynForm.type;
+    this.nForm = nFormCmp.nForm;
+    this.instance = nFormCmp.instance;
+    this.type = nFormCmp.type;
     this.slaveMode = true;
-    this.rendererEvent$.subscribe(e => dynForm.rendererEvent$.emit(e));
+    this.rendererEvent$.subscribe(e => nFormCmp.rendererEvent$.emit(e));
   }
 
   /**

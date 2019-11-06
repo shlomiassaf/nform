@@ -2,7 +2,7 @@
 
 These are the steps take should be taken before releasing a new version.
 
-> Valid for **ngrid** family libraries (i.e. not for utils)
+> Valid for **nform** family libraries (i.e. not for utils)
 
 - Run Tests
 
@@ -30,8 +30,8 @@ Run any of the relevant commands:
 
 ```bash
 npm publish dist/@pebula/utils
-npm publish dist/@pebula/ngrid
-npm publish dist/@pebula/ngrid-material
+npm publish dist/@pebula/nform
+npm publish dist/@pebula/nform-material
 ```
 
 - Commit, Create Tag & Push
@@ -55,14 +55,14 @@ npm run gh-pages
 Along with this repo, there are 2 more related repositories that require
 adjustments after every new release.
 
-1. There is a [StackBlitz](https://stackblitz.com/edit/pebula-ngrid-starter?file=app%2Fapp.component.ts)  demo is used to open GitHub tickets and to live demo the library by allowing users to play with the code easily.  
-**On every new release, the dependencies in [package.json](https://stackblitz.com/edit/pebula-ngrid-starter?file=package.json) must be updated to reflect the new version**
+1. There is a [StackBlitz](https://stackblitz.com/edit/pebula-nform-starter?file=app%2Fapp.component.ts)  demo is used to open GitHub tickets and to live demo the library by allowing users to play with the code easily.  
+**On every new release, the dependencies in [package.json](https://stackblitz.com/edit/pebula-nform-starter?file=package.json) must be updated to reflect the new version**
 
-2. There is a [GitHub Starter Repo](https://github.com/shlomiassaf/ngrid-material-starter) for `@pebula/ngrid` together with `@pebula/ngrid-material` which is used as a starter but also as a testing ground to see that the library compiles and works well with angular.  
+2. There is a [GitHub Starter Repo](https://github.com/shlomiassaf/nform-material-starter) for `@pebula/nform` together with `@pebula/nform-material` which is used as a starter but also as a testing ground to see that the library compiles and works well with angular.  
 **On every new release, the start repo should:**
   - Update the `package.json` and install the updated libraries
 ```bash
-yarn add `@pebula/ngrid` `pebula/ngrid-material`
+yarn add `@pebula/nform` `pebula/nform-material`
 ```
 
   - Initiate a `gh-pages` build and verify it works
@@ -82,4 +82,4 @@ The process is semi-automatic and can improve.
   - Auto-tag version
   - Auto push to remote
   - Auto build & publish
-  - Before publish, build and test example github repo `ngrid-material-starter`?
+  - Before publish, build and test example github repo `nform-material-starter`?

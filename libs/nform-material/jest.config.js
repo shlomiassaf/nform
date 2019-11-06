@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'ngrid-material',
+  name: 'nform-material',
   preset: '../../jest.config.js',
-  coverageDirectory: '../../coverage/libs/ngrid-material',
+  coverageDirectory: '../../coverage/libs/nform-material',
   snapshotSerializers: [
     'jest-preset-angular/AngularSnapshotSerializer.js',
     'jest-preset-angular/HTMLCommentSerializer.js'

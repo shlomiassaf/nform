@@ -40,18 +40,17 @@ export const storeContainer: { store: TemplateStore } = { store: undefined };
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MaterialFormControlRenderer implements MaterialStoreInstance, NFormControlTemplateContext, OnChanges {
-  // tslint:disable-line
   /**
    * Optional, set if the provider tree where you render this template is not an ancestor of [[NFormComponent]].
    * This is usually the case when using an override template with a template defined out of scope.
    */
-  @Input() get dynForm(): NFormComponent {
-    return this._dynForm;
+  @Input() get nFormCmp(): NFormComponent {
+    return this._nFormCmp;
   }
 
-  set dynForm(value: NFormComponent) {
+  set nFormCmp(value: NFormComponent) {
     if (value) {
-      this._dynForm = value;
+      this._nFormCmp = value;
     }
   }
 
@@ -69,11 +68,11 @@ export class MaterialFormControlRenderer implements MaterialStoreInstance, NForm
   self = this;
   externalNForm: NForm<any>;
 
-  private _dynForm: NFormComponent;
+  private _nFormCmp: NFormComponent;
 
-  constructor(@Optional() dynForm: NFormComponent, private cdr: ChangeDetectorRef) {
-    if (dynForm) {
-      this.dynForm = dynForm;
+  constructor(@Optional() nFormCmp: NFormComponent, private cdr: ChangeDetectorRef) {
+    if (nFormCmp) {
+      this.nFormCmp = nFormCmp;
     }
   }
 
@@ -127,7 +126,7 @@ export class MaterialFormControlRenderer implements MaterialStoreInstance, NForm
       );
       event.context.item.markAsChanged();
     }
-    this.dynForm.emitRendererEvent(event);
+    this.nFormCmp.emitRendererEvent(event);
   }
 
   addToList(): void {
@@ -144,7 +143,7 @@ export class MaterialFormControlRenderer implements MaterialStoreInstance, NForm
       if (this.item.isChildForm) {
         const event = createChildFormEvent(this, { fControl: <any>newControl });
         event.isNew = true;
-        this.dynForm.emitRendererEvent(event);
+        this.nFormCmp.emitRendererEvent(event);
       }
     }
   }
@@ -153,7 +152,7 @@ export class MaterialFormControlRenderer implements MaterialStoreInstance, NForm
     const event = createChildFormEvent(this, {
       fControl: <any>this.fArray.controls[this.selectedItem]
     });
-    this.dynForm.emitRendererEvent(event);
+    this.nFormCmp.emitRendererEvent(event);
   }
 
   removeFromList(): void {

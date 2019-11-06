@@ -8,9 +8,11 @@ import { ExampleMaterialModule } from './material-module';
 import { PblNFormModule } from '@pebula/nform';
 import { PblDemoAppSharedModule } from '@pebula/apps/shared';
 
+import { HomePageAppContentChunk } from './home-page/home-page.component';
 import { PblLedLegendChunkComponent } from './pbl-led-legend/pbl-led-legend.component';
 
 export const APP_CONTENT_CHUNKS_LIST = [
+  HomePageAppContentChunk,
   PblLedLegendChunkComponent
 ]
 
@@ -18,6 +20,12 @@ export const APP_CONTENT_CHUNKS: {[key: string]: LiveExample} = {
   'pbl-led-legend-chunk': {
     title: '',
     component: PblLedLegendChunkComponent,
+    additionalFiles: [],
+    selectorName: ''
+  },
+  'pbl-home-page-app-content-chunk': {
+    title: '',
+    component: HomePageAppContentChunk,
     additionalFiles: [],
     selectorName: ''
   },

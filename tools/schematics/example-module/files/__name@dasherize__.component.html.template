@@ -1,1 +1,1 @@
-<pbl-ngrid [dataSource]="ds" [columns]="columns"></pbl-ngrid>
+<pbl-nform [model]="model"></pbl-nform>

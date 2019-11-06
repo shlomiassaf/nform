@@ -19,7 +19,7 @@ import { NFormOverrideContext, ControlSelectorBase } from './nform-override.dire
 export class NFormControlOutletDirective extends ControlSelectorBase implements OnChanges, OnDestroy {
 
   @Input('nformControlOutlet') controlName: string | string[];
-  @Input('nformControlOutletDynForm') dynForm: import('../components/nform/nform.component').NFormComponent;
+  @Input('nformControlOutletNFormCmp') nFormCmp: import('../components/nform/nform.component').NFormComponent;
   @Input('nformControlOutletVType') vType: keyof FormElementType | Array<keyof FormElementType>;
 
   /**
@@ -36,19 +36,19 @@ export class NFormControlOutletDirective extends ControlSelectorBase implements 
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
-    if ('dynForm' in changes) {
-      if (changes.dynForm.previousValue) {
-        this.dynForm.detachControlOutlet(this);
+    if ('nFormCmp' in changes) {
+      if (changes.nFormCmp.previousValue) {
+        this.nFormCmp.detachControlOutlet(this);
       }
-      if (this.dynForm) {
-        this.dynForm.attachControlOutlet(this);
+      if (this.nFormCmp) {
+        this.nFormCmp.attachControlOutlet(this);
       }
     }
   }
 
   ngOnDestroy(): void {
-    if (this.dynForm) {
-      this.dynForm.detachControlOutlet(this);
+    if (this.nFormCmp) {
+      this.nFormCmp.detachControlOutlet(this);
     }
   }
 }

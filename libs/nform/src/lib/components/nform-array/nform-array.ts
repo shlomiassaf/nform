@@ -6,7 +6,7 @@ import { NForm, NFormRecordRef, NFormControlTemplateContext } from '../../nform/
 import { NFormComponent } from '../nform/nform.component';
 
 export abstract class NFormArray implements OnChanges {
-  dynForm: NFormComponent;
+  nFormCmp: NFormComponent;
   fArray: FormArray;
   fGroup: FormGroup;
   item: NFormRecordRef;
@@ -15,9 +15,9 @@ export abstract class NFormArray implements OnChanges {
 
   private ready: boolean = false;
 
-  constructor(private cfr: ComponentFactoryResolver, dynForm: NFormComponent<any>) {
-    if (dynForm) {
-      this.dynForm = dynForm;
+  constructor(private cfr: ComponentFactoryResolver, nFormCmp: NFormComponent<any>) {
+    if (nFormCmp) {
+      this.nFormCmp = nFormCmp;
     }
   }
 
@@ -42,13 +42,13 @@ export abstract class NFormArray implements OnChanges {
   private updateControls(): void {
     this.vcRef.clear();
     if (this.ready) {
-      const component = this.dynForm.getComponentRenderer(this.item);
+      const component = this.nFormCmp.getComponentRenderer(this.item);
       const componentFactory = this.cfr.resolveComponentFactory(component);
 
       for (let childControl of this.fArray.controls) {
         for (let childItem of this.item.children) {
           const c = childItem.resolveFormArrayChild(childControl);
-          const override = this.dynForm.getOverride(childItem);
+          const override = this.nFormCmp.getOverride(childItem);
           if (override) {
             const $implicit: NFormControlTemplateContext = <any>{
               item: childItem,

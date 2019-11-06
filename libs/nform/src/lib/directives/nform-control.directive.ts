@@ -32,30 +32,30 @@ export class NFormControlDirective {
     this.render = value;
 
     this.vcRef.clear();
-    const outlet = this.dynForm.getOutlet(value);
+    const outlet = this.nFormCmp.getOutlet(value);
     this.vcRef = outlet ? outlet._vcRef : this.defaultVCRef;
     this.vcRef.clear();
 
     if (outlet && outlet._tRef) {
       this.defaultVCRef.clear();
       const $implicit: NFormControlTemplateContext = <any>{};
-      this.dynForm.nForm.bindRenderingData($implicit, value);
+      this.nFormCmp.nForm.bindRenderingData($implicit, value);
       this.defaultVCRef.createEmbeddedView(outlet._tRef, { $implicit });
     }
 
     if (value) {
-      const override = this.dynForm.getOverride(value);
+      const override = this.nFormCmp.getOverride(value);
       if (override) {
         const $implicit: NFormControlTemplateContext = <any>{};
-        this.dynForm.nForm.bindRenderingData($implicit, value);
+        this.nFormCmp.nForm.bindRenderingData($implicit, value);
         this.vcRef.createEmbeddedView(override.template, { $implicit });
       } else {
         const injector = this.defaultVCRef.injector;
         const resolver = injector.get(ComponentFactoryResolver);
-        const component = this.dynForm.getComponentRenderer(value);
+        const component = this.nFormCmp.getComponentRenderer(value);
         const componentFactory = resolver.resolveComponentFactory(component);
         this.cmpRef = this.defaultVCRef.createComponent<NFormControlTemplateContext>(componentFactory, this.defaultVCRef.length, injector);
-        this.dynForm.nForm.bindRenderingData(this.cmpRef.instance, value);
+        this.nFormCmp.nForm.bindRenderingData(this.cmpRef.instance, value);
         if (typeof this.cmpRef.instance.tdmOnControlContextInit === 'function') {
           this.cmpRef.instance.tdmOnControlContextInit();
         }
@@ -72,7 +72,7 @@ export class NFormControlDirective {
   private vcRef: ViewContainerRef;
 
   constructor(private defaultVCRef: ViewContainerRef,
-              @Inject(NFormComponentToken) public dynForm: import('../components/nform/nform.component').NFormComponent<any>) {
+              @Inject(NFormComponentToken) public nFormCmp: import('../components/nform/nform.component').NFormComponent<any>) {
     // tslint:disable-line
     this.vcRef = defaultVCRef;
   }

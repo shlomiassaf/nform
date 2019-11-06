@@ -26,8 +26,9 @@ const VALID_INPUTS = [
  */
 
 /**
- * A "singleton" component that does never meet a view that has one purpose which is to be a store for templates
- * so each control renderer does not need to use queries and store templates within it's core template.
+ * A "singleton" component that does never meet a view.
+ * It has one purpose which is to be a store for templates so each control renderer
+ * does not need to use queries and store templates within it's core template.
  *
  * For more information see https://github.com/angular/angular/issues/15275
  * TODO: When angular`s IVY renderer is the default renderer try using it for dynamic templates instead of a component
@@ -51,9 +52,7 @@ export class MaterialTemplateStoreComponent implements TemplateStore {
   @ViewChild('childForm', { static: false }) childForm: TemplateRef<MaterialStoreTemplateContext>;
   @ViewChild('formArray', { static: false }) formArray: TemplateRef<MaterialStoreTemplateContext>;
 
-  private customTemplates: {
-    [name: string]: TemplateRef<MaterialStoreTemplateContext>;
-  } = {};
+  private customTemplates: { [name: string]: TemplateRef<MaterialStoreTemplateContext>; } = {};
 
   registerTemplate(name: keyof FormElementType, templateRef: TemplateRef<MaterialStoreTemplateContext>): void {
     this.customTemplates[name] = templateRef;

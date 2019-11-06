@@ -1,17 +1,17 @@
 # TODO
 
-- Move this list to [github projects](https://github.com/shlomiassaf/ngrid/projects)
+- Move this list to [github projects](https://github.com/shlomiassaf/nform/projects)
 
 - **DOCUMENTATION** - Update / Add documentation where needed
 
 - API reference document
 
-- `@pebula/ngrid-material`
+- `@pebula/nform-material`
   - Complete cell **view** templates to all types
   - Add cell **edit** templates to all types
   - Add pre-built (compiled) css themes, for each pre-built material theme, to the release
 
-- `@pebula/ngrid/detail-row`
+- `@pebula/nform/detail-row`
   - Add "mode" feature (click, double click, cellClick cellDoubleClick, manual)
   - Support detail row with virtual scroll
 

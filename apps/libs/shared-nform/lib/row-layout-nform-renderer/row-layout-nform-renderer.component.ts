@@ -11,7 +11,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 })
 export class PblRowLayoutNformRenderer implements NFormControlTemplateContext, OnChanges {
   @Input() custom: boolean;
-  @Input() dynForm: NFormComponent;
+  @Input() nFormCmp: NFormComponent;
   @Input() item: NFormRecordRef;
   @Input() nForm: NForm<any>;
 

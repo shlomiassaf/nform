@@ -78,7 +78,7 @@ class StageReleaseTask extends BaseReleaseTask {
   async run() {
     console.log();
     console.log(cyan('-----------------------------------------'));
-    console.log(cyan('  NGrid stage release script'));
+    console.log(cyan('  NForm stage release script'));
     console.log(cyan('-----------------------------------------'));
     console.log();
 
@@ -209,9 +209,9 @@ if (require.main === module) {
   new StageReleaseTask(
     join(__dirname, '../../../'),
     'shlomiassaf',
-    'ngrid',
+    'nform',
     'libs',
-    ['ngrid', 'ngrid-material']
+    ['nform', 'nform-material']
   ).run();
 }
 

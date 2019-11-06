@@ -33,7 +33,7 @@ The most basic `paths` entry is:
   ]
 ```
 
-The above should catch most imports, including secondary routs (e.g. `@pebula/ngrid/drag`).
+The above should catch most imports, including secondary routs (e.g. `@pebula/nform/drag`).
 
 This is set last because it is very generic and used as last resort. More specific
 path mappings are set before this one.
@@ -50,7 +50,7 @@ we need to point to the exact location (file) that the type is declared in.
 For example:
 
 ```ts
-declare module '@pebula/ngrid/lib/table/columns/types' {
+declare module '@pebula/nform/lib/table/columns/types' {
   interface PblColumnTypeDefinitionDataMap {
     currencyFn: (row: Person) => string;
     countryNameDynamic: (row: Person) => string;
@@ -58,20 +58,20 @@ declare module '@pebula/ngrid/lib/table/columns/types' {
 }
 ```
 
-Notice the path we reference: `declare module '@pebula/ngrid/lib/table/columns/types'`
+Notice the path we reference: `declare module '@pebula/nform/lib/table/columns/types'`
 
-We point to `@pebula/ngrid/lib` but the file is actually in `@pebula/ngrid/src/lib`.
+We point to `@pebula/nform/lib` but the file is actually in `@pebula/nform/src/lib`.
 
 This is required because the `dist` output structure is without the `src` folder and we need to make sure our code will work locally and with the `dist` version.
 
 To make this work we add additional path mappings:
 
 ```
-  "@pebula/ngrid/lib/*": [
-    "libs/ngrid/src/lib/*"
+  "@pebula/nform/lib/*": [
+    "libs/nform/src/lib/*"
   ],
-  "@pebula/ngrid-material/lib/*": [
-    "libs/ngrid-material/src/lib/*"
+  "@pebula/nform-material/lib/*": [
+    "libs/nform-material/src/lib/*"
   ]
 ```
 

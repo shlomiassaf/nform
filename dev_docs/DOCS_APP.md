@@ -55,7 +55,7 @@ With `"pbl-columns-app-content-chunk` being the selector of the angular componen
 
 ## Application Code
 
-The application code is located in `apps/ngrid-demo-app/src`.
+The application code is located in `apps/nform-demo-app/src`.
 The application itself is lightweight, containing small amounts of angular code while most of the code is
 located in the `apps/libs` folder.
 

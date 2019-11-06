@@ -12,7 +12,7 @@ Usually, groups are by feature/concept/doc section.
 This might seems verbose but it creates a boundary between the examples, preventing the leak of imported modules between them thus
 allow better testing for each example.
 
-For example, if example A showcase's a feature that requires an ngrid plugin PA, we will import it into the module.
+For example, if example A showcase's a feature that requires an nform plugin PA, we will import it into the module.
 If we add example B into the module, showcasing something else, it will be able to consume plugin PA as they are both in the same module.
 
 Now, we will not be able to determine if the feature in example B does not depend on the plugin PA, unless it has no access to it.
@@ -65,7 +65,7 @@ If the `<EXAMPLE NAME>` already exists it will only add the additional component
 There is an npm script called example:
 
 ```bash
-npm run example -- plugins/ngrid-material/SelectionColumn --add BulkModeAndVirtualScroll
+npm run example -- plugins/nform-material/SelectionColumn --add BulkModeAndVirtualScroll
 ```
 
 ## Console output
@@ -129,7 +129,7 @@ import { BindNgModule } from '@pebula/apps/shared';
   imports: [
     CommonModule,
     ExampleCommonModule,
-    PblNgridModule,
+    PblNFormModule,
   ],
   exports: [ MyExample ],
   entryComponents: [ MyExample ],
