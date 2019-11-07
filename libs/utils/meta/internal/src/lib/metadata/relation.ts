@@ -1,4 +1,6 @@
+import { Constructor } from '@pebula/utils';
 import { BaseMetadata, DecoratorInfo, MetaClass } from '../fw';
+import { targetStore } from './target-store';
 
 export interface RelationMetadataArgs {
   /**
@@ -13,7 +15,22 @@ export interface RelationMetadataArgs {
 
 @MetaClass<RelationMetadataArgs, RelationMetadata>({
   allowOn: ['member'],
-  extend: 'mergeMap'
+  extend: 'mergeMap',
+  onCreated: () => {
+    targetStore.on.processType((target: Constructor<any>) => {
+      const meta = targetStore.getTargetMeta(target);
+      meta.getValues(RelationMetadata).forEach(relation => {
+        // Its possible to set @Relation() without @Prop(), so make sure to create one if not set by the user.
+        const prop = meta.getCreateProp(relation.decoratorInfo);
+        prop.setRelationship(relation);
+
+        // if the fk is a different key, attach a reference to the foreign key PropMetadata (and create 1 if not there)
+        if (relation.name !== relation.foreignKey) {
+          meta.getCreateProp(relation.foreignKey).foreignKeyOf = prop;
+        }
+      });
+    });
+  }
 })
 export class RelationMetadata extends BaseMetadata {
   foreignKey: string;

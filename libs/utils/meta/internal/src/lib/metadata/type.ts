@@ -124,11 +124,7 @@ export class TypeMetadata extends BaseMetadata {
   readonly isArray?: boolean;
   readonly isGetter?: boolean;
 
-  constructor(
-    metaArgs: TypeMetadataArgs,
-    info: DecoratorInfo,
-    target?: Constructor<any>
-  ) {
+  constructor(metaArgs: TypeMetadataArgs, info: DecoratorInfo, target?: Constructor<any>) {
     super(info);
 
     const type = target

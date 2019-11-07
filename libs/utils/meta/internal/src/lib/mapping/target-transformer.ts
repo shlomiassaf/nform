@@ -20,10 +20,7 @@ import {
  * @param dir
  * @param transformNameStrategy
  */
-export function namingStrategyMap(
-  dir: TransformDir,
-  transformNameStrategy: NamingStrategyConfig
-): boolean {
+export function namingStrategyMap(dir: TransformDir, transformNameStrategy: NamingStrategyConfig): boolean {
   return transformNameStrategy && isFunction(transformNameStrategy[dir]);
 }
 
@@ -112,9 +109,7 @@ function deserializePredicate(p: PoClassPropertyMap) {
  * It will run the mapper, provide input and parse results
  */
 export class TargetTransformer<T, Z> {
-  @LazyInit(function(
-    this: TargetTransformer<T, Z>
-  ): PoClassPropertyMap | undefined {
+  @LazyInit(function(this: TargetTransformer<T, Z>): PoClassPropertyMap | undefined {
     const idKey = this.meta.getIdentityKey();
     if (idKey) {
       return (this.hasOwnProperty('incoming')

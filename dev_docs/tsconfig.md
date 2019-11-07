@@ -83,7 +83,7 @@ These records must be set **before** the main package mappings.
 
 Up to this point we described the mappings in `tsconfig.json` file at the root of this project. This is used in development mode along with webpack.
 
-When we build the libraries (`npm run build-grid`) we use the `tsconfig.lib.json` file, also located at the root of the project.
+When we build the libraries (`npm run build-lib`) we use the `tsconfig.lib.json` file, also located at the root of the project.
 
 This file is used to provide mappings when building package so if a package being built
 is referencing another package (local one) they will have proper mappings.

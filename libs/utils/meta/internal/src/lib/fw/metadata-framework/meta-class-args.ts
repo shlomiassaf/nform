@@ -183,4 +183,10 @@ export interface MetaClassMetadataArgs<TMetaArgs = any, TMetaClass = any> {
    * If not set (or empty list) all of the targets are allowed.
    */
   allowOn?: MetadataAllowOn[];
+
+  /**
+   * An optional function, that is invoked right after the metadata class is created for the meta-class.
+   * Note that this event run ONCE for every meta-class class, which happens when the decorator @MetaClass is invoked.
+   */
+  onCreated?: (metaClassMetadata: MetaClassMetadata<TMetaArgs, TMetaClass>) => void;
 }

@@ -1,12 +1,7 @@
 import { Constructor, isFunction } from '@pebula/utils';
 import { TransformDir } from '../../fw/interfaces';
 import { targetEvents } from '../../fw/events';
-import {
-  TargetStore,
-  TargetMetadata,
-  PropMetadata,
-  targetStore
-} from '../../metadata';
+import { TargetStore, TargetMetadata, PropMetadata, targetStore } from '../../metadata';
 import { ModelMetadata } from '../../add/model';
 
 declare module '../../metadata/target-metadata' {
@@ -29,10 +24,7 @@ declare module '../../metadata/target-store' {
      * @param direction
      * @returns
      */
-    getIdentityKey(
-      target: Constructor<any>,
-      direction?: TransformDir
-    ): string | undefined;
+    getIdentityKey(target: Constructor<any>, direction?: TransformDir): string | undefined;
 
     /**
      * Returns metadata, if not built, builds it
@@ -40,9 +32,7 @@ declare module '../../metadata/target-store' {
      * @param register when true will also register if not exists
      * @returns
      */
-    getTargetMeta<T, Z>(
-      target: Z & Constructor<T>
-    ): TargetMetadata<T, Z> | undefined;
+    getTargetMeta<T, Z>(target: Z & Constructor<T>): TargetMetadata<T, Z> | undefined;
 
     /**
      * Returns the target's name key without initiating a target build.
@@ -62,23 +52,15 @@ targetStore.on.processType(target => {
   }
 });
 
-TargetMetadata.prototype.getIdentityKey = function getIdentityKey(
-  this: TargetMetadata,
-  direction?: TransformDir
-): string | undefined {
+TargetMetadata.prototype.getIdentityKey = function getIdentityKey(this: TargetMetadata, direction?: TransformDir): string | undefined {
   return targetStore.getIdentityKey(this.target, direction);
 };
 
-TargetStore.prototype.getTargetName = function getTargetName(
-  this: TargetStore,
-  target: Constructor<any>
-): string | undefined {
+TargetStore.prototype.getTargetName = function getTargetName(this: TargetStore, target: Constructor<any>): string | undefined {
   return targetStore.getMetaFor(target, ModelMetadata, true, 'resName');
 };
 
-TargetStore.prototype.getTargetMeta = function getTargetMeta(
-  target: Constructor<any>
-): TargetMetadata | undefined {
+TargetStore.prototype.getTargetMeta = function getTargetMeta(target: Constructor<any>): TargetMetadata | undefined {
   let meta = this.builtTargets.get(target);
   if (!meta) {
     const metaArgs = this.targets.get(target);
@@ -95,14 +77,10 @@ TargetStore.prototype.getTargetMeta = function getTargetMeta(
   return meta;
 };
 
-TargetStore.prototype.getIdentityKey = function getIdentityKey(
-  this: TargetStore,
-  target: Constructor<any>,
-  direction?: TransformDir
-): string | undefined {
+TargetStore.prototype.getIdentityKey = function getIdentityKey(this: TargetStore, target: Constructor<any>, direction?: TransformDir): string | undefined {
   const meta = this.getTargetMeta(target);
   const model = meta.model();
-  const identity = <any>model.identity;
+  const identity = model.identity as any;
 
   if (identity) {
     if (!direction) {
@@ -111,14 +89,11 @@ TargetStore.prototype.getIdentityKey = function getIdentityKey(
 
     const propMeta = meta.getMetaFor(PropMetadata, identity);
 
-    // apply naming strategy when DONT HAVE ALIAS!
+    // apply naming strategy when DON'T HAVE ALIAS!
     if (propMeta.name === propMeta.alias[direction]) {
       const transformNameStrategy = model.transformNameStrategy;
 
-      if (
-        transformNameStrategy &&
-        isFunction(transformNameStrategy[direction])
-      ) {
+      if (transformNameStrategy && isFunction(transformNameStrategy[direction])) {
         // in exclusive mode there is no point in have 2 transformation strategies.
         // incoming is never there since incoming keys are not calculated, only defined Props.
         if (model.transformStrategy === 'exclusive') {
@@ -129,8 +104,6 @@ TargetStore.prototype.getIdentityKey = function getIdentityKey(
       }
     }
 
-    return direction === 'outgoing'
-      ? propMeta.alias.outgoing
-      : propMeta.alias.incoming;
+    return direction === 'outgoing' ? propMeta.alias.outgoing : propMeta.alias.incoming;
   }
 };

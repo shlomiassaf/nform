@@ -21,7 +21,7 @@ npm run stage-release
 - Build Libraries
 
 ```bash
-npm run build-grid
+npm run build-lib
 ```
 
 - Release to NPM

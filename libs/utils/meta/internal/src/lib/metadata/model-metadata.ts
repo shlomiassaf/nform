@@ -1,4 +1,9 @@
-import { TransformStrategy, NamingStrategyConfig } from '../fw';
+import {
+  TransformStrategy,
+  NamingStrategyConfig,
+
+} from '../fw';
+
 
 export interface ModelMetadataArgs {
   /**

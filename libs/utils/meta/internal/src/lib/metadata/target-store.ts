@@ -77,32 +77,11 @@ export class TargetStore {
     return this.namedTargets.get(name);
   }
 
-  getMetaFor<T, Z>(
-    target: Constructor<any>,
-    metaClass: T & Constructor<Z>
-  ): Map<TdmPropertyKey, Z> | undefined;
-  getMetaFor<T, Z>(
-    target: Constructor<any>,
-    metaClass: T & Constructor<Z>,
-    single: true
-  ): Z | undefined;
-  getMetaFor<T, Z, P extends keyof Z>(
-    target: Constructor<any>,
-    metaClass: T & Constructor<Z>,
-    single: true,
-    singleKey: P
-  ): Z[P] | undefined;
-  getMetaFor<T, Z>(
-    target: Constructor<any>,
-    metaClass: T & Constructor<Z>,
-    name: TdmPropertyKey
-  ): Z | undefined;
-  getMetaFor<T, Z>(
-    target: Constructor<any>,
-    metaClass: T & Constructor<Z>,
-    name?: TdmPropertyKey | true,
-    singleKey?: any
-  ): Z | Map<TdmPropertyKey, Z> | undefined {
+  getMetaFor<T, Z>(target: Constructor<any>, metaClass: T & Constructor<Z>): Map<TdmPropertyKey, Z> | undefined;
+  getMetaFor<T, Z>(target: Constructor<any>, metaClass: T & Constructor<Z>, single: true): Z | undefined;
+  getMetaFor<T, Z, P extends keyof Z>(target: Constructor<any>, metaClass: T & Constructor<Z>, single: true, singleKey: P): Z[P] | undefined;
+  getMetaFor<T, Z>(target: Constructor<any>, metaClass: T & Constructor<Z>, name: TdmPropertyKey): Z | undefined;
+  getMetaFor<T, Z>(target: Constructor<any>, metaClass: T & Constructor<Z>, name?: TdmPropertyKey | true, singleKey?: any): Z | Map<TdmPropertyKey, Z> | undefined {
     const dkm = this.targets.get(target);
     if (dkm) {
       if (name === true) {
@@ -136,24 +115,9 @@ export class TargetStore {
     }
   }
 
-  setMetaFor<T, ZValue = T>(
-    target: Constructor<any>,
-    metaClass: MetadataClassStatic<T>,
-    single: true,
-    value: ZValue
-  ): void;
-  setMetaFor<T, ZValue = T>(
-    target: Constructor<any>,
-    metaClass: MetadataClassStatic<T>,
-    name: string,
-    value: ZValue
-  ): void;
-  setMetaFor<T, ZValue = T>(
-    target: Constructor<any>,
-    metaClass: MetadataClassStatic<T>,
-    name: string | true,
-    value: ZValue
-  ): void {
+  setMetaFor<T, ZValue = T>(target: Constructor<any>, metaClass: MetadataClassStatic<T>, single: true, value: ZValue): void;
+  setMetaFor<T, ZValue = T>(target: Constructor<any>, metaClass: MetadataClassStatic<T>, name: string, value: ZValue): void;
+  setMetaFor<T, ZValue = T>(target: Constructor<any>, metaClass: MetadataClassStatic<T>, name: string | true, value: ZValue): void {
     if (name === true) {
       this.set<any, any, any>(target, GLOBAL_KEY, metaClass, value);
     } else {

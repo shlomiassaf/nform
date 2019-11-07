@@ -39,7 +39,7 @@ jobs:
 
       - run:
           name: Building Libraries
-          command: npm run build-grid
+          command: npm run build-lib
 
       # - run:
       #     name: Building Docs Application

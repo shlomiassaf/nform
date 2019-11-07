@@ -30,11 +30,7 @@ declare module '../../metadata/target-metadata' {
   interface TargetMetadata<T = any, Z = any> {
     transformer: TargetTransformer<T, Z>;
     serialize(mapper: SerializeMapper): any;
-    deserialize(
-      mapper: DeserializeMapper,
-      target: any | any[],
-      plain?: boolean
-    ): void;
+    deserialize(mapper: DeserializeMapper, target: any | any[], plain?: boolean): void;
   }
 }
 
@@ -42,10 +38,7 @@ export function initMapping(): void {
   @Model({ resName: 'InternalPlainObject' })
   class PlainObject {}
 
-  TargetStore.prototype.serialize = function serialize(
-    target: Constructor<any>,
-    mapper: SerializeMapper
-  ): any {
+  TargetStore.prototype.serialize = function serialize(target: Constructor<any>, mapper: SerializeMapper): any {
     const meta = this.getTargetMeta(target);
     if (meta) {
       return meta.serialize(mapper);
@@ -58,10 +51,7 @@ export function initMapping(): void {
    * @param mapper
    * @returns
    */
-  TargetStore.prototype.deserialize = function deserialize(
-    mapper: DeserializeMapper,
-    instance?: any
-  ): any | any[] | undefined {
+  TargetStore.prototype.deserialize = function deserialize(mapper: DeserializeMapper, instance?: any): any | any[] | undefined {
     if (this.hasTarget(mapper.sourceType)) {
       const meta = this.getTargetMeta(mapper.sourceType);
       const result: any = instance || meta.model().factory(mapper.isCollection);
@@ -78,10 +68,7 @@ export function initMapping(): void {
    * @param mapper
    * @param instance Optional, if not set a new instance of will be created.
    */
-  TargetStore.prototype.deserializePlain = function deserializePlain(
-    mapper: DeserializeMapper,
-    instance?: any
-  ): any {
+  TargetStore.prototype.deserializePlain = function deserializePlain(mapper: DeserializeMapper, instance?: any): any {
     const meta = this.getTargetMeta(PlainObject);
     const result: any = instance || mapper.isCollection ? [] : {};
     meta.deserialize(mapper, result, true);
@@ -98,11 +85,7 @@ export function initMapping(): void {
       return this.transformer.serialize(mapper);
     }
 
-    deserialize(
-      mapper: DeserializeMapper,
-      target: any | any[],
-      plain: boolean = false
-    ): void {
+    deserialize(mapper: DeserializeMapper, target: any | any[], plain: boolean = false): void {
       if (mapper.isCollection) {
         if (!Array.isArray(target)) {
           throw TransformationError.coll_obj(true);

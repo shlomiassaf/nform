@@ -52,11 +52,7 @@ export class ModelMetadata extends BaseMetadata implements ModelMetadataArgs {
 
   private _built: boolean;
 
-  constructor(
-    metaArgs: ModelMetadataArgs,
-    info: DecoratorInfo,
-    target: Constructor<any>
-  ) {
+  constructor(metaArgs: ModelMetadataArgs, info: DecoratorInfo, target: Constructor<any>) {
     super(info);
 
     const tMeta = targetStore.getTargetMeta(target);
