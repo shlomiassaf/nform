@@ -28,9 +28,7 @@ export class TestTargetStore extends TargetStore {
     return targetStore.builtTargets.get(target);
   }
 
-  static getModel<T extends ModelMetadata = ModelMetadata>(
-    target: Constructor<any>
-  ): T {
+  static getModel<T extends ModelMetadata = ModelMetadata>(target: Constructor<any>): T {
     const t = targetStore.getTargetMeta(target);
     return t && t.model<T>();
   }
@@ -53,9 +51,7 @@ export class TestTargetStore extends TargetStore {
 }
 
 export class TestTargetMetadata extends TargetMetadata {
-  static getFactory<T, Z>(
-    type: Z & Constructor<T>
-  ): (target: any, key: any) => T | undefined {
+  static getFactory<T, Z>(type: Z & Constructor<T>): (target: any, key: any) => T | undefined {
     return (target: any, key: string) => {
       const t = getTargetMetaStore(target);
       if (t) {
@@ -64,9 +60,7 @@ export class TestTargetMetadata extends TargetMetadata {
     };
   }
 
-  static removeFactory<T, Z>(
-    type: Z & Constructor<T>
-  ): (target: any, key: any) => boolean {
+  static removeFactory<T, Z>(type: Z & Constructor<T>): (target: any, key: any) => boolean {
     return (target: any, key: string) => {
       const t = TestTargetStore.getTargetMeta(target);
       if (t) {

@@ -1,8 +1,7 @@
 import { Validators } from '@angular/forms';
-import { Model, FormModel, FormProp } from '@pebula/nform';
+import { FormModel, FormProp } from '@pebula/nform';
 
-@Model()
-@FormModel({ model: false })
+@FormModel()
 export class UIDeveloper {
   @FormProp({
     required: true,

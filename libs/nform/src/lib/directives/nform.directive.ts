@@ -11,7 +11,7 @@ import { NFormFactoryService } from '../services/index';
  *
  * @example
  * ```ts
- * <div #nForm="nForm" [nForm]="user">
+ * <div #nForm="nForm" [pblNForm]="user">
  *   <form [formGroup]="nForm.form" novalidate>
  *     <div *ngFor="let item of nForm.renderData; trackBy: nForm.trackBy" class="row">
  *       <div [ngSwitch]="item.vType" class="row">
@@ -24,7 +24,7 @@ import { NFormFactoryService } from '../services/index';
  * ```
  */
 @Directive({
-  selector: '[nForm]',
+  selector: '[pblNForm]',
   exportAs: 'nForm'
 })
 export class NFormDirective<T> extends NForm<T> {

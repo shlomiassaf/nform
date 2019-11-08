@@ -4,5 +4,6 @@ export {
   autoSerialize,
   deserialize,
   autoDeserialize,
+  clone,
 } from './serialization';
 export { serializeTargetMeta, deserializeTargetMeta } from './mapping';

@@ -3,7 +3,6 @@ import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/for
 
 import { Constructor } from '@pebula/utils';
 import { TestTargetStore } from '@pebula/utils/testing';
-import { targetStore } from '@pebula/utils/meta/internal';
 import { Model, Exclude, Prop } from '@pebula/utils/meta';
 import * as utilsMeta from '@pebula/utils/meta';
 import { FormModel, FormProp, ngFormsMapper, cloneControl, createControl } from '@pebula/nform';
@@ -32,7 +31,6 @@ declare module '@pebula/nform/lib/types/form-element-type' {
 describe('@pebula/nform', () => {
   describe('angular-forms-mapper', () => {
     const createUserModel = () => {
-      @Model()
       @FormModel()
       class User {
         @FormProp() id: number;
@@ -79,7 +77,6 @@ describe('@pebula/nform', () => {
     });
 
     it('should apply exclude logic', () => {
-      @Model()
       @FormModel()
       class ExcludedFormCases {
         @Exclude()
@@ -100,7 +97,6 @@ describe('@pebula/nform', () => {
     });
 
     it('should apply transformation', () => {
-      @Model()
       @FormModel()
       class TransformationFormCases {
         @FormProp({
@@ -118,7 +114,6 @@ describe('@pebula/nform', () => {
     });
 
     it('should apply defaultValue logic', () => {
-      @Model()
       @FormModel()
       class DefaultValueFormCases {
         @FormProp({
@@ -140,7 +135,6 @@ describe('@pebula/nform', () => {
     it('should map complex objects based on childForm', () => {
       const obj = { x: 1, y: 2 };
 
-      @Model()
       @FormModel()
       class DemoForm {
         @FormProp({
@@ -170,7 +164,6 @@ describe('@pebula/nform', () => {
     });
 
     it('should map known models based on childForm', () => {
-      @Model()
       @FormModel()
       class DemoChildForm {
         @FormProp() val1: boolean;
@@ -183,7 +176,6 @@ describe('@pebula/nform', () => {
       obj.val2 = 10;
       obj.val3 = 'test';
 
-      @Model()
       @FormModel()
       class DemoForm {
         @FormProp({
@@ -212,7 +204,6 @@ describe('@pebula/nform', () => {
     });
 
     it('should add required validation', () => {
-      @Model()
       @FormModel()
       class DemoForm {
         @FormProp({
@@ -231,7 +222,6 @@ describe('@pebula/nform', () => {
     });
 
     it('should add custom validation', () => {
-      @Model()
       @FormModel()
       class DemoForm {
         @FormProp({
@@ -274,7 +264,6 @@ describe('@pebula/nform', () => {
     it(
       'should add custom async validation',
       fakeAsync(() => {
-        @Model()
         @FormModel()
         class DemoForm {
           @FormProp({
@@ -328,7 +317,6 @@ describe('@pebula/nform', () => {
       afterEach(() => TestTargetStore.clearAll());
 
       it('should serialize and deserialize array of primitives', () => {
-        @Model()
         @FormModel()
         class User {
           @FormProp() id: number;
@@ -379,7 +367,6 @@ describe('@pebula/nform', () => {
       });
 
       it('should serialize and deserialize array of child forms', () => {
-        @Model()
         @FormModel()
         class Address {
           @FormProp() street: string;
@@ -389,7 +376,6 @@ describe('@pebula/nform', () => {
           @FormProp() zip: number;
         }
 
-        @Model()
         @FormModel()
         class User {
           @FormProp() id: number;
@@ -455,7 +441,6 @@ describe('@pebula/nform', () => {
       afterEach(() => TestTargetStore.clearAll());
 
       it('should serialize and deserialize flatten definitions', () => {
-        @Model()
         @FormModel()
         class Address {
           @FormProp() street: string;
@@ -465,7 +450,6 @@ describe('@pebula/nform', () => {
           @FormProp() zip: number;
         }
 
-        @Model()
         @FormModel()
         class User {
           @FormProp() id: number;
@@ -506,7 +490,6 @@ describe('@pebula/nform', () => {
       });
 
       it('should serialize and deserialize array of flatten definition', () => {
-        @Model()
         @FormModel()
         class Address {
           @FormProp() street: string;
@@ -516,7 +499,6 @@ describe('@pebula/nform', () => {
           @FormProp() zip: number;
         }
 
-        @Model()
         @FormModel()
         class User {
           @FormProp() id: number;
@@ -605,7 +587,6 @@ describe('@pebula/nform', () => {
           zip: {}
         };
 
-        @Model()
         @FormModel()
         class Address {
           @FormProp() street: string;
@@ -615,7 +596,6 @@ describe('@pebula/nform', () => {
           @FormProp() zip: number;
         }
 
-        @Model()
         @FormModel()
         class User {
           @FormProp() id: number;
@@ -728,7 +708,6 @@ describe('@pebula/nform', () => {
       };
 
       beforeEach(() => {
-        @Model()
         @FormModel()
         class Address {
           @FormProp() street: string;
@@ -738,7 +717,6 @@ describe('@pebula/nform', () => {
           @FormProp() zip: number;
         }
 
-        @Model()
         @FormModel()
         class MyChildChildModel {
           @FormProp({
@@ -758,7 +736,6 @@ describe('@pebula/nform', () => {
           addressCollection: AddressWithAdditional[];
         }
 
-        @Model()
         @FormModel()
         class MyChildModel {
           @FormProp({
@@ -767,7 +744,6 @@ describe('@pebula/nform', () => {
           childModel: MyChildChildModel;
         }
 
-        @Model()
         @FormModel()
         class _User {
           @FormProp() id: number;

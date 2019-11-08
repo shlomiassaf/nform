@@ -108,8 +108,6 @@ export class PropMetadata extends BaseMetadata {
 // to make it easy on generics later
 declare module '../fw/metadata-framework/meta-class' {
   namespace MetaClass {
-    function get(
-      target: typeof PropMetadata
-    ): MetaClassMetadata<PropMetadataArgs, PropMetadata>;
+    function get(target: typeof PropMetadata): MetaClassMetadata<PropMetadataArgs, PropMetadata>;
   }
 }

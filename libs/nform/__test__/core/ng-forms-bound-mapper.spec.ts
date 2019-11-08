@@ -1,6 +1,5 @@
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { Model } from '@pebula/utils/meta';
 import { TestTargetStore } from '@pebula/utils/testing';
 import { FormModel, FormProp, NgFormsBoundMapper } from '@pebula/nform';
 
@@ -12,7 +11,6 @@ describe('@pebula/nform', () => {
   describe('ng-forms-bound-mapper', () => {
 
     const createUserModel = () => {
-      @Model()
       @FormModel()
       class User {
 
