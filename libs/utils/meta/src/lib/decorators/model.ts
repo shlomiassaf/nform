@@ -1,13 +1,11 @@
 import { getProtoChain } from '@pebula/utils';
-import { MetaClass } from '../../fw';
-import { targetStore, ModelMetadataArgs } from '../../metadata';
-import { ModelMetadata } from './model';
+import { targetStore, MetaClass, ModelMetadata, ModelMetadataArgs } from '@pebula/utils/meta/internal';
 
 /**
  * @propertyDecorator static
  * @param metaArgs
  */
-export function Model(metaArgs?: ModelMetadataArgs): Function {
+export function Model(metaArgs?: ModelMetadataArgs): ClassDecorator {
   return (target: any) => {
     const metaClass = MetaClass.create(ModelMetadata, metaArgs, target);
     processModel(target, metaClass, metaClass.skip !== true);

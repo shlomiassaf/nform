@@ -31,11 +31,7 @@ export function LazyInit(getter: Function): PropertyDecorator {
  * @pluginApi
  */
 export const array = (function() {
-  const findRemove = <T>(
-    arr: T[],
-    predicate: (value: T) => boolean,
-    thisArg?: any
-  ): T | undefined => {
+  const findRemove = <T>(arr: T[], predicate: (value: T) => boolean, thisArg?: any): T | undefined => {
     const idx = arr.findIndex(predicate, thisArg);
     if (idx > -1) {
       return arr.splice(idx, 1)[0];

@@ -79,25 +79,18 @@ export class TargetEvents {
 }
 
 export const EVENT_FIRE = {
-  metaInit<TMetaArgs, TMetaClass, Z>(
-    metaClass: Z & MetadataClassStatic<TMetaArgs, TMetaClass>,
-    target: Constructor<any>,
-    value: TMetaClass,
-    metaArgs?: TMetaArgs
-  ): void {
+  metaInit<TMetaArgs, TMetaClass, Z>(metaClass: Z & MetadataClassStatic<TMetaArgs, TMetaClass>,
+                                     target: Constructor<any>,
+                                     value: TMetaClass,
+                                     metaArgs?: TMetaArgs): void {
     const eventMap = metaInitHandlers.get(metaClass);
     if (eventMap) {
-      Array.from(eventMap.values()).forEach(handler =>
-        handler(target, value, metaArgs)
-      );
+      Array.from(eventMap.values()).forEach(handler => handler(target, value, metaArgs) );
     }
   },
-  createMetadata: (target: Constructor<any>) =>
-    fireTargetEvent('createMetadata', target),
-  beforeProcessType: (target: Constructor<any>) =>
-    fireTargetEvent('beforeProcessType', target),
-  processType: (target: Constructor<any>) =>
-    fireTargetEvent('processType', target)
+  createMetadata: (target: Constructor<any>) => fireTargetEvent('createMetadata', target),
+  beforeProcessType: (target: Constructor<any>) => fireTargetEvent('beforeProcessType', target),
+  processType: (target: Constructor<any>) => fireTargetEvent('processType', target)
 };
 
 export const targetEvents = TargetEvents.create();

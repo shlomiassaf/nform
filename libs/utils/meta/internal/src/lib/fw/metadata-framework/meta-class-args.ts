@@ -189,4 +189,16 @@ export interface MetaClassMetadataArgs<TMetaArgs = any, TMetaClass = any> {
    * Note that this event run ONCE for every meta-class class, which happens when the decorator @MetaClass is invoked.
    */
   onCreated?: (metaClassMetadata: MetaClassMetadata<TMetaArgs, TMetaClass>) => void;
+
+  /**
+   * Additional decorators to run before the decorator for this meta-class invokes.
+   * Note that the factory function run's before but the actual decorators run after
+   */
+  decorateBefore?: (defs?: TMetaArgs) => Array<ClassDecorator | PropertyDecorator | MethodDecorator | ParameterDecorator>;
+
+  /**
+   * Additional decorators to run after the decorator for this meta-class invokes.
+   * Note that the factory function run's after but the actual decorators run before
+   */
+  decorateAfter?: (defs?: TMetaArgs) => Array<ClassDecorator | PropertyDecorator | MethodDecorator | ParameterDecorator>;
 }

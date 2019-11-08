@@ -1,6 +1,7 @@
 import { FormGroup } from '@angular/forms';
 import { Constructor, isString, isNumber } from '@pebula/utils';
 import { targetStore, PlainObjectMapper, TargetMetadata } from '@pebula/utils/meta/internal';
+import { serializeTargetMeta, deserializeTargetMeta } from '@pebula/utils/meta';
 
 import {
   DeserializableForm,
@@ -14,12 +15,10 @@ import { FormPropMetadata } from './metadata/index';
  *
  */
 class NgFormsBoundDeserializeMapper extends NgFormsDeserializeMapper {
-  constructor(
-    public formGroup: DeserializableForm,
-    sourceType: any,
-    public instance: any,
-    plainMapper?: PlainObjectMapper
-  ) {
+  constructor(public formGroup: DeserializableForm,
+              sourceType: any,
+              public instance: any,
+              plainMapper?: PlainObjectMapper) {
     super(formGroup, sourceType, plainMapper);
   }
 
@@ -30,11 +29,9 @@ class NgFormsBoundDeserializeMapper extends NgFormsDeserializeMapper {
    * This should have no effect since the base implementation of `deserializeFlattened`, when calling itself, provides
    * the `resultOrKey`
    */
-  protected deserializeFlattened(
-    control: DeserializableForm,
-    formProp: FormPropMetadata,
-    resultOrKey?: string | number | any
-  ): any {
+  protected deserializeFlattened(control: DeserializableForm,
+                                 formProp: FormPropMetadata,
+                                 resultOrKey?: string | number | any): any {
     if (isString(resultOrKey) || isNumber(resultOrKey)) {
       resultOrKey = this.instance[resultOrKey];
     }
@@ -51,11 +48,9 @@ export class NgFormsBoundMapper<T = any> {
   private fg: FormGroup;
   private meta: TargetMetadata;
 
-  constructor(
-    private readonly type: Constructor<any>,
-    public readonly instance: T,
-    formGroup?: FormGroup
-  ) {
+  constructor(private readonly type: Constructor<any>,
+              public readonly instance: T,
+              formGroup?: FormGroup) {
     this.meta = targetStore.getTargetMeta(type);
     if (formGroup) {
       this.fg = formGroup;
@@ -63,16 +58,11 @@ export class NgFormsBoundMapper<T = any> {
   }
 
   serialize(): FormGroup {
-    return (this.fg = this.meta.serialize(
-      new NgFormsSerializeMapper(this.instance)
-    ));
+    return this.fg = serializeTargetMeta(this.meta, new NgFormsSerializeMapper(this.instance))
   }
 
   deserialize(): T {
-    this.meta.deserialize(
-      new NgFormsBoundDeserializeMapper(this.fg, this.type, this.instance),
-      this.instance
-    );
+    deserializeTargetMeta(this.meta, new NgFormsBoundDeserializeMapper(this.fg, this.type, this.instance), this.instance);
     return this.instance;
   }
 }

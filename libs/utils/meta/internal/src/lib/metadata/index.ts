@@ -4,4 +4,4 @@ export * from './type';
 export * from './relation';
 export { ExcludeMetadata, ExcludeMetadataArgs } from './exclude';
 export * from './target-metadata';
-export { ModelMetadataArgs } from './model-metadata';
+export { ModelMetadata, ModelMetadataArgs } from './model-metadata';

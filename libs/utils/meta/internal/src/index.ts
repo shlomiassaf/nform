@@ -1,1 +1,1 @@
-export * from './lib/tdm';
+export * from './lib/index';

@@ -8,22 +8,22 @@ import { PlainObjectMapper } from '@pebula/utils/meta/internal';
  * Does not clone values but can assign if a value is supplied.
  * Does clone sync and async validators.
  */
-export function clone(control: FormArray, value?: any[]): FormArray;
+export function cloneControl(control: FormArray, value?: any[]): FormArray;
 /**
  * Performs a FormGroup deep clone.
  * Does not clone state.
  * Does not clone values but can assign if a value is supplied.
  * Does clone sync and async validators.
  */
-export function clone(control: FormGroup, value?: any): FormGroup;
-export function clone(control: FormArray | FormGroup | FormControl, value?: any | any[]): FormArray | FormGroup | FormControl {
+export function cloneControl(control: FormGroup, value?: any): FormGroup;
+export function cloneControl(control: FormArray | FormGroup | FormControl, value?: any | any[]): FormArray | FormGroup | FormControl {
   let result: FormArray | FormGroup | FormControl;
   if (control instanceof FormControl) {
     result = new FormControl(value);
   } else if (control instanceof FormArray) {
     value = Array.isArray(value) ? value : [];
     result = new FormArray(
-      control.controls.map((c, i) => clone(control, value[i]))
+      control.controls.map((c, i) => cloneControl(control, value[i]))
     );
   } else if (control instanceof FormGroup) {
     value = isJsObject(value) ? value : {};
@@ -31,7 +31,7 @@ export function clone(control: FormArray | FormGroup | FormControl, value?: any 
     result = new FormGroup(
       keys.reduce(
         (controls, key) => {
-          controls[key] = clone(<any>control.controls[key], value[key]);
+          controls[key] = cloneControl(<any>control.controls[key], value[key]);
           return controls;
         },
         {} as { [key: string]: AbstractControl }

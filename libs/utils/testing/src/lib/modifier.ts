@@ -2,7 +2,6 @@ import { isFunction, Constructor } from '@pebula/utils';
 import {
   targetStore as _targetStore,
   PropMetadataArgs,
-  Model,
   ModelMetadataArgs,
   ExcludeMetadataArgs,
   RelationMetadataArgs,
@@ -14,6 +13,7 @@ import {
   ModelMetadata,
   TypeMetadata
 } from '@pebula/utils/meta/internal';
+import { Model } from '@pebula/utils/meta';
 
 import { Prop, Identity, Exclude, Relation } from '@pebula/utils/meta';
 

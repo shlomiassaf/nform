@@ -1,6 +1,6 @@
 import { Constructor, isString } from '@pebula/utils';
 import { DualKeyMap, BaseMetadata, GLOBAL_KEY, MetadataClassStatic } from '../fw';
-import { TDMCollection } from '../model';
+import { ModelClassCollection } from '../model';
 import { targetStore } from './target-store';
 
 /**
@@ -95,11 +95,11 @@ export class TargetMetadata<T = any, Z = any> {
   }
 
   /**
-   * Create a new instance of the TDMCollection for this type.
+   * Create a new instance of the ModelClassCollection for this type.
    * @returns
    */
-  createCollection(): TDMCollection<T> {
-    return new TDMCollection<T>();
+  createCollection(): ModelClassCollection<T> {
+    return new ModelClassCollection<T>();
   }
 
 }

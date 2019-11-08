@@ -1,6 +1,6 @@
-import { Model, FormProp } from '@pebula/nform';
+import { FormModel, FormProp } from '@pebula/nform';
 
-@Model({ form: true })
+@FormModel()
 export class Hero {
   @FormProp({
     render: { vType: 'text', label: 'Hero Name' }

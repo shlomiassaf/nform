@@ -14,18 +14,17 @@ export {
   RelationMetadataArgs,
   ExcludeMetadataArgs,
   // here was tdm
-  TDMCollection,
-  TDMModel,
-  TDMModelBase,
-  // add/model
-  Model,
+  ModelClassCollection,
+  ModelClass,
+  ModelClassBase,
   // mapping
-  directMapper,
-  TransformationError,
-  DirectSerializeMapper,
-  DirectDeserializeMapper
+  SerializationFactory,
+  SerializerContext, PoClassPropertyMap,
+  BaseDeserializer,
+  BaseSerializer,
+  PlainObjectMapper,
 } from '@pebula/utils/meta/internal';
 
-export { Type, Prop, Exclude, Relation, Identity } from './decorators';
+export { Type, Prop, Exclude, Relation, Identity, Model } from './decorators';
 
 export * from './serialization';

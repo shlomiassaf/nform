@@ -1,6 +1,7 @@
 import * as deepEqual from 'deep-equal';
 
-import { directMapper, targetStore } from '@pebula/utils/meta/internal';
+import { targetStore } from '@pebula/utils/meta/internal';
+import { directMapper, serialize, deserialize } from '@pebula/utils/meta';
 import { TargetMetaModifier } from '@pebula/utils/testing';
 
 class Article {
@@ -48,9 +49,7 @@ describe('@pebula/utils/meta', () => {
           .props('id', 'title')
           .build();
 
-        const res = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        );
+        const res = deserialize(directMapper.deserializer(basic, Article));
 
         expect(res instanceof Article).toBe(true);
         Object.keys(basic).forEach(k => {
@@ -65,9 +64,7 @@ describe('@pebula/utils/meta', () => {
           .props('id', 'title')
           .exclude('category');
 
-        const res: Article = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        ) as any;
+        const res: Article = deserialize(directMapper.deserializer(basic, Article));
 
         expect(res instanceof Article).toBe(true);
         expect(res.id).toEqual(basic.id);
@@ -82,9 +79,7 @@ describe('@pebula/utils/meta', () => {
           .props('id', 'title')
           .prop('myCat' as any, { alias: 'category' });
 
-        const res: Article = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        ) as any;
+        const res: Article = deserialize(directMapper.deserializer(basic, Article));
 
         expect(res instanceof Article).toBe(true);
         expect(res.id).toEqual(basic.id);
@@ -102,9 +97,7 @@ describe('@pebula/utils/meta', () => {
         const newBasic = Object.assign({}, basic);
         newBasic.myId = basic.id;
 
-        const res: Article = targetStore.deserialize(
-          directMapper.deserializer(newBasic, Article)
-        ) as any;
+        const res: Article = deserialize(directMapper.deserializer(newBasic, Article));
 
         expect(res instanceof Article).toBe(true);
         expect(res.title).toEqual(basic.title);
@@ -119,9 +112,7 @@ describe('@pebula/utils/meta', () => {
           .prop('myId' as any, { alias: 'id' })
           .prop('title');
 
-        const res: Article = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        ) as any;
+        const res: Article = deserialize(directMapper.deserializer(basic, Article));
         expect(res instanceof Article).toBe(true);
         expect(res.id).toBeUndefined();
         expect(res.title).toEqual(basic.title);
@@ -135,9 +126,7 @@ describe('@pebula/utils/meta', () => {
           .setIdentity('id')
           .props('id', 'title');
 
-        const res: Article = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        ) as any;
+        const res: Article = deserialize(directMapper.deserializer(basic, Article));
 
         expect(res instanceof Article).toBe(true);
         expect(res.id).toEqual(basic.id);
@@ -151,9 +140,7 @@ describe('@pebula/utils/meta', () => {
           .setIdentity('id')
           .props('id', 'title');
 
-        const resArr: any[] = targetStore.deserialize(
-          directMapper.deserializer(basicColl, Article)
-        ) as any;
+        const resArr: any[] = deserialize(directMapper.deserializer(basicColl, Article)) as any;
 
         expect(Array.isArray(resArr)).toBe(true);
         expect(resArr.length).toBe(basicColl.length);
@@ -173,9 +160,7 @@ describe('@pebula/utils/meta', () => {
           .props('id', 'title')
           .exclude('category');
 
-        const resArr: any[] = targetStore.deserialize(
-          directMapper.deserializer(basicColl, Article)
-        ) as any;
+        const resArr: any[] = deserialize(directMapper.deserializer(basicColl, Article)) as any;
 
         expect(Array.isArray(resArr)).toBe(true);
         expect(resArr.length).toBe(basicColl.length);
@@ -212,9 +197,7 @@ describe('@pebula/utils/meta', () => {
           .relation('author', { foreignKey: 'author_id' })
           .build();
 
-        const res: Article = targetStore.deserialize(
-          directMapper.deserializer(included, Article)
-        ) as any;
+        const res: Article = deserialize(directMapper.deserializer(included, Article));
 
         expect(res instanceof Article).toBe(true);
         expect(res.id).toEqual(included.id);
@@ -259,13 +242,8 @@ describe('@pebula/utils/meta', () => {
           .setIdentity('id')
           .props('id', 'title');
 
-        const resource = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        );
-        const ser = targetStore.serialize(
-          Article,
-          directMapper.serializer(resource)
-        );
+        const resource = deserialize(directMapper.deserializer(basic, Article));
+        const ser = serialize(directMapper.serializer(resource), Article);
         expect(deepEqual(ser, basic)).toBe(true);
       });
 
@@ -276,13 +254,8 @@ describe('@pebula/utils/meta', () => {
           .props('id', 'title')
           .exclude('category');
 
-        const resource = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        );
-        const ser = targetStore.serialize(
-          Article,
-          directMapper.serializer(resource)
-        );
+        const resource = deserialize(directMapper.deserializer(basic, Article));
+        const ser = serialize(directMapper.serializer(resource), Article);
         expect(deepEqual(ser, basic)).toBe(false);
         ser.category = basic.category;
         expect(deepEqual(ser, basic)).toBe(true);
@@ -295,18 +268,13 @@ describe('@pebula/utils/meta', () => {
           .props('id', 'title')
           .prop('myCat' as any, { alias: 'category' });
 
-        const resource: Article = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        ) as any;
+        const resource: Article = deserialize(directMapper.deserializer(basic, Article));
 
         expect(resource instanceof Article).toBe(true);
         expect(resource.category).toBeUndefined();
         expect(resource['myCat']).toEqual(basic.category);
 
-        const ser = targetStore.serialize(
-          Article,
-          directMapper.serializer(resource)
-        );
+        const ser = serialize(directMapper.serializer(resource), Article);
         expect(deepEqual(ser, basic)).toBe(true);
       });
 
@@ -317,13 +285,8 @@ describe('@pebula/utils/meta', () => {
           .prop('myId' as any, { alias: 'id' })
           .prop('title');
 
-        const resource: Article = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        ) as any;
-        const ser = targetStore.serialize(
-          Article,
-          directMapper.serializer(resource)
-        );
+        const resource: Article = deserialize(directMapper.deserializer(basic, Article));
+        const ser = serialize(directMapper.serializer(resource), Article);
         expect(deepEqual(ser, basic)).toBe(true);
       });
 
@@ -333,13 +296,8 @@ describe('@pebula/utils/meta', () => {
           .setIdentity('myId' as any)
           .prop('myId' as any, { alias: 'id' });
 
-        const resource: Article = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        ) as any;
-        const ser = targetStore.serialize(
-          Article,
-          directMapper.serializer(resource)
-        );
+        const resource: Article = deserialize(directMapper.deserializer(basic, Article));
+        const ser = serialize(directMapper.serializer(resource), Article);
         expect(deepEqual(ser, basic)).toBe(true);
       });
 
@@ -349,13 +307,8 @@ describe('@pebula/utils/meta', () => {
           .setIdentity('id')
           .props('id', 'title');
 
-        const resource = targetStore.deserialize(
-          directMapper.deserializer(basic, Article)
-        );
-        const ser = targetStore.serialize(
-          Article,
-          directMapper.serializer(resource)
-        );
+        const resource = deserialize(directMapper.deserializer(basic, Article));
+        const ser = serialize(directMapper.serializer(resource), Article);
         expect(deepEqual(ser, basic)).toBe(false);
         ser.category = basic.category;
         expect(deepEqual(ser, basic)).toBe(true);
@@ -367,15 +320,10 @@ describe('@pebula/utils/meta', () => {
           .setIdentity('id')
           .props('id', 'title');
 
-        const resources: Article[] = targetStore.deserialize(
-          directMapper.deserializer(basicColl, Article)
-        ) as any;
+        const resources: Article[] = deserialize(directMapper.deserializer(basicColl, Article)) as any;
         expect(Array.isArray(resources)).toBe(true);
 
-        const ser = targetStore.serialize(
-          Article,
-          directMapper.serializer(resources)
-        );
+        const ser = serialize(directMapper.serializer(resources), Article);
         expect(deepEqual(ser, basicColl)).toBe(true);
       });
 
@@ -403,13 +351,8 @@ describe('@pebula/utils/meta', () => {
           .relation('author', { foreignKey: 'author_id' })
           .build();
 
-        const resource: Article = targetStore.deserialize(
-          directMapper.deserializer(included, Article)
-        ) as any;
-        const ser = targetStore.serialize(
-          Article,
-          directMapper.serializer(resource)
-        );
+        const resource: Article = deserialize(directMapper.deserializer(included, Article));
+        const ser = serialize(directMapper.serializer(resource), Article);
         expect(deepEqual(ser, included)).toBe(false);
 
         // original payload included the Author object in full.

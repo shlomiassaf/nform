@@ -186,8 +186,18 @@ export class MetaClassMetadata<TMetaArgs = any, TMetaClass = any, Z = any> {
   createDecorator(optional: true): (def?: TMetaArgs) => PropertyDecorator | MethodDecorator;
   createDecorator(...args: any[]): any {
     return ((def: TMetaArgs) => {
-      return (target: Object | Function, key: TdmPropertyKey, desc?: PropertyDescriptor) => {
+      return (target: any, key: any, desc?: any) => {
+        const { decorateBefore, decorateAfter } = this.metaArgs;
+        const post: any[] = isFunction(decorateBefore) ? decorateBefore(def) : [];
+        const pre: any[] = isFunction(decorateAfter) ? decorateAfter(def) : [];
+
+        for(const d of pre) {
+          d(target, key, desc);
+        }
         this.create(def, target, key, desc);
+        for(const d of post) {
+          d(target, key, desc);
+        }
       };
     }) as any;
   }

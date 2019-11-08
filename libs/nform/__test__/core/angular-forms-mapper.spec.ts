@@ -1,21 +1,19 @@
-// tslint:disable
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 import { Constructor } from '@pebula/utils';
 import { TestTargetStore } from '@pebula/utils/testing';
-import { Model, Exclude, Prop } from '@pebula/utils/meta';
 import { targetStore } from '@pebula/utils/meta/internal';
-import { FormModel, FormProp, ngFormsMapper, clone, createControl } from '@pebula/nform';
+import { Model, Exclude, Prop } from '@pebula/utils/meta';
+import * as utilsMeta from '@pebula/utils/meta';
+import { FormModel, FormProp, ngFormsMapper, cloneControl, createControl } from '@pebula/nform';
 
 function serialize(instance: any): FormGroup {
-  return targetStore.serialize(
-    instance.constructor,
-    ngFormsMapper.serializer(instance)
-  );
+  return utilsMeta.serialize(ngFormsMapper.serializer(instance), instance.constructor);
 }
+
 function deserialize<T, Z>(formGroup: FormGroup, type: Z & Constructor<T>): T {
-  return targetStore.deserialize(ngFormsMapper.deserializer(formGroup, type));
+  return utilsMeta.deserialize(ngFormsMapper.deserializer(formGroup, type));
 }
 
 interface IAddress {
@@ -566,7 +564,7 @@ describe('@pebula/nform', () => {
           city: 'testomania3',
           zip: 456
         };
-        const thirdAddressFormGroup = clone(controls[0] as FormGroup);
+        const thirdAddressFormGroup = cloneControl(controls[0] as FormGroup);
         Object.keys(thirdAddress).forEach(k => {
           thirdAddressFormGroup.get(k).setValue(thirdAddress[k]);
         });
@@ -578,10 +576,7 @@ describe('@pebula/nform', () => {
           city: 'testomania4',
           zip: 789
         };
-        const fourthAddressFormGroup = clone(
-          controls[0] as FormGroup,
-          fourthAddress
-        );
+        const fourthAddressFormGroup = cloneControl(controls[0] as FormGroup, fourthAddress);
         (formGroup.get('addresses') as FormArray).push(fourthAddressFormGroup);
 
         const _user = deserialize(formGroup, User);

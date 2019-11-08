@@ -1,2 +1,2 @@
-export * from './tdm-collection';
-export * from './tdm-model';
+export * from './model-class-collection';
+export * from './model-class';

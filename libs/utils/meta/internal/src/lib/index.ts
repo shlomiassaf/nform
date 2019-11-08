@@ -26,7 +26,8 @@ export {
   MetaClass,
   MetadataClassStatic,
   MetadataCurriedCreate,
-  MetaClassInstanceDetails
+  MetaClassInstanceDetails,
+  array,
 } from './fw/index';
 
 export {
@@ -42,31 +43,19 @@ export {
   RelationMetadata,
   TargetStore,
   TargetMetadata,
+  ModelMetadata,
   targetStore
 } from './metadata/index';
 
 export {
-  directMapper,
-  TransformationError,
-  DirectSerializeMapper,
-  DirectDeserializeMapper,
-  MapperFactory,
-  DeserializeMapper,
-  SerializeMapper,
-  PropertyContainer,
-  PoClassPropertyMap,
-  transformValueOut,
-  PlainObjectMapper
-} from './mapping/index';
+  SerializationFactory,
+  SerializerContext, PoClassPropertyMap,
+  BaseDeserializer,
+  BaseSerializer,
+  PlainObjectMapper,
+} from './serialization';
 
-export { TDMCollection, TDMModel, TDMModelBase } from './model/index';
-
-export { Model, ModelMetadata, processModel } from './add/model/index';
-
-import './add/target-store';
-import { initMapping } from './add/mapping';
-initMapping();
-import './add/mapping'; // we need this for d.ts export, the 2 rows above are not set in d.ts)
+export { ModelClassCollection, ModelClass, ModelClassBase } from './model/index';
 
 // tslint:disable-next-line:no-namespace
 declare global {

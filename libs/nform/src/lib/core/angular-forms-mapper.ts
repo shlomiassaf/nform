@@ -8,17 +8,16 @@ import {
 } from '@pebula/utils';
 import {
   targetStore,
-  directMapper,
   TypeMetadata,
   PropMetadata,
-  PropertyContainer,
-  MapperFactory,
+  SerializerContext,
+  SerializationFactory,
   PoClassPropertyMap,
-  SerializeMapper,
-  DeserializeMapper,
-  DirectDeserializeMapper,
-  PlainObjectMapper
+  BaseSerializer,
+  BaseDeserializer,
+  PlainObjectMapper,
 } from '@pebula/utils/meta/internal';
+import { directMapper, DirectDeserializeMapper, deserialize, serialize } from '@pebula/utils/meta';
 
 import { FormModelMetadata, FormPropMetadata } from './metadata/index';
 import { objectToForm } from '../utils';
@@ -30,11 +29,7 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
   readonly raw: boolean = true;
   protected formModel: FormModelMetadata | undefined;
 
-  constructor(
-    public formGroup: DeserializableForm,
-    sourceType: any,
-    plainMapper?: PlainObjectMapper
-  ) {
+  constructor(public formGroup: DeserializableForm, sourceType: any, plainMapper?: PlainObjectMapper) {
     super(formGroup.value, sourceType, plainMapper);
     this.formModel = targetStore.getMetaFor(
       sourceType,
@@ -124,11 +119,7 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
     }
   }
 
-  protected parseFormGroup(
-    c: FormGroup,
-    key: string,
-    formProp: FormPropMetadata
-  ): any {
+  protected parseFormGroup(c: FormGroup, key: string, formProp: FormPropMetadata): any {
     const type = formProp.rtType;
     if (formProp.flatten) {
       return this.deserializeFlattened(c, formProp, key);
@@ -141,15 +132,10 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
 
   protected deserialize(value: DeserializableForm, prop: TypeMetadata): any;
   protected deserialize(value: DeserializableForm, prop: PropMetadata): any;
-  protected deserialize(
-    value: DeserializableForm,
-    prop: PropMetadata | TypeMetadata
-  ): any {
+  protected deserialize(value: DeserializableForm, prop: PropMetadata | TypeMetadata): any {
     const type: TypeMetadata = prop instanceof TypeMetadata ? prop : prop.type;
-    const mapper = this.ref
-      ? new NgFormsDeserializeMapper(value, type.ref)
-      : directMapper.deserializer(value, type.ref);
-    return targetStore.deserialize(mapper);
+    const mapper = this.ref ? ngFormsMapper : directMapper;
+    return deserialize(mapper, value, type.ref);
   }
 
   /**
@@ -176,11 +162,9 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
    * @param formProp The FormPropertyMetadata instance for the property.
    * @param resultOrKey
    */
-  protected deserializeFlattened(
-    control: DeserializableForm,
-    formProp: FormPropMetadata,
-    resultOrKey?: string | number | any
-  ): any {
+  protected deserializeFlattened(control: DeserializableForm,
+                                 formProp: FormPropMetadata,
+                                 resultOrKey?: string | number | any): any {
     if (control instanceof FormArray) {
       const { controls } = control;
       const result = [];
@@ -239,20 +223,14 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
 }
 
 // tslint:disable-next-line
-export class NgFormsSerializeMapper extends SerializeMapper {
+export class NgFormsSerializeMapper extends BaseSerializer {
   protected cache: Map<any, any>;
   protected formModel: FormModelMetadata | undefined;
 
-  serialize(container: PropertyContainer): any {
-    this.formModel = targetStore.getMetaFor(
-      container.target,
-      FormModelMetadata,
-      true
-    );
+  serialize(container: SerializerContext): FormGroup | FormArray {
+    this.formModel = targetStore.getMetaFor(container.target, FormModelMetadata, true);
     if (!this.formModel) {
-      throw new Error(
-        `Target '${stringify(container.target)}' is not a registered FormModel`
-      );
+      throw new Error(`Target '${stringify(container.target)}' is not a registered FormModel`);
     }
 
     if (!this.cache) {
@@ -266,7 +244,7 @@ export class NgFormsSerializeMapper extends SerializeMapper {
     }
   }
 
-  protected serializeObject(obj: any, container: PropertyContainer): FormGroup {
+  protected serializeObject(obj: any, container: SerializerContext): FormGroup {
     const data: FormGroup = new FormGroup(
       {},
       this.formModel.validator,
@@ -413,13 +391,11 @@ export class NgFormsSerializeMapper extends SerializeMapper {
   }
 
   protected serializeChild(type: TypeMetadata, obj: any): FormGroup | FormArray {
-    return targetStore.serialize(
-      type.ref as any,
-      new NgFormsChildSerializeMapper(obj, this.cache, this.plainMapper)
-    );
+    const serializer = new NgFormsChildSerializeMapper(obj, this.cache, this.plainMapper);
+    return serialize(serializer, type.ref);
   }
 
-  protected serializeCollection(arr: any[], container: PropertyContainer): FormArray {
+  protected serializeCollection(arr: any[], container: SerializerContext): FormArray {
     return new FormArray(arr.map(s => this.serializeObject(s, container)));
   }
 
@@ -576,12 +552,12 @@ export class NgFormsChildSerializeMapper extends NgFormsSerializeMapper {
   }
 }
 
-export const ngFormsMapper: MapperFactory = {
+export const ngFormsMapper: SerializationFactory = {
   serializer(source: any, plainMapper?: PlainObjectMapper): NgFormsSerializeMapper {
     return new NgFormsSerializeMapper(source, plainMapper);
   },
-  deserializer(source: DeserializableForm, sourceType: any, plainMapper?: PlainObjectMapper): DeserializeMapper {
-    return new NgFormsDeserializeMapper(source, sourceType, plainMapper);
+  deserializer<T, Z extends Constructor<T>>(source: DeserializableForm, sourceType: Z & Constructor<T>, plainMapper?: PlainObjectMapper): BaseDeserializer<T, Z> {
+    return new NgFormsDeserializeMapper(source, sourceType, plainMapper) as any;
   }
 };
 

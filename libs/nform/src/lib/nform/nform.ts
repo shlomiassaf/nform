@@ -60,10 +60,10 @@ export class NForm<T = any> implements PropNotifyHandler {
    */
   get renderData(): NFormRecordRef[] {
     if (!this._renderData) {
-      const clone = this.modelFormService.createRICloneFactory<any>(this);
+      const recordRefCloner = this.modelFormService.createRICloneFactory<any>(this);
       this._renderData = this.modelFormService
         .getRecords(this.type)
-        .map(clone);
+        .map(recordRefCloner);
     }
     return this._renderData;
   }
@@ -300,8 +300,8 @@ export class NForm<T = any> implements PropNotifyHandler {
 
   /**
    * Set the context for this the form.
-   * @param instance The TDModel instance
-   * @param type The TDModel class, if not set instance.constructor is the default.
+   * @param instance The ModelClass instance
+   * @param type The ModelClass class, if not set instance.constructor is the default.
    * @param formGroup An optional [[FormGroup]] instance, if set it will be used instead of serializing a new one
    */
   setContext(instance: T): void;

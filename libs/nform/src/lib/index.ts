@@ -42,7 +42,7 @@ export { NFormFactoryService } from './services/index';
 
 export { PblNFormModule } from './nform.module';
 
-export { clone, objectToForm } from './utils';
+export { cloneControl, objectToForm } from './utils';
 
 // re-export common types from core.
 export { Prop, Model, Exclude, Type } from '@pebula/utils/meta';

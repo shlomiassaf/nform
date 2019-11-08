@@ -1,37 +1,6 @@
+import { Constructor } from '@pebula/utils';
 import { PropMetadata } from '../metadata/prop';
-import { PropertyContainer } from './prop-container';
 import { PlainObjectMapper } from './plain-object-mapper';
-
-export interface MapperFactory {
-  serializer(source: any, plainMapper?: PlainObjectMapper): SerializeMapper;
-  deserializer(
-    source: any,
-    sourceType: any,
-    plainMapper?: PlainObjectMapper
-  ): DeserializeMapper;
-}
-
-/**
- * Represents the contract a Serializer needs to implements.
- * A Serializer should handle both a collection and a single item and should be able to identify them.
- *
- * Since Serialization transforms a KNOWN document to an UNKNOWN document the serializer is gets
- * free control over the output.
- * The library provides the instance and a container of property metadata for the instance and the
- * serializer should do the rest.
- *
- * Since the output schema is now known to the library the whole process is managed by the serializer.
- * The library helps with metadata.
- */
-export abstract class SerializeMapper {
-  protected plainMapper: PlainObjectMapper;
-
-  constructor(public source: any | any[], plainMapper?: PlainObjectMapper) {
-    this.plainMapper = plainMapper || new PlainObjectMapper();
-  }
-
-  abstract serialize(container: PropertyContainer): any;
-}
 
 /**
  * Represents the contract a Deserializer needs to implements.
@@ -58,7 +27,7 @@ export abstract class SerializeMapper {
  * > See `directMapper` and `@tdm/json-api-mapper` for implementation example.
  *
  */
-export abstract class DeserializeMapper {
+export abstract class BaseDeserializer<T = any, Z extends Constructor<T> = Constructor<any>> {
   /**
    * Optional, if set will be used to get the identity value.
    * If the identity is part of the properties it will be sent through getValue(), but if not this
@@ -77,17 +46,13 @@ export abstract class DeserializeMapper {
 
   /**
    * If true will iterate excluded items when calling getValue.
-   * See PropertyContainer.forEachRaw
+   * See SerializerContext.forEachRaw
    */
   raw?: boolean;
 
   protected plainMapper: PlainObjectMapper;
 
-  constructor(
-    public source: any,
-    public sourceType: any,
-    plainMapper?: PlainObjectMapper
-  ) {
+  constructor(public source: T, public sourceType: Z & Constructor<T>, plainMapper?: PlainObjectMapper) {
     this.plainMapper = plainMapper || new PlainObjectMapper();
   }
 

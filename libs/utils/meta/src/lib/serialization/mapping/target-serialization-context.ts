@@ -1,17 +1,24 @@
 import { isFunction } from '@pebula/utils';
-import { LazyInit, TransformDir, NamingStrategyConfig, array } from '../fw';
-import { PropMetadata, ExcludeMetadata, TargetMetadata } from '../metadata';
+import {
+  PropMetadata,
+  ExcludeMetadata,
+  TargetMetadata,
+  LazyInit,
+  TransformDir,
+  NamingStrategyConfig,
+  BaseSerializer,
+  BaseDeserializer,
+  PoClassPropertyMap,
+  SerializerContext,
+  array,
+} from '@pebula/utils/meta/internal';
 
 import {
-  SerializeMapper,
-  DeserializeMapper,
   CompiledTransformation,
-  PoClassPropertyMap,
-  PropertyContainer,
   ExclusivePropertyContainer,
   InclusivePropertyContainer,
   transformValueIn
-} from './index';
+} from './serialization-context';
 
 /**
  * Returns an array of 2 property names, first is the name of the transformed output
@@ -66,7 +73,7 @@ export function getInstructions<T, Z>(meta: TargetMetadata<T, Z>, dir: Transform
     // These arr actually matching pairs of a belongTo relation and it's fk
     // (not all belongsTo has fk, only different property name is a fk)
     //
-    // At the end, go through the stored PropMetadata's and see if matching pairs found (2 values in array)
+    // At the end, go through the stored PropMetadata and see if matching pairs found (2 values in array)
     // for all of them, swap the prop names so:
     // belongsTo PoClassPropertyMap will output (deserialize) to the original fk property name
     // foreignKey PoClassPropertyMap wil input (serialize) to the belongsTo property name
@@ -105,11 +112,12 @@ function deserializePredicate(p: PoClassPropertyMap) {
 }
 
 /**
- * A Target transformer is the running context of a mapper.
+ * A TargetSerializationContext is the running context of a mapper for a specific target class that
+ * can serialize and deserialize instances of the target class.
  * It will run the mapper, provide input and parse results
  */
-export class TargetTransformer<T, Z> {
-  @LazyInit(function(this: TargetTransformer<T, Z>): PoClassPropertyMap | undefined {
+export class TargetSerializationContext<T = any, Z = any> {
+  @LazyInit(function(this: TargetSerializationContext<T, Z>): PoClassPropertyMap | undefined {
     const idKey = this.meta.getIdentityKey();
     if (idKey) {
       return (this.hasOwnProperty('incoming')
@@ -120,17 +128,17 @@ export class TargetTransformer<T, Z> {
   })
   protected identity: PoClassPropertyMap | undefined;
 
-  @LazyInit(function(this: TargetTransformer<T, Z>): CompiledTransformation {
+  @LazyInit(function(this: TargetSerializationContext<T, Z>): CompiledTransformation {
     return getInstructions(this.meta, 'incoming');
   })
   protected incoming: CompiledTransformation;
 
-  @LazyInit(function(this: TargetTransformer<T, Z>): CompiledTransformation {
+  @LazyInit(function(this: TargetSerializationContext<T, Z>): CompiledTransformation {
     return getInstructions(this.meta, 'outgoing');
   })
   protected outgoing: CompiledTransformation;
 
-  @LazyInit(function(this: TargetTransformer<T, Z>): PropertyContainer {
+  @LazyInit(function(this: TargetSerializationContext<T, Z>): SerializerContext {
     const model = this.meta.model();
     if (model.transformStrategy === 'exclusive') {
       return new ExclusivePropertyContainer(this.meta.target, this.incoming);
@@ -146,9 +154,9 @@ export class TargetTransformer<T, Z> {
       );
     }
   })
-  protected incomingContainer: PropertyContainer;
+  protected incomingContainer: SerializerContext;
 
-  @LazyInit(function(this: TargetTransformer<T, Z>): PropertyContainer {
+  @LazyInit(function(this: TargetSerializationContext<T, Z>): SerializerContext {
     const model = this.meta.model();
     if (model.transformStrategy === 'exclusive') {
       return new ExclusivePropertyContainer(this.meta.target, this.outgoing);
@@ -164,11 +172,11 @@ export class TargetTransformer<T, Z> {
       );
     }
   })
-  protected outgoingContainer: PropertyContainer;
+  protected outgoingContainer: SerializerContext;
 
   constructor(protected meta: TargetMetadata<T, Z>) {}
 
-  serialize(mapper: SerializeMapper): any {
+  serialize(mapper: BaseSerializer): any {
     return mapper.serialize(this.outgoingContainer);
   }
 
@@ -178,7 +186,7 @@ export class TargetTransformer<T, Z> {
    * @param mapper
    * @param target
    */
-  deserialize(mapper: DeserializeMapper, target: any): void {
+  deserialize(mapper: BaseDeserializer, target: any): void {
     const cb = (prop: PoClassPropertyMap) => {
       const propMeta = (prop.prop && prop.prop.foreignKeyOf) || prop.prop;
       target[prop.cls] = transformValueIn(

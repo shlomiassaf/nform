@@ -1,4 +1,3 @@
-// tslint:disable
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Model } from '@pebula/utils/meta';

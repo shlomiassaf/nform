@@ -82,7 +82,7 @@ export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof Fo
 
   /**
    * When set true will force the mapper to treat this property as a generic `Object`.
-   * This means that when the model will serilalize to a `Form` this property will serialize to a `FormControl` regardless
+   * This means that when the model will serialize to a `Form` this property will serialize to a `FormControl` regardless
    * of it's actual type.
    *
    * > Note: Setting this will override any `type` or `rtType` set.

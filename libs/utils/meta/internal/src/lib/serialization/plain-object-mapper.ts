@@ -2,7 +2,7 @@ const PRIMITIVES = ['boolean', 'string', 'number', 'symbol'];
 
 /**
  * A plain object (POJO/POCO) serializer/deserializer.
- * Extend for custom behaviour.
+ * Extend for custom behavior.
  */
 export class PlainObjectMapper {
   deserialize(obj: any): any {

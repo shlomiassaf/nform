@@ -1,10 +1,6 @@
 import * as voca from 'voca';
-import {
-  targetStore,
-  Model,
-  directMapper,
-  TargetMetadata
-} from '@pebula/utils/meta/internal';
+import { targetStore, TargetMetadata } from '@pebula/utils/meta/internal';
+import { Model, directMapper, serialize, deserialize } from '@pebula/utils/meta';
 import { TargetMetaModifier } from '@pebula/utils/testing';
 
 const transformNameStrategy = {
@@ -47,9 +43,7 @@ describe('@pebula/utils/meta', () => {
       it('should apply NamingStrategyConfig in inclusive mode - without defined @Props', () => {
         userModifier.setModel({ transformNameStrategy: transformNameStrategy });
 
-        const user = targetStore.deserialize(
-          directMapper.deserializer(data, User)
-        );
+        const user = deserialize(directMapper.deserializer(data, User));
 
         expect(user['my_property_1']).toBeUndefined();
         expect(user['myProperty1']).toBe(data.my_property1);
@@ -59,7 +53,7 @@ describe('@pebula/utils/meta', () => {
 
         expect(user['myProperty3']).toBe(data.myProperty3);
 
-        const ser = targetStore.serialize(User, directMapper.serializer(user));
+        const ser = serialize(directMapper.serializer(user), User);
 
         expect(ser['myProperty1']).toBeUndefined();
         expect(ser['my_property_1']).toBe(data.my_property1);
@@ -79,9 +73,7 @@ describe('@pebula/utils/meta', () => {
           'myProperty3'
         );
 
-        const user = targetStore.deserialize(
-          directMapper.deserializer(data, User)
-        );
+        const user = deserialize(directMapper.deserializer(data, User));
 
         expect(user['my_property_1']).toBeUndefined();
         expect(user['myProperty1']).toBe(data.my_property1);
@@ -91,7 +83,7 @@ describe('@pebula/utils/meta', () => {
 
         expect(user['myProperty3']).toBe(data.myProperty3);
 
-        const ser = targetStore.serialize(User, directMapper.serializer(user));
+        const ser = serialize(directMapper.serializer(user), User);
 
         expect(ser['myProperty1']).toBeUndefined();
         expect(ser['my_property_1']).toBe(data.my_property1);
@@ -118,9 +110,7 @@ describe('@pebula/utils/meta', () => {
           my_property_1: 1
         };
 
-        const user = targetStore.deserialize(
-          directMapper.deserializer(data, User)
-        );
+        const user = deserialize(directMapper.deserializer(data, User));
 
         expect(user['my_property_1']).toBeUndefined();
         expect(user['myProperty1']).toBe(data.my_property_1);

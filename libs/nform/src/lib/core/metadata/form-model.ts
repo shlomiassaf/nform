@@ -1,10 +1,18 @@
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { isJsObject } from '@pebula/utils';
-import { MetaClass, PropMetadata, ModelMetadata, BaseMetadata, DecoratorInfo } from '@pebula/utils/meta/internal';
+import { MetaClass, PropMetadata, BaseMetadata, DecoratorInfo, ModelMetadataArgs, targetStore, ModelMetadata } from '@pebula/utils/meta/internal';
+import { Model } from '@pebula/utils/meta';
 
 import { FormPropMetadata } from './form-prop';
 
 export interface FormModelMetadataArgs {
+  /**
+   * Optional definition for the @Model decorator.
+   * By default, @Model is called with the value provided on this property or no value if not set.
+   *
+   * If you wish to prevent running @Model, set this value to false but make sure you run it manually.
+   */
+  model?: ModelMetadataArgs | false;
   validator?: ValidatorFn;
   asyncValidator?: AsyncValidatorFn;
 }
@@ -12,10 +20,21 @@ export interface FormModelMetadataArgs {
 @MetaClass<FormModelMetadataArgs, FormModelMetadata>({
   single: true,
   allowOn: ['class'],
-  proxy: {
-    host: ModelMetadata,
-    containerKey: 'form'
-  }
+  // proxy: { host: ModelMetadata, containerKey: 'form' },
+  decorateBefore: defs => {
+    return [
+      target => {
+        if (defs && defs.model === false) {
+          return;
+        }
+        const modelMetaArgs: ModelMetadataArgs = (defs && defs.model) || undefined;
+        const modelMetadata = targetStore.getMetaFor(target, ModelMetadata, true);
+        if (!modelMetadata || !modelMetadata.built) {
+          return Model(modelMetaArgs)(target) || target;
+        }
+      }
+    ];
+  },
 })
 export class FormModelMetadata extends BaseMetadata
   implements FormModelMetadataArgs {
@@ -41,8 +60,10 @@ export class FormModelMetadata extends BaseMetadata
   }
 }
 
-declare module '@pebula/utils/meta/internal/lib/metadata/model-metadata' {
-  interface ModelMetadataArgs {
-    form?: FormModelMetadataArgs | undefined | true;
-  }
-}
+/* For the proxy */
+
+// declare module '@pebula/utils/meta/internal/lib/metadata/model-metadata' {
+//   interface ModelMetadataArgs {
+//     form?: FormModelMetadataArgs | undefined | true;
+//   }
+// }

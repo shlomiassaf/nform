@@ -1,20 +1,24 @@
-import { isPrimitive } from '@pebula/utils';
-import { DualKeyMap } from '../../fw';
-import { PropMetadata, targetStore } from '../../metadata';
-import { MapperFactory, DeserializeMapper, SerializeMapper } from '../mapper';
+import { isPrimitive, Constructor } from '@pebula/utils';
 import {
-  PropertyContainer,
+  DualKeyMap,
+  PropMetadata,
+  targetStore,
+  SerializationFactory,
+  BaseDeserializer,
+  BaseSerializer,
+  SerializerContext,
   PoClassPropertyMap,
-  transformValueOut
-} from '../prop-container';
-import { PlainObjectMapper } from '../plain-object-mapper';
+  PlainObjectMapper
+} from '@pebula/utils/meta/internal';
 
+import { transformValueOut } from './mapping/serialization-context'
+import { serialize, deserialize } from './serialization';
 /**
  * A mapper that has no mapping effect.
  * Maps every property on the source to the same property on the target.
  * This mapper does not support non primitive id's
  */
-export class DirectDeserializeMapper extends DeserializeMapper {
+export class DirectDeserializeMapper<T = any, Z extends Constructor<T> = Constructor<any>> extends BaseDeserializer<T, Z> {
   setRef(value: any): void {
     if (this.current) {
       this.existing.set(this.sourceType, this.getIdentity(), value);
@@ -34,7 +38,7 @@ export class DirectDeserializeMapper extends DeserializeMapper {
   protected identity: string;
   private idx: number = -1;
 
-  constructor(source: any, sourceType: any, plainMapper?: PlainObjectMapper) {
+  constructor(source: any, sourceType: Z & Constructor<T>, plainMapper?: PlainObjectMapper) {
     super(source, sourceType, plainMapper);
 
     if (!(this instanceof DirectChildDeserializeMapper)) {
@@ -98,7 +102,7 @@ export class DirectDeserializeMapper extends DeserializeMapper {
   }
 
   protected deserialize(value: any, prop: PropMetadata): any {
-    const mapper = this.ref
+    const deserializer = this.ref
       ? new DirectChildDeserializeMapper(
           value,
           prop.type.ref,
@@ -107,7 +111,7 @@ export class DirectDeserializeMapper extends DeserializeMapper {
         )
       : directMapper.deserializer(value, prop.type.ref, this.plainMapper); // tslint:disable-line
 
-    return targetStore.deserialize(mapper);
+    return deserialize(deserializer);
   }
 
   /**
@@ -133,21 +137,19 @@ export class DirectDeserializeMapper extends DeserializeMapper {
 
 // tslint:disable-next-line
 export class DirectChildDeserializeMapper extends DirectDeserializeMapper {
-  constructor(
-    source: any,
-    sourceType: any,
-    protected existing: DualKeyMap<any, string, any>,
-    plainMapper: PlainObjectMapper
-  ) {
+  constructor(source: any,
+              sourceType: any,
+              protected existing: DualKeyMap<any, string, any>,
+              plainMapper: PlainObjectMapper) {
     super(source, sourceType, plainMapper);
   }
 }
 
 // tslint:disable-next-line
-export class DirectSerializeMapper extends SerializeMapper {
+export class DirectSerializeMapper extends BaseSerializer {
   protected cache: Map<any, any>;
 
-  serialize(container: PropertyContainer): any {
+  serialize(container: SerializerContext): any {
     if (!this.cache) {
       this.cache = new Map<any, any>();
     }
@@ -159,7 +161,7 @@ export class DirectSerializeMapper extends SerializeMapper {
     }
   }
 
-  private serializeObject(obj: any, container: PropertyContainer): any {
+  private serializeObject(obj: any, container: SerializerContext): any {
     const data: any = {};
 
     const cb = (pMap: PoClassPropertyMap) => {
@@ -171,19 +173,17 @@ export class DirectSerializeMapper extends SerializeMapper {
           // if the rel points to a different fk property name, @tdm will make sure prop.obj is that fk.
           data[pMap.obj] = obj[pMap.cls][idKey];
         } else {
-          data[pMap.obj] = targetStore.serialize(
-            type,
+          data[pMap.obj] = serialize(
             new DirectChildSerializeMapper(
               obj[pMap.cls],
               this.cache,
               this.plainMapper
-            )
+            ),
+            type,
           );
         }
       } else {
-        const newVal = this.plainMapper.serialize(
-          transformValueOut(obj[pMap.cls], p)
-        );
+        const newVal = this.plainMapper.serialize(transformValueOut(obj[pMap.cls], p));
         data[pMap.obj] = newVal;
       }
     };
@@ -198,34 +198,23 @@ export class DirectSerializeMapper extends SerializeMapper {
     return data;
   }
 
-  private serializeCollection(arr: any[], container: PropertyContainer): any[] {
+  private serializeCollection(arr: any[], container: SerializerContext): any[] {
     return arr.map(s => this.serializeObject(s, container));
   }
 }
 
 // tslint:disable-next-line
 export class DirectChildSerializeMapper extends DirectSerializeMapper {
-  constructor(
-    source: any,
-    protected cache: Map<any, any>,
-    plainMapper: PlainObjectMapper
-  ) {
+  constructor(source: any, protected cache: Map<any, any>, plainMapper: PlainObjectMapper) {
     super(source, plainMapper);
   }
 }
 
-export const directMapper: MapperFactory = {
-  serializer(
-    source: any,
-    plainMapper?: PlainObjectMapper
-  ): DirectSerializeMapper {
+export const directMapper: SerializationFactory = {
+  serializer(source: any, plainMapper?: PlainObjectMapper): DirectSerializeMapper {
     return new DirectSerializeMapper(source, plainMapper);
   },
-  deserializer(
-    source: any,
-    sourceType: any,
-    plainMapper?: PlainObjectMapper
-  ): DirectDeserializeMapper {
+  deserializer<T, Z extends Constructor<T>>(source: any, sourceType: Z & Constructor<T>, plainMapper?: PlainObjectMapper): DirectDeserializeMapper<T, Z> {
     return new DirectDeserializeMapper(source, sourceType, plainMapper);
   }
 };
