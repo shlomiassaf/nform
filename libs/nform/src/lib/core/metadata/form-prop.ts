@@ -10,7 +10,7 @@ import {
 } from '@pebula/metap/internal';
 import { RenderDef, FormElementType } from '../../types';
 
-export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof FormElementType> {
+export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof FormElementType> extends RenderDef<T> {
   /**
    * Exclude this property from the form.
    * By default every class property decorated with @Prop or @FormProp is included in the output of
@@ -25,12 +25,6 @@ export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof Fo
    * @param value
    */
   transform?: (value: any) => any;
-
-  /**
-   * Definition for element rendering.
-   * Set this if you want your models to automatically render into forms.
-   */
-  render?: RenderDef<T>;
 
   /**
    * Sugar for adding a required validator
@@ -192,13 +186,15 @@ export class FormPropMetadata extends BaseMetadata {
       this.required = metaArgs.required;
       this.validators = metaArgs.validators || null;
       this.asyncValidators = metaArgs.asyncValidators || null;
-      if (!this.exclude && metaArgs.render) {
-        if (!metaArgs.render.vType) {
-          throw new Error(
-            `Invalid property type or type not set in ${stringify(target)}.${info.name.toString()}`
-          );
+      if (!this.exclude) {
+        if (!metaArgs.vType && !metaArgs.flatten) {
+          throw new Error(`Invalid property type or type not set in ${stringify(target)}.${info.name.toString()}`);
         }
-        Object.assign(this.render, metaArgs.render);
+        for (const key of ['ordinal', 'label', 'vType', 'data']) {
+          if (key in metaArgs) {
+            this.render[key] = metaArgs[key];
+          }
+        }
       }
 
       if (metaArgs.childForm) {
@@ -228,7 +224,7 @@ export class FormPropMetadata extends BaseMetadata {
     }
   }
 
-  static EMPTY = new FormPropMetadata({} as any, { type: 'class' });
+  static EMPTY = new FormPropMetadata({ vType: 'none' } as any, { type: 'class' });
 }
 
 declare module '@pebula/metap/internal/lib/metadata/prop' {

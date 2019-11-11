@@ -84,6 +84,7 @@ describe('@pebula/nform', () => {
         modelExcluded: string;
 
         @FormProp({
+          vType: 'none',
           exclude: true
         })
         formExcluded: string;
@@ -100,6 +101,7 @@ describe('@pebula/nform', () => {
       @FormModel()
       class TransformationFormCases {
         @FormProp({
+          vType: 'none',
           transform: () => 'test'
         })
         alwaysTest: string;
@@ -117,11 +119,13 @@ describe('@pebula/nform', () => {
       @FormModel()
       class DefaultValueFormCases {
         @FormProp({
+          vType: 'none',
           defaultValue: 'defaultValue'
         })
         inFormPreSet: string = '';
 
         @FormProp({
+          vType: 'none',
           defaultValue: 'defaultValue'
         })
         inForm: string;
@@ -138,13 +142,13 @@ describe('@pebula/nform', () => {
       @FormModel()
       class DemoForm {
         @FormProp({
-          render: { vType: 'text' },
+           vType: 'text',
           childForm: true
         })
         complexObject1: any = obj;
 
         @FormProp({
-          render: { vType: 'text' },
+          vType: 'text',
           childForm: false
         })
         complexObject2: any = obj;
@@ -179,11 +183,13 @@ describe('@pebula/nform', () => {
       @FormModel()
       class DemoForm {
         @FormProp({
+          vType: 'none',
           childForm: true
         })
         child1: DemoChildForm = obj;
 
         @FormProp({
+          vType: 'none',
           childForm: false
         })
         child2: DemoChildForm = obj;
@@ -207,6 +213,7 @@ describe('@pebula/nform', () => {
       @FormModel()
       class DemoForm {
         @FormProp({
+          vType: 'form',
           required: true
         })
         required: string;
@@ -225,6 +232,7 @@ describe('@pebula/nform', () => {
       @FormModel()
       class DemoForm {
         @FormProp({
+          vType: 'none',
           validators: [
             (value: AbstractControl) => {
               if (value.value === 'fail') {
@@ -267,6 +275,7 @@ describe('@pebula/nform', () => {
         @FormModel()
         class DemoForm {
           @FormProp({
+            vType: 'none',
             asyncValidators: [
               (value: AbstractControl) => {
                 return Promise.resolve(null).then(() => {
@@ -328,6 +337,7 @@ describe('@pebula/nform', () => {
           names: string[];
 
           @FormProp({
+            vType: 'none',
             rtType: () => String
           })
           notSetArray: string[];
@@ -381,6 +391,7 @@ describe('@pebula/nform', () => {
           @FormProp() id: number;
 
           @FormProp({
+            vType: 'none',
             childForm: true,
             rtType: () => Address
           })
@@ -455,14 +466,17 @@ describe('@pebula/nform', () => {
           @FormProp() id: number;
 
           @FormProp({
+            vType: 'none',
             flatten: {
               street: {
+                vType: 'text',
                 required: true
               },
               city: {
+                vType: 'text',
                 required: true
               },
-              zip: {}
+              zip: { vType: 'text' }
             }
           })
           address: Address;
@@ -504,14 +518,17 @@ describe('@pebula/nform', () => {
           @FormProp() id: number;
 
           @FormProp({
+            vType: 'none',
             flatten: {
               street: {
+                vType: 'text',
                 required: true
               },
               city: {
+                vType: 'text',
                 required: true
               },
-              zip: {}
+              zip: { vType: 'text' }
             }
           })
           addresses: Address[];
@@ -579,12 +596,14 @@ describe('@pebula/nform', () => {
 
         const basicFlatten = {
           street: {
+            vType: 'text',
             required: true
           },
           city: {
+            vType: 'text',
             required: true
           },
-          zip: {}
+          zip: { vType: 'text' }
         };
 
         @FormModel()
@@ -601,6 +620,7 @@ describe('@pebula/nform', () => {
           @FormProp() id: number;
 
           @FormProp({
+            vType: 'none',
             flatten: Object.assign({}, basicFlatten, {
               additional: {
                 flatten: {
@@ -692,12 +712,14 @@ describe('@pebula/nform', () => {
 
       const basicFlatten = {
         street: {
+          vType: 'text',
           required: true
         },
         city: {
+          vType: 'text',
           required: true
         },
-        zip: {}
+        zip: { vType: 'text' }
       };
 
       let User: any;
@@ -720,6 +742,7 @@ describe('@pebula/nform', () => {
         @FormModel()
         class MyChildChildModel {
           @FormProp({
+            vType: 'none',
             flatten: Object.assign({}, basicFlatten, {
               additional: {
                 flatten: {
@@ -739,6 +762,7 @@ describe('@pebula/nform', () => {
         @FormModel()
         class MyChildModel {
           @FormProp({
+            vType: 'none',
             childForm: true
           })
           childModel: MyChildChildModel;
@@ -749,6 +773,7 @@ describe('@pebula/nform', () => {
           @FormProp() id: number;
 
           @FormProp({
+            vType: 'none',
             flatten: Object.assign({}, basicFlatten, {
               additional: {
                 flatten: {
@@ -768,6 +793,7 @@ describe('@pebula/nform', () => {
           addresses: AddressWithAdditional[];
 
           @FormProp({
+            vType: 'none',
             childForm: true
           })
           childModel: MyChildModel;

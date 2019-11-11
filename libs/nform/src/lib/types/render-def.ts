@@ -27,7 +27,7 @@ export interface RenderDef<T extends keyof FormElementType = keyof FormElementTy
    *
    * If no type is set an error is thrown
    */
-  vType: T;
+  vType?: T;
 
   /**
    * Extra data to be used by the renderer.

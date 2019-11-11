@@ -59,10 +59,8 @@ describe('@pebula/nform', () => {
           @FormModel()
           class DemoForm {
             @FormProp({
-              render: {
-                vType: undefined,
-                label: 'label'
-              }
+              vType: undefined,
+              label: 'label',
             })
             otherType: OtherType;
           }
