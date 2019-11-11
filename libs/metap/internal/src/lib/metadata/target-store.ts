@@ -77,6 +77,23 @@ export class TargetStore {
     return this.namedTargets.get(name);
   }
 
+  getTargetMeta(target: Constructor<any>): TargetMetadata | undefined {
+    let meta = this.builtTargets.get(target);
+    if (!meta) {
+      const metaArgs = this.targets.get(target);
+
+      if (!metaArgs) {
+        this.registerTarget(target);
+        return this.getTargetMeta(target);
+      }
+
+      meta = new TargetMetadata(this, target, metaArgs);
+      this.builtTargets.set(target, meta);
+      targetEvents.FIRE.createMetadata(target);
+    }
+    return meta;
+  }
+
   getMetaFor<T, Z>(target: Constructor<any>, metaClass: T & Constructor<Z>): Map<TdmPropertyKey, Z> | undefined;
   getMetaFor<T, Z>(target: Constructor<any>, metaClass: T & Constructor<Z>, single: true): Z | undefined;
   getMetaFor<T, Z, P extends keyof Z>(target: Constructor<any>, metaClass: T & Constructor<Z>, single: true, singleKey: P): Z[P] | undefined;

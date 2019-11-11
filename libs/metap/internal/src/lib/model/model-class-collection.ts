@@ -1,5 +1,5 @@
 import { Constructor, Mixin } from '@pebula/utils';
-import { targetStore } from '../metadata/target-store';
+import { TargetStore } from '../metadata/target-store';
 
 const ModelClassCollectionMark = Symbol('ModelClassCollection instance mark');
 const NON_EXTENDABLE_PROPS = ['constructor'];
@@ -54,7 +54,9 @@ export class ModelClassCollection<T /* extends ActiveRecord<any, any> */> extend
    * It is recommended to use this method along with a type to ensure plugins functionality.
    * @param type
    */
-  static create<T>(type?: Constructor<T>): ModelClassCollection<T> {
+  static create<T>(): ModelClassCollection<T>
+  static create<T>(targetStore: TargetStore, type: Constructor<T>): ModelClassCollection<T>;
+  static create<T>(targetStore?: TargetStore, type?: Constructor<T>): ModelClassCollection<T> {
     if (!type) {
       return new ModelClassCollection<any>();
     } else {

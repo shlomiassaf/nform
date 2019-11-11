@@ -7,4 +7,4 @@ ordinal: 3
 ---
 # Field Sync / Redraw
 
-Field Sync / Field Redraw
+<div pbl-example-view="pbl-field-sync-redraw-example"></div>

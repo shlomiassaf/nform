@@ -7,4 +7,4 @@ ordinal: 2
 ---
 # valueChanges Event
 
-valueChanges Event
+<div pbl-example-view="pbl-value-changes-example"></div>

@@ -2,6 +2,6 @@
 title: Advanced Modeling
 path: guide/advanced-modeling
 parent: guide
-ordinal: 1
+ordinal: 3
 empty: true
 ---

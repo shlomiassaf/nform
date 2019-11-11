@@ -17,14 +17,6 @@ declare module '../target-store' {
     getIdentityKey(target: Constructor<any>, direction?: TransformDir): string | undefined;
 
     /**
-     * Returns metadata, if not built, builds it
-     * @param target
-     * @param register when true will also register if not exists
-     * @returns
-     */
-    getTargetMeta<T, Z>(target: Z & Constructor<T>): TargetMetadata<T, Z> | undefined;
-
-    /**
      * Returns the target's name key without initiating a target build.
      * @param target
      * @returns
@@ -46,23 +38,6 @@ export function registerTargetStoreExtensions(modelMetaClass: typeof ModelMetada
 
   TargetStore.prototype.getTargetName = function getTargetName(this: TargetStore, target: Constructor<any>): string | undefined {
     return targetStore.getMetaFor(target, modelMetaClass, true, 'resName');
-  };
-
-  TargetStore.prototype.getTargetMeta = function getTargetMeta(target: Constructor<any>): TargetMetadata | undefined {
-    let meta = this.builtTargets.get(target);
-    if (!meta) {
-      const metaArgs = this.targets.get(target);
-
-      if (!metaArgs) {
-        this.registerTarget(target);
-        return this.getTargetMeta(target);
-      }
-
-      meta = new TargetMetadata(target, metaArgs);
-      this.builtTargets.set(target, meta);
-      targetEvents.FIRE.createMetadata(target);
-    }
-    return meta;
   };
 
   TargetStore.prototype.getIdentityKey = function getIdentityKey(this: TargetStore, target: Constructor<any>, direction?: TransformDir): string | undefined {

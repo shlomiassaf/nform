@@ -7,4 +7,4 @@ ordinal: 1
 ---
 # renderState Event
 
-renderState Event
+<div pbl-example-view="pbl-render-state-example"></div>

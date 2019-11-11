@@ -7,4 +7,4 @@ ordinal: 0
 ---
 # beforeRender Event
 
-beforeRender Event
+<div pbl-example-view="pbl-before-render-example"></div>

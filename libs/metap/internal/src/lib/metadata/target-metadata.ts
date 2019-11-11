@@ -1,8 +1,8 @@
 import { Constructor, isString } from '@pebula/utils';
 import { DualKeyMap, BaseMetadata, GLOBAL_KEY, MetadataClassStatic } from '../fw';
 import { ModelClassCollection } from '../model';
-import { targetStore } from './target-store';
 
+// @dynamic
 /**
  * The metadata store for a target.
  *
@@ -14,7 +14,8 @@ import { targetStore } from './target-store';
 export class TargetMetadata<T = any, Z = any> {
   protected config: DualKeyMap<Constructor<any>, TdmPropertyKey, any>;
 
-  constructor(public readonly target: Z & Constructor<T>,
+  constructor(public readonly targetStore: import('./target-store').TargetStore,
+              public readonly target: Z & Constructor<T>,
               config: DualKeyMap<MetadataClassStatic, TdmPropertyKey, any>) {
     this.config = config;
   }
@@ -43,14 +44,8 @@ export class TargetMetadata<T = any, Z = any> {
   /**
    * Get metadata for a non-single value metadata class
    */
-  getMetaFor<T extends MetadataClassStatic, Z extends BaseMetadata>(
-    metaClass: T & Constructor<Z>,
-    name: string
-  ): Z | undefined;
-  getMetaFor<T extends MetadataClassStatic, Z extends BaseMetadata>(
-    metaClass: T & Constructor<Z>,
-    name?: string | true
-  ): Z | undefined {
+  getMetaFor<T extends MetadataClassStatic, Z extends BaseMetadata>(metaClass: T & Constructor<Z>, name: string): Z | undefined;
+  getMetaFor<T extends MetadataClassStatic, Z extends BaseMetadata>(metaClass: T & Constructor<Z>, name?: string | true): Z | undefined {
     if (isString(name)) {
       const meta = this.config.get(metaClass);
       if (meta) {
@@ -69,28 +64,17 @@ export class TargetMetadata<T = any, Z = any> {
   /**
    * Set metadata for a single metadata class
    */
-  setMetaFor<T, ZValue = T>(
-    metaClass: MetadataClassStatic<T>,
-    value: ZValue
-  ): void;
+  setMetaFor<T, ZValue = T>(metaClass: MetadataClassStatic<T>, value: ZValue): void;
   /**
    * Set metadata for a non-single metadata class
    */
-  setMetaFor<T, ZValue = T>(
-    metaClass: MetadataClassStatic<T>,
-    name: string,
-    value: ZValue
-  ): void;
-  setMetaFor<T, ZValue = T>(
-    metaClass: MetadataClassStatic<T>,
-    name: string | ZValue,
-    value?: ZValue
-  ): void {
+  setMetaFor<T, ZValue = T>(metaClass: MetadataClassStatic<T>, name: string, value: ZValue): void;
+  setMetaFor<T, ZValue = T>(metaClass: MetadataClassStatic<T>, name: string | ZValue, value?: ZValue): void {
     // TODO: don't go to target-store for this, implement here
     if (isString(name)) {
-      targetStore.setMetaFor(this.target, metaClass, name, value);
+      this.targetStore.setMetaFor(this.target, metaClass, name, value);
     } else {
-      targetStore.setMetaFor(this.target, metaClass, true, name);
+      this.targetStore.setMetaFor(this.target, metaClass, true, name);
     }
   }
 

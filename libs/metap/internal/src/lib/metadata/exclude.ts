@@ -26,12 +26,10 @@ declare module './prop' {
 }
 
 // exporting to satisfy angular AOT
-export function factory(
-  this: MetaClassMetadata<ExcludeMetadataArgs, ExcludeMetadata>,
-  metaArgs: ExcludeMetadataArgs,
-  target: Object | Function,
-  info: DecoratorInfo
-): MetaClassInstanceDetails<ExcludeMetadataArgs, ExcludeMetadata> | undefined {
+export function factory(this: MetaClassMetadata<ExcludeMetadataArgs, ExcludeMetadata>,
+                        metaArgs: ExcludeMetadataArgs,
+                        target: Object | Function,
+                        info: DecoratorInfo): MetaClassInstanceDetails<ExcludeMetadataArgs, ExcludeMetadata> | undefined {
   if (info.type === 'class') {
     targetStore.getTargetMeta(<any>target).model().transformStrategy =
       'exclusive';
@@ -70,8 +68,6 @@ export class ExcludeMetadata extends BaseMetadata {
 // to make it easy on generics later
 declare module '../fw/metadata-framework/meta-class' {
   namespace MetaClass {
-    function get(
-      target: typeof ExcludeMetadata
-    ): MetaClassMetadata<ExcludeMetadataArgs, ExcludeMetadata>;
+    function get(target: typeof ExcludeMetadata): MetaClassMetadata<ExcludeMetadataArgs, ExcludeMetadata>;
   }
 }

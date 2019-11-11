@@ -1,4 +1,4 @@
-export * from './target-store';
+export { TargetStore, targetStore } from './target-store';
 export * from './prop';
 export * from './type';
 export * from './relation';
