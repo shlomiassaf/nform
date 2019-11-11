@@ -18,7 +18,7 @@
       "@pebula/apps/*": ["apps/libs/*", "apps/libs/*/src/index.ts"],
       "@pebula/nform/lib/*": ["libs/nform/src/lib/*"],
       "@pebula/nform-material/lib/*": ["libs/nform-material/src/lib/*"],
-      "@pebula/utils/meta/internal/lib/*": ["libs/utils/meta/internal/src/lib/*"],
+      "@pebula/metap/internal/lib/*": ["libs/metap/internal/src/lib/*"],
       "@pebula/*": ["libs/*/src/index.ts", "libs/*"]
     },
     "rootDir": "."

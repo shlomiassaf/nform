@@ -16,8 +16,8 @@ import {
   BaseSerializer,
   BaseDeserializer,
   PlainObjectMapper,
-} from '@pebula/utils/meta/internal';
-import { directMapper, DirectDeserializeMapper, deserialize, serialize } from '@pebula/utils/meta';
+} from '@pebula/metap/internal';
+import { directMapper, DirectDeserializeMapper, deserialize, serialize } from '@pebula/metap';
 
 import { FormModelMetadata, FormPropMetadata } from './metadata/index';
 import { objectToForm } from '../utils';

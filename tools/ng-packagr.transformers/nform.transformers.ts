@@ -12,6 +12,8 @@ async function compileNgcTransformer(taskContext: EntryPointTaskContext) {
 
 async function writeBundles(context: EntryPointTaskContext) {
   mergeUmdIds(context, { '@pebula/utils': 'pebula.utils' });
+  mergeUmdIds(context, { '@pebula/metap': 'pebula.metap' });
+  mergeUmdIds(context, { '@pebula/metap/internal': 'pebula.metap.internal' });
 }
 
 module.exports = function(ctx: NgPackagerHooksContext, registry: HookRegistry) {

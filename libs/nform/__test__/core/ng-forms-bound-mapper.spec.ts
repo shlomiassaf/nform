@@ -1,6 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
 
-import { TestTargetStore } from '@pebula/utils/testing';
+import { TestTargetStore } from '@pebula/metap/testing';
 import { FormModel, FormProp, NgFormsBoundMapper } from '@pebula/nform';
 
 function createMapper(instance: any): NgFormsBoundMapper {

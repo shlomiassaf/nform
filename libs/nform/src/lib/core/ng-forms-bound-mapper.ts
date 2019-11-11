@@ -1,7 +1,7 @@
 import { FormGroup } from '@angular/forms';
 import { Constructor, isString, isNumber } from '@pebula/utils';
-import { targetStore, PlainObjectMapper, TargetMetadata } from '@pebula/utils/meta/internal';
-import { serializeTargetMeta, deserializeTargetMeta } from '@pebula/utils/meta';
+import { targetStore, PlainObjectMapper, TargetMetadata } from '@pebula/metap/internal';
+import { serializeTargetMeta, deserializeTargetMeta } from '@pebula/metap';
 
 import {
   DeserializableForm,

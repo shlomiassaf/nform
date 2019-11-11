@@ -1,6 +1,6 @@
-import { Model, Prop } from '@pebula/utils/meta';
-import { targetStore, PropMetadata } from '@pebula/utils/meta/internal';
-import { TestTargetStore } from '@pebula/utils/testing';
+import { Model, Prop } from '@pebula/metap';
+import { targetStore, PropMetadata } from '@pebula/metap/internal';
+import { TestTargetStore } from '@pebula/metap/testing';
 import { FormModel, FormProp } from '@pebula/nform';
 
 import { FormModelMetadata, FormPropMetadata } from '@pebula/nform/lib/core/index';

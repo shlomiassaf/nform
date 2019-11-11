@@ -10,7 +10,7 @@ import { Hero } from './model';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@Example('pbl-nform-basics-example', { title: 'Nform Basics' })
+@Example('pbl-nform-basics-example', { title: 'Nform Basics', additionalFiles: [ './model.ts' ] })
 export class NformBasicsExample {
   model: Hero;
 

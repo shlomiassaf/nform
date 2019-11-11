@@ -1,5 +1,5 @@
 import { Constructor } from '@pebula/utils';
-import { targetStore, MapExt, MetaClass } from '@pebula/utils/meta/internal';
+import { targetStore, MapExt, MetaClass } from '@pebula/metap/internal';
 
 import {
   FormModelMetadata,

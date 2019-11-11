@@ -45,4 +45,4 @@ export { PblNFormModule } from './nform.module';
 export { cloneControl, objectToForm } from './utils';
 
 // re-export common types from core.
-export { Exclude, Type } from '@pebula/utils/meta';
+export { Exclude, Type } from '@pebula/metap';

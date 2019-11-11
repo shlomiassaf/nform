@@ -14,7 +14,7 @@ import { PblRowLayoutNformRenderer } from '@pebula/apps/shared-nform';
     { provide: FORM_CONTROL_COMPONENT, useValue: PblRowLayoutNformRenderer }
   ]
 })
-@Example('pbl-guide-intro-example', { title: 'Guide Intro', additionalFiles: ['./models.ts'] })
+@Example('pbl-guide-intro-example', { title: 'Guide Intro', additionalFiles: ['./model.ts'] })
 export class GuideIntroExample {
   model = new UIDeveloper();
 }

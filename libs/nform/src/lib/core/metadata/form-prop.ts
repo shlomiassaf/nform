@@ -7,7 +7,7 @@ import {
   DecoratorInfo,
   TypeMetadataArgs,
   TypeMetadata
-} from '@pebula/utils/meta/internal';
+} from '@pebula/metap/internal';
 import { RenderDef, FormElementType } from '../../types';
 
 export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof FormElementType> {
@@ -231,7 +231,7 @@ export class FormPropMetadata extends BaseMetadata {
   static EMPTY = new FormPropMetadata({} as any, { type: 'class' });
 }
 
-declare module '@pebula/utils/meta/internal/lib/metadata/prop' {
+declare module '@pebula/metap/internal/lib/metadata/prop' {
   interface PropMetadataArgs {
     form?: FormPropMetadataArgs | undefined;
   }

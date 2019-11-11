@@ -147,26 +147,32 @@ export class MarkdownCodeExamplesWebpackPlugin implements webpack.Plugin {
     const primary = parseExampleTsFile(fullPath, source);
 
     if (primary) {
-      const assets = createInitialExampleFileAssets(fullPath, primary);
+      const [ primaryAsset, ...assets ] = createInitialExampleFileAssets(fullPath, primary);
       const pathAssets = new Map<string, ExampleFileAsset>();
-      for (const asset of assets) {
-        if (asset.parent === primary.component && asset.lang === 'typescript') {
-          asset.source = source;
-          pathAssets.set(fullPath, asset);
-        } else {
-          const secondaryFullPath = Path.join(root, asset.file);
-          asset.source = FS.readFileSync(secondaryFullPath, { encoding: 'utf-8' });
-          pathAssets.set(secondaryFullPath, asset);
-        }
+
+      const renderCodeContent = (asset: ExampleFileAsset) => {
         const markdownAST = {
           lang: asset.lang,
           value: asset.source,
           type: 'code',
         };
+
         remarkPrismJs({ markdownAST });
         asset.contents = markdownAST.value;
+      };
+
+      primaryAsset.source = source;
+      pathAssets.set(fullPath, primaryAsset);
+      renderCodeContent(primaryAsset);
+
+      for (const asset of assets) {
+        const secondaryFullPath = Path.join(root, asset.file);
+        asset.source = FS.readFileSync(secondaryFullPath, { encoding: 'utf-8' });
+        pathAssets.set(secondaryFullPath, asset);
+        renderCodeContent(asset);
       }
 
+      assets.unshift(primaryAsset);
 
       const parsedExample: ParsedExampleMetadata = {
         cacheId: file,

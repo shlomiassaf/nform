@@ -2,9 +2,9 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { FormArray, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 import { Constructor } from '@pebula/utils';
-import { TestTargetStore } from '@pebula/utils/testing';
-import { Model, Exclude, Prop } from '@pebula/utils/meta';
-import * as utilsMeta from '@pebula/utils/meta';
+import { TestTargetStore } from '@pebula/metap/testing';
+import { Model, Exclude, Prop } from '@pebula/metap';
+import * as utilsMeta from '@pebula/metap';
 import { FormModel, FormProp, ngFormsMapper, cloneControl, createControl } from '@pebula/nform';
 
 function serialize(instance: any): FormGroup {

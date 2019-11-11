@@ -1,7 +1,7 @@
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { isJsObject } from '@pebula/utils';
-import { MetaClass, PropMetadata, BaseMetadata, DecoratorInfo, ModelMetadataArgs, targetStore, ModelMetadata } from '@pebula/utils/meta/internal';
-import { Model } from '@pebula/utils/meta';
+import { MetaClass, PropMetadata, BaseMetadata, DecoratorInfo, ModelMetadataArgs, targetStore, ModelMetadata } from '@pebula/metap/internal';
+import { Model } from '@pebula/metap';
 
 import { FormPropMetadata } from './form-prop';
 
@@ -62,7 +62,7 @@ export class FormModelMetadata extends BaseMetadata
 
 /* For the proxy */
 
-// declare module '@pebula/utils/meta/internal/lib/metadata/model-metadata' {
+// declare module '@pebula/metap/internal/lib/metadata/model-metadata' {
 //   interface ModelMetadataArgs {
 //     form?: FormModelMetadataArgs | undefined | true;
 //   }

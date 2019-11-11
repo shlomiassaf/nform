@@ -1,6 +1,6 @@
 import { AbstractControl, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { isJsObject, isPrimitive } from '@pebula/utils';
-import { PlainObjectMapper } from '@pebula/utils/meta/internal';
+import { PlainObjectMapper } from '@pebula/metap/internal';
 
 /**
  * Performs a FormArray deep clone.
