@@ -6,4 +6,4 @@ export {
   autoDeserialize,
   clone,
 } from './serialization';
-export { serializeTargetMeta, deserializeTargetMeta } from './mapping';
+export { serializeTargetMeta, deserializeTargetMeta } from './mapping/index';

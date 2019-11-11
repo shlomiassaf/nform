@@ -2,7 +2,7 @@ import { Constructor } from '@pebula/utils';
 import { SerializationFactory, targetStore, BaseSerializer, BaseDeserializer } from '@pebula/utils/meta/internal';
 import { Model } from '../decorators/model';
 import { directMapper } from './direct-mapper';
-import { serializeTargetMeta, deserializeTargetMeta } from './mapping';
+import { serializeTargetMeta, deserializeTargetMeta } from './mapping/index';
 
 @Model({ resName: 'InternalPlainObject' })
 class PlainObject {}

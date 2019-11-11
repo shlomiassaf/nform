@@ -127,6 +127,7 @@ export function extendSingle(from: ModelMetadata,
   }
 }
 
+// @dynamic
 @MetaClass<ModelMetadataArgs, ModelMetadata>({
   allowOn: ['class'],
   single: true,

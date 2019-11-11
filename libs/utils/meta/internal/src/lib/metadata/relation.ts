@@ -13,6 +13,7 @@ export interface RelationMetadataArgs {
   foreignKey?: string;
 }
 
+// @dynamic
 @MetaClass<RelationMetadataArgs, RelationMetadata>({
   allowOn: ['member'],
   extend: 'mergeMap',

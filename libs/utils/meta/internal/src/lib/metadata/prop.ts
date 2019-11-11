@@ -39,6 +39,7 @@ export interface PropMetadataArgs {
   type?: TypeMetadataArgs;
 }
 
+// @dynamic
 @MetaClass<PropMetadataArgs, PropMetadata>({
   allowOn: ['member'],
   extend: 'mergeMap'

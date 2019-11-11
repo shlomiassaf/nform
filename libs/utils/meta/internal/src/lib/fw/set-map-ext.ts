@@ -344,7 +344,11 @@ export class SetExt<T> extends Set<T> {
   }
 
   static isSuperset(set: Set<any>, subset: Set<any>): boolean {
-    return !SetExt.asArray(subset).some(v => !set.has(v));
+    // ohh NGC!!!
+    function x(v) {
+      return !set.has(v)
+    }
+    return !SetExt.asArray(subset).some(x);
   }
 
   /**
@@ -530,9 +534,10 @@ export class MapExt {
   }
 
   static asObjectLiteral<K, V>(map: Map<K, V>): { [key: string]: V } {
-    return MapExt.asKeyArray(map).reduce((prev, curr) => {
+    function x(prev, curr) {
       prev[curr.toString()] = map.get(curr);
       return prev;
-    }, {});
+    };
+    return MapExt.asKeyArray(map).reduce(x, {});
   }
 }

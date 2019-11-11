@@ -25,6 +25,6 @@ export {
   PlainObjectMapper,
 } from '@pebula/utils/meta/internal';
 
-export { Type, Prop, Exclude, Relation, Identity, Model } from './decorators';
+export { Type, Prop, Exclude, Relation, Identity, Model } from './decorators/index';
 
-export * from './serialization';
+export * from './serialization/index';

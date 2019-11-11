@@ -111,6 +111,7 @@ function deserializePredicate(p: PoClassPropertyMap) {
   return p.obj === this;
 }
 
+// @dynamic
 /**
  * A TargetSerializationContext is the running context of a mapper for a specific target class that
  * can serialize and deserialize instances of the target class.

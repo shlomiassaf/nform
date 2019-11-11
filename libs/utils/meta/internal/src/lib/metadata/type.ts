@@ -115,6 +115,7 @@ export interface TypeDefinition {
  */
 export type TypeMetadataArgs = { (): Constructor<any> } | TypeDefinition;
 
+// @dynamic
 @MetaClass<TypeMetadataArgs, TypeMetadata>({
   allowOn: ['member'],
   extend: 'mergeMap'
