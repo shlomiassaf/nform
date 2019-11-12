@@ -1,10 +1,13 @@
 import { Type } from '@angular/core';
 import { AbstractControl, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { stringify, isNumber } from '@pebula/utils';
+import { LazyInit } from '@pebula/metap/internal';
 
-import { FormModelMetadata, FormPropMetadata, NgFormsBoundMapper, NgFormsSerializeMapper } from '../core/index';
+import { FormPropMetadata, NgFormsBoundMapper, NgFormsSerializeMapper } from '../core/index';
 import { PropNotifyHandler, PropChanges } from '../utils';
 import { NFormRecordRef } from './nform-record-ref';
+import { createFormProxy, FormProxy } from './form-proxy';
+
 
 export interface NFormControlTemplateContext {
   item: NFormRecordRef;
@@ -58,19 +61,15 @@ export class NForm<T = any> implements PropNotifyHandler {
    * The render records for the NForm type of this instance.
    * @returns
    */
-  get renderData(): NFormRecordRef[] {
-    if (!this._renderData) {
-      const recordRefCloner = this.modelFormService.createRICloneFactory<any>(this);
-      this._renderData = this.modelFormService
-        .getRecords(this.type)
-        .map(recordRefCloner);
-    }
-    return this._renderData;
-  }
+  @LazyInit(function (this: NForm) {
+    return this.modelFormService.getRecords(this.type).map(this.modelFormService.createRICloneFactory<any>(this));
+  })
+  readonly renderData: NFormRecordRef[];
 
-  private _renderData: NFormRecordRef[];
+  @LazyInit(function (this: NForm) { return createFormProxy(this); })
+  readonly formProxy: FormProxy<T>;
+
   private mapper: NgFormsBoundMapper<any>;
-  private formMeta: FormModelMetadata;
   private _type: Type<T>;
   private _model: T;
   private _ready: boolean;
@@ -324,7 +323,6 @@ export class NForm<T = any> implements PropNotifyHandler {
 
     if (this._type !== type) {
       this._type = type as Type<T>;
-      this.formMeta = this.modelFormService.getMeta(this._type);
     }
 
     if (this._model !== instance) {
@@ -385,11 +383,7 @@ export class NForm<T = any> implements PropNotifyHandler {
   protected getFormProp(path: [keyof T, string]): FormPropMetadata {
     const formProp = NgFormsSerializeMapper.getFormProp(this.type, path);
     if (!formProp) {
-      throw new Error(
-        `Could not find form property metadata for type ${stringify(
-          this.type
-        )} using path ${path.join('.')}`
-      );
+      throw new Error(`Could not find form property metadata for type ${stringify(this.type)} using path ${path.join('.')}`);
     }
     return formProp;
   }

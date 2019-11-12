@@ -172,7 +172,7 @@ export class NFormRecordRef<T extends keyof FormElementType = keyof FormElementT
    * The full name.
    * The full name is usually identical to the name, except for instructions that are part of a `flattening` expression.
    *
-   * When the record is part of a `flattening` expressions the full name is also refered to as the `static path`
+   * When the record is part of a `flattening` expressions the full name is also referred to as the `static path`
    * The static path is used for metadata lookup, where all arrays are meaningless and only their type is required.
    *
    * > It is recommended to use the full name at all times, except for visual display purpose.
@@ -180,11 +180,9 @@ export class NFormRecordRef<T extends keyof FormElementType = keyof FormElementT
   get fullName(): string {
     const fullName = this.flattened
       ? this.flattened.join('.') + '.' + this.name
-      : this.name;
-    Object.defineProperty(this, 'fullName', {
-      value: fullName,
-      writable: false
-    });
+      : this.name
+    ;
+    Object.defineProperty(this, 'fullName', { value: fullName, writable: false });
     return fullName;
   }
 
@@ -214,7 +212,7 @@ export class NFormRecordRef<T extends keyof FormElementType = keyof FormElementT
   }
 
   /**
-   * A helper method that merge's (assign) the provided value into the existing `data` object.
+   * A helper method that merges (assign) the provided value into the existing `data` object.
    * If a `data` object is undefined it will create one.
    */
   mergeData(value: any): void {
@@ -241,13 +239,12 @@ export class NFormRecordRef<T extends keyof FormElementType = keyof FormElementT
     if (!parent || parent === control.root) {
       return this.name;
     } else {
-      const name =
-        parent instanceof FormArray
-          ? `${this.name}.${parent.controls.indexOf(control)}`
-          : this.name;
-      return this.parent
-        ? `${this.parent.getRuntimePath(parent)}.${name}`
-        : name;
+      const name = parent instanceof FormArray
+        ? `${this.name}.${parent.controls.indexOf(control)}`
+        : this.name
+      ;
+
+      return this.parent ? `${this.parent.getRuntimePath(parent)}.${name}` : name;
     }
   }
 

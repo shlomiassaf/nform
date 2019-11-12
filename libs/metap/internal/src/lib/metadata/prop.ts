@@ -1,4 +1,4 @@
-import { Constructor } from '@pebula/utils';
+import { Constructor, isString } from '@pebula/utils';
 import {
   LazyInit,
   TransformFn,
@@ -11,9 +11,12 @@ import {
   MetaClass,
 } from '../fw';
 
+import { TargetMetadata } from './target-metadata';
 import { targetStore } from './target-store';
 import { RelationMetadata } from './relation';
 import { TypeMetadata, TypeMetadataArgs } from './type';
+
+const PROP_DECORATOR = Symbol('@Prop');
 
 export interface PropMetadataArgs {
   alias?: string | Partial<PropAliasConfig>;
@@ -45,6 +48,21 @@ export interface PropMetadataArgs {
   extend: 'mergeMap'
 })
 export class PropMetadata extends BaseMetadata {
+
+  @LazyInit( () => MetaClass.decorator(PropMetadata, true)() )
+  private static [PROP_DECORATOR]: (target: any, propertyKey?: string | number | symbol, descOrIndex?: number | PropertyDescriptor) => any;
+
+  static getCreateProp(tMeta: TargetMetadata, info: DecoratorInfo | string): PropMetadata {
+    const name = isString(info) ? info : info.name as string;
+    const prop = tMeta.getMetaFor(PropMetadata, name);
+    if (!prop) {
+      PropMetadata[PROP_DECORATOR](tMeta.target.prototype, name);
+      return tMeta.getMetaFor(PropMetadata, name);
+    } else {
+      return prop;
+    }
+  }
+
   alias: PropAliasConfig;
   transform?: Partial<PropTransformConfig>;
 
@@ -54,10 +72,7 @@ export class PropMetadata extends BaseMetadata {
     // 1. User set the @Type decorator, so we will find it in the metadata store
     // 2. User the the 'type' property in PropMetadataArgs which will mimic @Type in the PropMetadata constructor
     // 3. Auto resolve, we will create a new instance with no getter.
-    return (
-      targetStore.getMetaFor(this.target, TypeMetadata, this.name) ||
-      new TypeMetadata(this.typeArgs, this.decoratorInfo, this.target)
-    );
+    return targetStore.getMetaFor(this.target, TypeMetadata, this.name) || new TypeMetadata(this.typeArgs, this.decoratorInfo, this.target);
   })
   type: TypeMetadata;
 
@@ -66,11 +81,7 @@ export class PropMetadata extends BaseMetadata {
 
   private typeArgs?: TypeMetadataArgs;
 
-  constructor(
-    obj: PropMetadataArgs | undefined,
-    info: DecoratorInfo,
-    private target: Constructor<any>
-  ) {
+  constructor(obj: PropMetadataArgs | undefined, info: DecoratorInfo, private target: Constructor<any>) {
     super(info);
 
     if (!obj) {
@@ -87,22 +98,6 @@ export class PropMetadata extends BaseMetadata {
     if (obj.type) {
       this.typeArgs = obj.type;
     }
-  }
-
-  setRelationship(rel: RelationMetadata): void {
-    if (!this.type.isGetter) {
-      if (
-        !this.type.ref ||
-        this.type.ref === Object ||
-        this.type.ref === Array
-      ) {
-        throw new Error(
-          `Property ${this.decoratorInfo.name.toString()} with relation but without a type, please set a type.`
-        );
-      }
-    }
-
-    this.relation = rel;
   }
 }
 

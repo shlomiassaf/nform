@@ -1,19 +1,19 @@
 import { Injectable, Type } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { targetStore, PropMetadata } from '@pebula/metap/internal';
+import { targetStore } from '@pebula/metap/internal';
 
 import { PropNotifier, PropNotifyHandler } from '../utils';
 import { FormModelMetadata, FormPropMetadata } from '../core/index';
 import { NForm, NFormRecordRef } from '../nform/index';
 
-function createRI(formProp: FormPropMetadata, name: string, assign: any, parent?: NFormRecordRef): NFormRecordRef {
+function createRecordRef(formProp: FormPropMetadata, name: string, assign: any, parent?: NFormRecordRef): NFormRecordRef {
   const renderRecords = new NFormRecordRef(name, formProp, parent);
   Object.assign(renderRecords, assign);
   return renderRecords;
 }
 
-function createVRI(formProp: FormPropMetadata, name: string, parent?: NFormRecordRef): NFormRecordRef {
-  return createRI(
+function createVirtualRecordRef(formProp: FormPropMetadata, name: string, parent?: NFormRecordRef): NFormRecordRef {
+  return createRecordRef(
     formProp,
     name,
     { isPrimitive: false, isVirtual: true, virtualChildren: [] },
@@ -112,14 +112,10 @@ export class NFormFactoryService {
   private _getRecords(type: Type<any>): NFormRecordRef[] {
     // NOTE: The logic for creating records is tightly coupled with the logic for cloning the records.
     //       Make sure changes in the logic are reflected in `createRICloner()`
-    const props = targetStore.getTargetMeta(type).getValues(PropMetadata);
     const formMeta = this.getMeta(type);
     const records: NFormRecordRef[] = [];
-    for (let p of props) {
-      const formProp = formMeta.getProp(p.name as string);
-      if (!formProp) {
-        records.push(new NFormRecordRef(p.name as string));
-      } else if (!formProp.exclude) {
+    for (let [p, formProp] of formMeta.getProps()) {
+      if (!formProp.exclude) {
         const typeMeta = formProp.rtType || p.type;
 
         let internalRecords: NFormRecordRef[] = records;
@@ -127,7 +123,7 @@ export class NFormFactoryService {
         let parent: NFormRecordRef;
         const isPrimitive = !(formProp.flatten || formProp.childForm);
         if (typeMeta && typeMeta.isArray) {
-          parent = createRI(formProp, name as string, {
+          parent = createRecordRef(formProp, name as string, {
             isArray: true,
             isPrimitive,
             children: (internalRecords = [])
@@ -140,13 +136,11 @@ export class NFormFactoryService {
             formProp.flatten,
             [name as string],
             internalRecords,
-            createVRI(formProp, name as string, parent),
+            createVirtualRecordRef(formProp, name as string, parent),
             parent && parent.isArray ? 0 : undefined
           );
         } else {
-          internalRecords.push(
-            createRI(formProp, name as string, { isPrimitive }, parent)
-          );
+          internalRecords.push(createRecordRef(formProp, name as string, { isPrimitive }, parent));
         }
       }
     }
@@ -164,21 +158,16 @@ export class NFormFactoryService {
        The depth 0 means the immediate child of the array and so on...
        When the depth is negative (or not set) it means that there is no array ancestor.
      */
-    const arrayPath =
-      depthFromArray > 0
-        ? path.slice(path.length - depthFromArray).join('.') + '.'
-        : '';
+    const arrayPath = depthFromArray > 0 ? path.slice(path.length - depthFromArray).join('.') + '.' : '';
 
     for (let key of Object.keys(props)) {
       const p = props[key];
       const isPrimitive = !(p.flatten || p.childForm);
       const isArray = p.rtType && p.rtType.isArray;
-      const internalRecords: NFormRecordRef[] = isArray
-        ? []
-        : records;
+      const internalRecords: NFormRecordRef[] = isArray ? [] : records;
 
       if (p.rtType && p.rtType.isArray) {
-        parent = createRI(
+        parent = createRecordRef(
           p,
           key as string,
           { isArray, isPrimitive, children: internalRecords },
@@ -196,18 +185,16 @@ export class NFormFactoryService {
           p.flatten,
           path.concat([key]),
           internalRecords,
-          createVRI(p, key, parent),
+          createVirtualRecordRef(p, key, parent),
           depthFromArray + 1
         );
 
         // if internalRecords added, get the parent of the last added, it's a virtual child
         if (internalRecords.length > len) {
-          parent.virtualChildren.push(
-            internalRecords[internalRecords.length - 1].parent
-          );
+          parent.virtualChildren.push( internalRecords[internalRecords.length - 1].parent );
         }
       } else {
-        const renderRecord = createRI(
+        const renderRecord = createRecordRef(
           p,
           key as string,
           { isPrimitive, flattened: path },

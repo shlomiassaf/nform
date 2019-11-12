@@ -1,1 +1,39 @@
-<pbl-nform [model]="model"></pbl-nform>
+<div class="filter-mode">
+  <label>Filter Mode: </label>
+  <mat-radio-group #filterModeInteractive="matRadioGroup" value="exclude">
+    <mat-radio-button value="exclude">Exclude</mat-radio-button>
+    <mat-radio-button value="include">Include</mat-radio-button>
+  </mat-radio-group>
+</div>
+<mat-list dense style="max-width: 400px; min-height: 300px">
+  <mat-list-item>
+    <div fxLayout="row" style="width: 100%;">
+      <div fxFlex="40%"></div>
+      <div fxFlex="20%">{{filterModeInteractive.value === 'include' ? 'Include' : 'Exclude'}}</div>
+      <div fxFlex="20%">Disabled</div>
+      <div fxFlex="20%">Hidden</div>
+    </div>
+  </mat-list-item>
+  <mat-list-item *ngFor="let prop of ['id', 'name', 'hasTracking', 'doubleAgent', 'bmi', 'superPower']">
+    <div fxLayout="row" style="width: 100%;">
+      <div fxFlex="40%">{{prop}}</div>
+      <mat-checkbox fxFlex="20%"
+                    [checked]="controlState.exclude.indexOf(prop) > -1"
+                    (click)="handleControlState(controlState.exclude, prop)"></mat-checkbox>
+      <mat-checkbox fxFlex="20%"
+                    [checked]="controlState.disabled.indexOf(prop) > -1"
+                    (click)="handleControlState(controlState.disabled, prop)"></mat-checkbox>
+      <mat-checkbox fxFlex="20%"
+                    [checked]="controlState.hidden.indexOf(prop) > -1"
+                    (click)="handleControlState(controlState.hidden, prop)"></mat-checkbox>
+    </div>
+  </mat-list-item>
+</mat-list>
+<div style="min-height: 300px">
+  <pbl-nform [model]="model"
+                [filter]="controlState.exclude"
+                [filterMode]="filterModeInteractive.selected.value"
+                [disabledState]="controlState.disabled"
+                [hiddenState]="controlState.hidden">
+  </pbl-nform>
+</div>

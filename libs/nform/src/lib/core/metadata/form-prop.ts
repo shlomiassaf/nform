@@ -6,9 +6,15 @@ import {
   BaseMetadata,
   DecoratorInfo,
   TypeMetadataArgs,
-  TypeMetadata
+  TypeMetadata,
+  targetStore,
+  LazyInit,
+  MapExt
 } from '@pebula/metap/internal';
 import { RenderDef, FormElementType } from '../../types';
+import { FormModelMetadata } from './form-model';
+
+const FORM_MODEL_DECORATOR = Symbol('@FormModel');
 
 export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof FormElementType> extends RenderDef<T> {
   /**
@@ -156,12 +162,32 @@ export const BASE_RENDERER: RenderDef = {
 @MetaClass<FormPropMetadataArgs, FormPropMetadata>({
   allowOn: ['member'],
   extend: 'mergeMap',
-  proxy: {
-    host: PropMetadata,
-    containerKey: 'form'
-  }
+  // proxy: { host: PropMetadata, containerKey: 'form' },
+  onCreated: () => {
+    targetStore.on.processType((target: Constructor<any>) => {
+      const tMeta = targetStore.getTargetMeta(target);
+      const modelProps = tMeta.getMetaFor(FormPropMetadata);
+      if (modelProps) {
+        let formModelMeta = tMeta.getMetaFor(FormModelMetadata, true);
+        if (!formModelMeta) {
+          FormPropMetadata[FORM_MODEL_DECORATOR](target);
+          formModelMeta = tMeta.getMetaFor(FormModelMetadata, true);
+        }
+
+        // In here we add every property decorated with @FormProp
+        // into the FormModelMetadata and in the process create PropMetadata to each FormPropMetadata
+        for (const [k, v] of MapExt.asKeyValArray(modelProps)) {
+          formModelMeta.addProp(PropMetadata.getCreateProp(tMeta, k as any), v)
+        }
+      }
+    });
+  },
 })
 export class FormPropMetadata extends BaseMetadata {
+
+  @LazyInit( () => MetaClass.decorator(FormModelMetadata, true)() )
+  private static [FORM_MODEL_DECORATOR]: (target: any) => any;
+
   transform: (value: any) => any;
   exclude: boolean;
   required: boolean;
@@ -227,8 +253,10 @@ export class FormPropMetadata extends BaseMetadata {
   static EMPTY = new FormPropMetadata({ vType: 'none' } as any, { type: 'class' });
 }
 
-declare module '@pebula/metap/internal/lib/metadata/prop' {
-  interface PropMetadataArgs {
-    form?: FormPropMetadataArgs | undefined;
-  }
-}
+/* For the proxy */
+
+// declare module '@pebula/metap/internal/lib/metadata/prop' {
+//   interface PropMetadataArgs {
+//     form?: FormPropMetadataArgs | undefined;
+//   }
+// }

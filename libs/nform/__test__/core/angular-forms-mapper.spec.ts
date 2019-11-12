@@ -6,6 +6,7 @@ import { TestTargetStore } from '@pebula/metap/testing';
 import { Model, Exclude, Prop } from '@pebula/metap';
 import * as utilsMeta from '@pebula/metap';
 import { FormModel, FormProp, ngFormsMapper, cloneControl, createControl } from '@pebula/nform';
+import { FormPropMetadataArgs } from '../../src/lib/core/metadata/form-prop';
 
 function serialize(instance: any): FormGroup {
   return utilsMeta.serialize(ngFormsMapper.serializer(instance), instance.constructor);
@@ -110,9 +111,7 @@ describe('@pebula/nform', () => {
       const instance = new TransformationFormCases();
       expect(instance.alwaysTest).toBeUndefined();
       const formGroup = serialize(new TransformationFormCases());
-      expect(
-        deserialize(formGroup, TransformationFormCases).alwaysTest
-      ).toEqual('test');
+      expect(deserialize(formGroup, TransformationFormCases).alwaysTest).toEqual('test');
     });
 
     it('should apply defaultValue logic', () => {
@@ -594,7 +593,7 @@ describe('@pebula/nform', () => {
           };
         }
 
-        const basicFlatten = {
+        const basicFlatten: FormPropMetadataArgs['flatten'] = {
           street: {
             vType: 'text',
             required: true
@@ -621,18 +620,23 @@ describe('@pebula/nform', () => {
 
           @FormProp({
             vType: 'none',
-            flatten: Object.assign({}, basicFlatten, {
+            flatten: {
+              ...basicFlatten,
               additional: {
                 flatten: {
                   work: {
-                    flatten: Object.assign({}, basicFlatten)
+                    flatten: {
+                      ...basicFlatten
+                    },
                   },
                   other: {
-                    flatten: Object.assign({}, basicFlatten)
+                    flatten: {
+                      ...basicFlatten
+                    },
                   }
                 }
               }
-            })
+            },
           })
           addresses: AddressWithAdditional[];
         }
@@ -671,28 +675,15 @@ describe('@pebula/nform', () => {
         expect(formGroup).toBeInstanceOf(FormGroup);
         expect(formGroup.get('id')).toBeInstanceOf(FormControl);
         expect(formGroup.get('addresses')).toBeInstanceOf(FormArray);
-        expect((formGroup.get('addresses') as FormArray).controls.length).toBe(
-          2
-        );
+        expect((formGroup.get('addresses') as FormArray).controls.length).toBe(2);
 
         user.addresses.forEach((address, idx) => {
-          expect(formGroup.get(`addresses.${idx}.additional`)).toBeInstanceOf(
-            FormGroup
-          );
-          expect(
-            formGroup.get(`addresses.${idx}.additional.work`)
-          ).toBeInstanceOf(FormGroup);
-          expect(
-            formGroup.get(`addresses.${idx}.additional.other`)
-          ).toBeInstanceOf(FormArray);
-          expect(
-            (formGroup.get(`addresses.${idx}.additional.other`) as FormArray)
-              .controls.length
-          ).toBe(3);
+          expect(formGroup.get(`addresses.${idx}.additional`)).toBeInstanceOf(FormGroup);
+          expect(formGroup.get(`addresses.${idx}.additional.work`)).toBeInstanceOf(FormGroup);
+          expect(formGroup.get(`addresses.${idx}.additional.other`)).toBeInstanceOf(FormArray);
+          expect((formGroup.get(`addresses.${idx}.additional.other`) as FormArray).controls.length).toBe(3);
           user.addresses[idx].additional.other.forEach((address, idx2) => {
-            expect(
-              formGroup.get(`addresses.${idx}.additional.other.${idx2}`)
-            ).toBeInstanceOf(FormGroup);
+            expect(formGroup.get(`addresses.${idx}.additional.other.${idx2}`)).toBeInstanceOf(FormGroup);
           });
         });
 
@@ -710,7 +701,7 @@ describe('@pebula/nform', () => {
         };
       }
 
-      const basicFlatten = {
+      const basicFlatten: FormPropMetadataArgs['flatten'] = {
         street: {
           vType: 'text',
           required: true
@@ -743,18 +734,19 @@ describe('@pebula/nform', () => {
         class MyChildChildModel {
           @FormProp({
             vType: 'none',
-            flatten: Object.assign({}, basicFlatten, {
+            flatten: {
+              ...basicFlatten,
               additional: {
                 flatten: {
                   work: {
-                    flatten: Object.assign({}, basicFlatten)
+                    flatten: { ...basicFlatten },
                   },
                   other: {
-                    flatten: Object.assign({}, basicFlatten)
+                    flatten: { ...basicFlatten },
                   }
-                }
-              }
-            })
+                },
+              },
+            },
           })
           addressCollection: AddressWithAdditional[];
         }
@@ -774,21 +766,22 @@ describe('@pebula/nform', () => {
 
           @FormProp({
             vType: 'none',
-            flatten: Object.assign({}, basicFlatten, {
+            flatten: {
+              ...basicFlatten,
               additional: {
                 flatten: {
                   work: {
-                    flatten: Object.assign({}, basicFlatten)
+                    flatten: { ...basicFlatten },
                   },
                   other: {
                     rtType: {
                       isArray: true
                     },
-                    flatten: Object.assign({}, basicFlatten)
+                    flatten: { ...basicFlatten },
                   }
                 }
               }
-            })
+            }
           })
           addresses: AddressWithAdditional[];
 
@@ -870,14 +863,9 @@ describe('@pebula/nform', () => {
 
       it('should create and populate a form control from a nested property using a deep path ', () => {
         const formGroup = serialize(user);
-        const manual = createControl(
-          User,
-          ['addresses', 'additional.other'],
-          createAddress(10)
-        ) as FormGroup;
+        const manual = createControl(User, ['addresses', 'additional.other'], createAddress(10)) as FormGroup;
 
-        expect(manual.getRawValue())
-          .toEqual( (formGroup.get(`addresses.1.additional.other.2`) as FormArray).getRawValue() );
+        expect(manual.getRawValue()).toEqual( (formGroup.get(`addresses.1.additional.other.2`) as FormArray).getRawValue() );
       });
 
       it('should create a form control from a nested property starting with a childForm and then a flatten expression', () => {
@@ -893,11 +881,7 @@ describe('@pebula/nform', () => {
 
       it('should create and populate a form control from a nested property starting with a childForm and then a flatten expression', () => {
         const formGroup = serialize(user);
-        const manual = createControl(
-          User,
-          ['childModel', 'childModel.addressCollection.additional.other'],
-          createAddress(15)
-        ) as FormGroup;
+        const manual = createControl(User, ['childModel', 'childModel.addressCollection.additional.other'], createAddress(15)) as FormGroup;
 
         expect(manual.getRawValue())
           .toEqual( (formGroup.get(`childModel.childModel.addressCollection.0.additional.other.2`) as FormArray).getRawValue() );

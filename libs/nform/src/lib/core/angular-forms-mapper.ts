@@ -245,11 +245,7 @@ export class NgFormsSerializeMapper extends BaseSerializer {
   }
 
   protected serializeObject(obj: any, container: SerializerContext): FormGroup {
-    const data: FormGroup = new FormGroup(
-      {},
-      this.formModel.validator,
-      this.formModel.asyncValidator
-    );
+    const data: FormGroup = new FormGroup({}, this.formModel.validator, this.formModel.asyncValidator);
 
     const cb = (prop: PoClassPropertyMap) => {
       const meta = prop.prop;
@@ -271,10 +267,7 @@ export class NgFormsSerializeMapper extends BaseSerializer {
     container.forEachRaw(obj ? Object.keys(obj) : [], cb);
 
     const idKey = targetStore.getIdentityKey(container.target);
-    if (
-      data.get(idKey) &&
-      idKey !== targetStore.getIdentityKey(container.target, 'outgoing')
-    ) {
+    if (data.get(idKey) && idKey !== targetStore.getIdentityKey(container.target, 'outgoing')) {
       data.removeControl(idKey);
     }
 
@@ -324,7 +317,11 @@ export class NgFormsSerializeMapper extends BaseSerializer {
     });
 
     if (formProp.flatten) {
-      value = value ? this.plainMapper.serialize(value) : isArray ? [] : {};
+      value = value
+        ? this.plainMapper.serialize(value)
+        : isArray ? [] : {}
+      ;
+
       if (isArray) {
         ctrl = new FormArray([]);
         for (const item of value) {
@@ -512,17 +509,11 @@ export function deepGetFormProp<T, Z>(type: Z & Constructor<T>, prop: keyof T | 
       formProp = formProp.flatten[path.shift() as any];
     }
     if (path.length > 0) {
-      throw new Error(
-        `Error trying deep access to a flatten declaration ${(prop as string[]).join(
-          '.'
-        )}`
-      );
+      throw new Error(`Error trying deep access to a flatten declaration ${(prop as string[]).join('.')}`);
     } else if (formProp.childForm) {
       if (!formProp.rtType) {
         // tslint:disable-next-line
-        throw new Error(
-          `Error trying deep access to a flatten declaration, "rtType" is not set but "childForm" is in section "${key}"`
-        );
+        throw new Error(`Error trying deep access to a flatten declaration, "rtType" is not set but "childForm" is in section "${key}"`);
       }
     }
   }
@@ -535,9 +526,7 @@ export function deepGetFormProp<T, Z>(type: Z & Constructor<T>, prop: keyof T | 
   if (formProp.childForm && path.length > 0) {
     if (!targetStore.hasTarget(typeMeta.ref)) {
       // tslint:disable-next-line
-      throw new Error(
-        `Error trying deep access with a "childForm" found in path section "${key}", "${typeMeta.ref}" is not a registered model`
-      );
+      throw new Error(`Error trying deep access with a "childForm" found in path section "${key}", "${typeMeta.ref}" is not a registered model`);
     }
     return deepGetFormProp(typeMeta.ref, [path.shift(), path.join('.')] as any);
   }

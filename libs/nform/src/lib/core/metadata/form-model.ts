@@ -40,7 +40,7 @@ export class FormModelMetadata extends BaseMetadata
   implements FormModelMetadataArgs {
   validator: ValidatorFn | null;
   asyncValidator: AsyncValidatorFn | null;
-  props = new Map<string, FormPropMetadata>();
+  props = new Map<string, [PropMetadata, FormPropMetadata]>();
 
   constructor(metaArgs: FormModelMetadataArgs | undefined, info: DecoratorInfo) {
     super(info);
@@ -51,12 +51,17 @@ export class FormModelMetadata extends BaseMetadata
     }
   }
 
-  addProp(prop: PropMetadata, metaArgs: FormPropMetadata) {
-    this.props.set(prop.name as any, metaArgs);
+  addProp(prop: PropMetadata, formProp: FormPropMetadata) {
+    this.props.set(prop.name as any, [prop, formProp]);
   }
 
   getProp(propertyKey: string): FormPropMetadata | undefined {
-    return this.props.get(propertyKey);
+    const meta = this.props.get(propertyKey);
+    return meta ? meta[1] : undefined;
+  }
+
+  getProps(): Array<[PropMetadata, FormPropMetadata]> {
+    return Array.from(this.props.values());
   }
 }
 
