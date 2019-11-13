@@ -11,5 +11,5 @@ import { Hero } from './model';
 })
 @Example('<%= selector %>', { title: '<%= title %>' })
 export class <%= componentClassName(name) %> {
-  model: any;
+  model = new Hero();
 }

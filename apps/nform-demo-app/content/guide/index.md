@@ -48,7 +48,7 @@ export class UIDeveloper {
   </div>
 
   <div style="flex: 1 1 auto">
-    <div pbl-example-view="pbl-guide-intro-example" noToolbar></div>
+    <div pbl-example-view="pbl-guide-index-example" noToolbar></div>
   </div>
 </div>
 

@@ -5,47 +5,14 @@ parent: guide
 tooltip: How-to use the guide
 ordinal: 0
 ---
-# Guide Introduction
-
-This tutorial is made up of a series of chapters, seen on the left.
-
-A Chapter in this tutorial usually cover a single feature. In most cases it is followed by a live example with source code.
-
-The order of the chapters matter as it build up features and dependant features.
-
-There are 2 constructs that follow the entire tutorial and used by all
-of the examples, these are the **model** (`Hero` class) and the
-**renderer**.
-
-The `Hero` class start simple and evolve as the tutorial progress
-Each chapter might extend the `Hero` class  based on the feature it demonstrate.
-
-Chapters that modify the **model** will review the change, all of the
-examples in the code come with the model's source code.
-
-Following chapters will use the updated version.
-
-The **renderer** used in the tutorial is a predefined renderer that
-implement UI components from the `@angular/material` UI framework, this
-renderer is used for all chapters that demonstrates feature.
-
-The last section of this tutorial is about custom renderer
-implementation, chapters in this sections use the custom renderer
-built for that purpose with each chapter modifying the **renderer** to
-demonstrate a topic.
-
-Renderer chapters cover how to create a renderer and offer strategies
-for different scenarios, even if you are using a pre-built renderer it
-is important to review them as they provide valuable insight.
-
-I> The **model** and **renderer** described above are terms not yet discussed, mentioned here for reference only.
-They are reviewed in the `Creating a Model` and `Simple Renderer` chapters.
+# Guide: How to
 
 ## The Dashboard
 
-The tutorial contains a lot of examples, in most of them you'll find a
-container called the dashboard, this is an important tool, let's review
-it quickly:
+This guide contains a lot of live form example, each example contains a
+single `pbl-nform` component wrapped within a **dashboard**.
+
+The **dashboard** provides tools to interact with the form, inspect state and access to the source code. 
 
 <div pbl-example-view="pbl-guide-intro-example"></div>
 

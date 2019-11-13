@@ -65,8 +65,8 @@ export class ExampleViewComponent extends MarkdownDynamicComponentPortal impleme
     return this.exampleData;
   }
 
-  render(): void {
-    super.render();
+  render(...providers: Parameters<MarkdownDynamicComponentPortal['render']>): void {
+    super.render(...providers);
     if (!this.containerClass) {
       this.containerClass = 'table-height-300 mat-elevation-z7';
     }

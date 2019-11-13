@@ -11,8 +11,8 @@ const ALLOWED_INPUTS: Array<[string, (val: any) => any]> = [
   [ 'exampleStyle', String ],
   [ 'rightDrawerOpened', coerceNumberProperty ],
   [ 'jsonView', coerceBooleanProperty ],
+  [ 'showSourceCode', coerceBooleanProperty ],
   [ 'noToolbar', coerceBooleanProperty ],
-  [ 'width', String ],
 ];
 
 @Injectable()

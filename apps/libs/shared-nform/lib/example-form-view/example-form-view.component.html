@@ -6,8 +6,8 @@
         <pbl-led [blink]="ledBlinking" [color]="ledColor"></pbl-led>
       </div>
     </div>
-    <span class="mat-h3" style="margin: 0" fxFlex="*">{{ exampleData?.title }}</span>
-    <button mat-icon-button matTooltip="View Source" (click)="viewSourceCode = !viewSourceCode">
+    <span class="mat-h3 pbl-example-title" style="margin: 0" fxFlex="*">{{ exampleData?.title }}</span>
+    <button class="pbl-example-code-button" mat-icon-button matTooltip="View Source" (click)="showSourceCode = !showSourceCode">
       <mat-icon>code</mat-icon>
     </button>
     <button mat-icon-button matTooltip="Manage Form" (click)="this.toggleJsonView()">
@@ -15,7 +15,7 @@
     </button>
   </mat-toolbar>
   <div fxLayout="column" class="section-code-and-component">
-    <div *ngIf="viewSourceCode">
+    <div *ngIf="showSourceCode">
       <ng-container *ngTemplateOutlet="sourceCodeTab"></ng-container>
     </div>
     <div [class]="containerClass">
@@ -25,15 +25,15 @@
 </div>
 
 <div *ngIf="exampleStyle === 'flow'" class="flow-style-container">
-  <div *ngIf="viewSourceCode" [@slideInOutRight]>
+  <div *ngIf="showSourceCode" [@slideInOutRight]>
     <ng-container *ngTemplateOutlet="sourceCodeTab"></ng-container>
   </div>
-  <div *ngIf="!viewSourceCode" [@slideInOutLeft] class="flow-style-container">
+  <div *ngIf="!showSourceCode" [@slideInOutLeft] class="flow-style-container">
     <ng-container *ngTemplateOutlet="formViewTab"></ng-container>
     <mat-spinner *ngIf="selectedPortal$ | async | negate"></mat-spinner>
   </div>
 
-  <div class="flow-style-code-marker" matTooltip="View Source" (click)="viewSourceCode = !viewSourceCode">
+  <div class="flow-style-code-marker" matTooltip="View Source" (click)="showSourceCode = !showSourceCode">
     <div class="flow-style-marker-thumb"></div>
     <mat-icon>code</mat-icon>
   </div>
@@ -45,7 +45,7 @@
       <mat-tab>
         <ng-template mat-tab-label>
           <div fxLayout="column" fxLayoutAlign="center center" [matTooltip]="asset.file">
-            <span>{{asset.file}} [{{asset.lang.toUpperCase()}}]</span>
+            <span>{{asset.file}}</span>
           </div>
         </ng-template>
         <div [exampleAssetFileView]="asset" class="pbl-code-example"></div>

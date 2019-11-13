@@ -28,7 +28,15 @@
               "apps/nform-demo-app/src/google1a0455c97ead32c8.html",
               "apps/nform-demo-app/src/assets"
             ],
-            "styles": ["apps/nform-demo-app/src/styles/main.scss"],
+            "styles": [
+              "apps/nform-demo-app/src/styles/main.scss",
+              {
+                "input": "node_modules/shepherd.js/dist/css/shepherd.css",
+                "bundleName": "shepherd.css",
+                "lazy": true,
+                "inject": false
+              }
+            ],
             "scripts": [
               {
                 "input": "node_modules/document-register-element/build/document-register-element.js"

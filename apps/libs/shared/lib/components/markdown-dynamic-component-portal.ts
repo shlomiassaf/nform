@@ -1,6 +1,6 @@
 import { BehaviorSubject, timer, race } from 'rxjs';
 import { filter, mapTo } from 'rxjs/operators';
-import { ComponentRef, Type } from '@angular/core';
+import { ComponentRef, Type, Injector, StaticProvider } from '@angular/core';
 import { ComponentPortal, CdkPortalOutletAttachedRef } from '@angular/cdk/portal';
 
 import { UnRx } from '@pebula/utils';
@@ -23,12 +23,15 @@ export abstract class MarkdownDynamicComponentPortal {
 
   abstract getRenderTypes(selector: string): { component?: Type<any>; moduleType?: Type<any>; } | undefined;
 
-  render(): void {
+  render(...providers: StaticProvider[]): void {
     UnRx.kill(this, 'render');
     const { component, moduleType } = this.getRenderTypes(this.componentName) || <any>{};
     if (component) {
       const ngModule = this.lazyModuleStore && this.lazyModuleStore.get(moduleType);
-      const injector = ngModule ? ngModule.injector : null;
+      let injector = ngModule ? ngModule.injector : null;
+      if (providers.length > 0) {
+        injector = Injector.create({ providers, parent: injector });
+      }
       const componentFactoryResolver = ngModule ? ngModule.componentFactoryResolver : null;
       this.selectedPortal$.next(new ComponentPortal(component, null, injector, componentFactoryResolver));
     } else {

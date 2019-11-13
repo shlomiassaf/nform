@@ -44,7 +44,7 @@ hljs.registerLanguage('json', require(`highlight.js/lib/languages/json.js`));
 export class PblExampleFormViewComponent extends ExampleViewComponent {
 
   form: AbstractControl;
-  @ContentChild(NFormComponent, { static: false }) nFormCmp: NFormComponent;
+  nFormCmp: NFormComponent;
 
   formJson: string;
   modelJson: string;
@@ -53,10 +53,14 @@ export class PblExampleFormViewComponent extends ExampleViewComponent {
   @Input() noToolbar: boolean;
   @Input() rightDrawerOpened: boolean;
   @Input() jsonView: boolean;
-  @Input() width: string = '60%';
+  @Input() showSourceCode: boolean = false;
 
   ledBlinking: boolean;
   ledColor: 'red' | 'blue' | 'yellow' | 'green';
+
+  render(): void {
+    super.render({ provide: PblExampleFormViewComponent, useValue: this });
+  }
 
   toggleJsonView(): void {
     this.jsonView = !this.jsonView;
