@@ -17,6 +17,7 @@ export interface FormModelMetadataArgs {
   asyncValidator?: AsyncValidatorFn;
 }
 
+// @dynamic
 @MetaClass<FormModelMetadataArgs, FormModelMetadata>({
   single: true,
   allowOn: ['class'],

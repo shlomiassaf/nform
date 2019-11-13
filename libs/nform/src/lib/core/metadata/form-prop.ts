@@ -159,6 +159,7 @@ export const BASE_RENDERER: RenderDef = {
   ordinal: Number.MAX_SAFE_INTEGER
 };
 
+// @dynamic
 @MetaClass<FormPropMetadataArgs, FormPropMetadata>({
   allowOn: ['member'],
   extend: 'mergeMap',
