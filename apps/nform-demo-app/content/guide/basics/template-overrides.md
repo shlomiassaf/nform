@@ -2,7 +2,7 @@
 title: Template Overrides
 path: guide/basics/template-overrides
 parent: guide/basics
-ordinal: 5
+ordinal: 6
 ---
 # Template Overrides
 

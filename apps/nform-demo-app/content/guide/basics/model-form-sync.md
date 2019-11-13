@@ -1,8 +1,8 @@
 ---
-title: Model Form Sync
+title: "Sync: Model <-> Form"
 path: guide/basics/model-form-sync
 parent: guide/basics
-ordinal: 4
+ordinal: 5
 ---
 # Model <-> Form Sync
 

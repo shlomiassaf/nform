@@ -1,0 +1,17 @@
+<mat-form-field>
+  <mat-select multiple [value]="disabledRecords" placeholder="Disabled Fields">
+    <mat-select-trigger>
+      <span *ngIf="disabledRecords.length > 0">{{ disabledRecords[0].label }}</span>
+      <span *ngIf="disabledRecords.length > 1">
+        (+{{disabledRecords.length - 1}} {{disabledRecords.length === 2 ? 'other' : 'others'}})
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let record of nForm?.nForm?.renderData" [value]="record"
+                (onSelectionChange)="$event.isUserInput && toggleDisabled(record)">{{record.label}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<div>
+  <pbl-nform #nForm [model]="model" [disabledState]="disabled">
+  </pbl-nform>
+</div>
+

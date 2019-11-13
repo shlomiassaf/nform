@@ -2,7 +2,7 @@
 title: Form Splitting
 path: guide/basics/form-splitting
 parent: guide/basics
-ordinal: 6
+ordinal: 7
 ---
 # Form Splitting
 

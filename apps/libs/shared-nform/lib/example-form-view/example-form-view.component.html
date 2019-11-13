@@ -10,20 +10,9 @@
     <button mat-icon-button matTooltip="View Source" (click)="viewSourceCode = !viewSourceCode">
       <mat-icon>code</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Manage Form" [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
+    <button mat-icon-button matTooltip="Manage Form" (click)="this.toggleJsonView()">
+      <mat-icon>settings_applications</mat-icon>
     </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item [disabled]="jsonView" (click)="this.toggleJsonView()">&#x7b; JSON } View</button>
-      <button mat-menu-item matTooltip="Update form's value & Validity" (click)="nFormCmp.nForm.form.updateValueAndValidity()">
-        <mat-icon>sync</mat-icon>
-        <span>Sync Form</span>
-      </button>
-      <button mat-menu-item matTooltip="Commit form to model" (click)="onCommitToModel()">
-        <mat-icon>save</mat-icon>
-        <span>Commit</span>
-      </button>
-    </mat-menu>
   </mat-toolbar>
   <div fxLayout="column" class="section-code-and-component">
     <div *ngIf="viewSourceCode">
@@ -74,7 +63,23 @@
       <div>
         <button mat-icon-button (click)="jsonView = false"><mat-icon>close</mat-icon></button>
         <div fxFlex></div>
-        <button mat-icon-button (click)="refreshJsonView()"><mat-icon>refresh</mat-icon></button>
+        <button mat-icon-button matTooltip="Manage Form" [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item matTooltip="Commit form to model" (click)="refreshJsonView()">
+            <mat-icon>refresh</mat-icon>
+            <span>Refresh</span>
+          </button>
+          <button mat-menu-item matTooltip="Update form's value & Validity" (click)="nFormCmp.nForm.form.updateValueAndValidity()">
+            <mat-icon>sync</mat-icon>
+            <span>Sync Form</span>
+          </button>
+          <button mat-menu-item matTooltip="Commit form to model" (click)="onCommitToModel()">
+            <mat-icon>save</mat-icon>
+            <span>Commit</span>
+          </button>
+        </mat-menu>
       </div>
       <mat-tab-group>
         <mat-tab label="Model">

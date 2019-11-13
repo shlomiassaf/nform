@@ -1,0 +1,37 @@
+<div class="filter-mode">
+  <label>Filter Mode: </label>
+  <mat-radio-group #filterModeInteractive="matRadioGroup" value="exclude">
+    <mat-radio-button value="exclude">Exclude</mat-radio-button>
+    <mat-radio-button value="include">Include</mat-radio-button>
+  </mat-radio-group>
+</div>
+<mat-form-field>
+  <mat-select multiple [value]="hiddenRecords" placeholder="Hidden Fields">
+    <mat-select-trigger>
+      <span *ngIf="hiddenRecords.length > 0">{{ hiddenRecords[0].label }}</span>
+      <span *ngIf="hiddenRecords.length > 1">
+        (+{{hiddenRecords.length - 1}} {{hiddenRecords.length === 2 ? 'other' : 'others'}})
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let record of nForm?.nForm?.renderData" [value]="record"
+                (onSelectionChange)="$event.isUserInput && toggle(record, 'hidden')">{{record.label}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field>
+  <mat-select multiple [value]="excludedRecords" placeholder="Excluded Fields">
+    <mat-select-trigger>
+      <span *ngIf="excludedRecords.length > 0">{{ excludedRecords[0].label }}</span>
+      <span *ngIf="excludedRecords.length > 1">
+        (+{{excludedRecords.length - 1}} {{excludedRecords.length === 2 ? 'other' : 'others'}})
+      </span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let record of nForm?.nForm?.renderData" [value]="record"
+                (onSelectionChange)="$event.isUserInput && toggle(record, 'excluded')">{{record.label}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<pbl-nform #nForm
+           [model]="model"
+           [filter]="excluded"
+           [filterMode]="filterModeInteractive.selected.value"
+           [hiddenState]="hidden">
+</pbl-nform>

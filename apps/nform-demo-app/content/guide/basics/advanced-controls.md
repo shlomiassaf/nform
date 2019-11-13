@@ -2,7 +2,7 @@
 title: Advanced Controls
 path: guide/basics/advanced-controls
 parent: guide/basics
-ordinal: 6
+ordinal: 8
 ---
 # Advanced Controls
 

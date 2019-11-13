@@ -1,1 +1,2 @@
-<pbl-nform [model]="model"></pbl-nform>
+<mat-slide-toggle [checked]="hotBind" (change)="hotBind = !!$event.checked">Hot Bind Enabled</mat-slide-toggle>
+<pbl-nform [model]="model" [hotBind]="hotBind"></pbl-nform>

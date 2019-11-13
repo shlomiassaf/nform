@@ -10,9 +10,14 @@ export const ELEMENT_MODULE_PATHS_AS_ROUTES = [
     loadChildren: () => import('@pebula/apps/demo-examples/guide/basics/nform-basics/nform-basics.module').then( m => m.NformBasicsExampleModule ),
   },
   {
-    path: 'guide-basics-hide-and-disable.module',
+    path: 'guide-basics-disable.module',
     pathMatch: 'full',
-    loadChildren: () => import('@pebula/apps/demo-examples/guide/basics/hide-and-disable/hide-and-disable.module').then( m => m.HideAndDisableExampleModule ),
+    loadChildren: () => import('@pebula/apps/demo-examples/guide/basics/disable/disable.module').then( m => m.DisableExampleModule ),
+  },
+  {
+    path: 'guide-basics-hide-filter-controls.module',
+    pathMatch: 'full',
+    loadChildren: () => import('@pebula/apps/demo-examples/guide/basics/hide-filter-controls/hide-filter-controls.module').then( m => m.HideFilterControlsExampleModule ),
   },
   {
     path: 'guide-basics-hot-binding.module',

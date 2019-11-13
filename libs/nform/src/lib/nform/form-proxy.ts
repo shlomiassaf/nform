@@ -179,7 +179,10 @@ function createFormArrayProxy<T = any>(context: FormProxyContext, formProp: Form
         }
         target[property] = value;
       } else {
-
+        if (property === 'length') {
+          (context.form as FormArray).clear();
+          target.length = 0;
+        }
       }
       return true;
     }

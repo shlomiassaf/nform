@@ -12,5 +12,6 @@ import { Hero } from './model';
 })
 @Example('pbl-hot-binding-example', { title: 'Hot Binding', additionalFiles: [ './model.ts' ] })
 export class HotBindingExample {
+  hotBind: boolean = true;
   model = new Hero();
 }

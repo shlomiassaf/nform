@@ -146,17 +146,3 @@ example and inspect the current state:
   Takes the current form and commits it to the model.
   > If you don't understand why we need to commit a form please read
   the **Know your framework** section at the bottom.
-
-### Panels
-
-The dashboard comes with 2 side panels, one on the left and one on the right.
-  
-The **right panel** is **usually** used to display general, cross example
-information. A good example is the JSON View for model or form.
-
-The **left panel** is **usually** used to display example specific information.  
-It can not be opened from the top panel, and it might not exist, depending on the example.  
-
-If it does exist, optional buttons to control will display above the form.
-
-The **Filter / Disabled / Hidden state** example makes use of the left panel.
