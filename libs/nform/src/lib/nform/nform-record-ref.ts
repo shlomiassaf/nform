@@ -1,8 +1,8 @@
 import { AbstractControl, FormArray, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { FormPropMetadata } from '../core/metadata/form-prop';
-import { FormElementType, RenderDef } from '../types';
+import { FormElementType, RenderDef } from '../types/index';
 import { getValidators } from '../validation';
-import { PropNotify } from '../utils';
+import { PropNotify } from '../utils/index';
 
 /**
  * Render definition with the name of the control.

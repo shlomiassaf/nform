@@ -4,7 +4,7 @@ import { stringify, isNumber } from '@pebula/utils';
 import { LazyInit } from '@pebula/metap/internal';
 
 import { FormPropMetadata, NgFormsBoundMapper, NgFormsSerializeMapper } from '../core/index';
-import { PropNotifyHandler, PropChanges } from '../utils';
+import { PropNotifyHandler, PropChanges } from '../utils/index';
 import { NFormRecordRef } from './nform-record-ref';
 import { createFormProxy, FormProxy } from './form-proxy';
 
@@ -35,6 +35,7 @@ function normalizeFormPath<T = any>(path: Array<string | number> | string): [key
   return [<any>pathArr.shift(), pathArr.join('.')];
 }
 
+// @dynamic
 /**
  * A container that binds a model instance and and a `FormGroup` instance.
  *

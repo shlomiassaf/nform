@@ -31,13 +31,13 @@ import {
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 import { isFunction } from '@pebula/utils';
-import { FormElementType, ControlRenderer, DefaultRenderer, DefaultRendererMap } from '../../types';
-import { coerceBooleanProperty, PropNotifyHandler, PropChanges  } from '../../utils';
+import { FormElementType, ControlRenderer, DefaultRenderer, DefaultRendererMap } from '../../types/index';
+import { coerceBooleanProperty, PropNotifyHandler, PropChanges  } from '../../utils/index';
 import { NFormComponentToken, FORM_CONTROL_COMPONENT } from '../../constants';
 import { NForm, NFormRecordRef } from '../../nform/index';
-import { NFormOverrideDirective, NFormOverrideContext, NFormControlOutletDirective } from '../../directives';
+import { NFormOverrideDirective, NFormOverrideContext, NFormControlOutletDirective } from '../../directives/index';
 import { NFormFactoryService } from '../../services/index';
-import { BeforeRenderEventHandler, RendererEvent, NFormValuesChange } from '../../events';
+import { BeforeRenderEventHandler, RendererEvent, NFormValuesChange } from '../../events/index';
 
 export interface NFormRecordRefInternal extends NFormRecordRef {
   /**

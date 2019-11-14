@@ -11,6 +11,7 @@ import {
   targetEvents,
   TargetEvents
 } from '../fw';
+import './helpers'; // we need this so the d.ts augmentation survives the prod build into the package
 import { register } from './helpers';
 import { TargetMetadata } from './target-metadata';
 

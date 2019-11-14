@@ -1,4 +1,4 @@
-export { FormElementType, RenderDef, ControlRenderer, DefaultRenderer, DefaultRendererMap } from './types';
+export { FormElementType, RenderDef, ControlRenderer, DefaultRenderer, DefaultRendererMap } from './types/index';
 
 export {
   FormModel,
@@ -42,7 +42,7 @@ export { NFormFactoryService } from './services/index';
 
 export { PblNFormModule } from './nform.module';
 
-export { cloneControl, objectToForm } from './utils';
+export { cloneControl, objectToForm } from './utils/index';
 
 // re-export common types from core.
 export { Exclude, Type } from '@pebula/metap';

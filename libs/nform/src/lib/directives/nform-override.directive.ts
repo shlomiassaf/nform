@@ -1,7 +1,7 @@
 import { Directive, Input, TemplateRef, SimpleChanges, OnChanges } from '@angular/core';
 import { isString } from '@pebula/utils';
 
-import { FormElementType } from '../types';
+import { FormElementType } from '../types/index';
 import { NFormRecordRef } from '../nform/nform-record-ref';
 import { NFormControlTemplateContext } from '../nform/nform';
 
@@ -70,8 +70,7 @@ export class ControlSelectorBase implements OnChanges {
 })
 export class NFormOverrideDirective extends ControlSelectorBase {
   @Input('nFormOverride') controlName: string | string[];
-  @Input('nFormOverrideVType')
-  vType: keyof FormElementType | Array<keyof FormElementType>;
+  @Input('nFormOverrideVType') vType: keyof FormElementType | Array<keyof FormElementType>;
 
   constructor(public template: TemplateRef<NFormOverrideContext>) {
     // tslint:disable-line

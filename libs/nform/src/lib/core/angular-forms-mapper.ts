@@ -20,7 +20,7 @@ import {
 import { directMapper, DirectDeserializeMapper, deserialize, serialize } from '@pebula/metap';
 
 import { FormModelMetadata, FormPropMetadata } from './metadata/index';
-import { objectToForm } from '../utils';
+import { objectToForm } from '../utils/index';
 import { getValidators } from '../validation';
 
 export type DeserializableForm = FormGroup | FormArray;

@@ -1,13 +1,11 @@
 {
   "name": "@pebula/nform",
-  "version": "1.0.0",
+  "version": "0.0.1-alpha.1",
   "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^8.0.0",
     "@angular/core": "^8.0.0",
-    "@angular/cdk": "^8.0.0",
-    "resize-observer-polyfill": "^1.5.0",
-    "@pebula/utils": "1.0.0"
+    "@pebula/metap": "0.0.1-alpha.1"
   },
   "description": "Angular Forms",
   "repository": {
@@ -16,8 +14,8 @@
   },
   "keywords": [
     "angular",
-    "grid",
-    "table"
+    "forms",
+    "dynamic forms"
   ],
   "author": "Shlomi Assaf",
   "homepage": "https://github.com/shlomiassaf/nform",

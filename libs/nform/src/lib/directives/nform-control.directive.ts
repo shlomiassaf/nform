@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 
 import { NFormControlTemplateContext, NFormRecordRef } from '../nform/index';
+import { NFormComponent } from '../components/nform/nform.component';
 import { NFormComponentToken } from '../constants';
 
 /**
@@ -20,6 +21,8 @@ import { NFormComponentToken } from '../constants';
  */
 @Directive({ selector: '[nFormControl]' })
 export class NFormControlDirective {
+  public readonly nFormCmp: NFormComponent<any>;
+
   get nFormControl(): NFormRecordRef {
     return this.render;
   }
@@ -71,9 +74,8 @@ export class NFormControlDirective {
   private cmpRef: ComponentRef<NFormControlTemplateContext>;
   private vcRef: ViewContainerRef;
 
-  constructor(private defaultVCRef: ViewContainerRef,
-              @Inject(NFormComponentToken) public nFormCmp: import('../components/nform/nform.component').NFormComponent<any>) {
-    // tslint:disable-line
+  constructor(private defaultVCRef: ViewContainerRef, @Inject(NFormComponentToken) nFormCmp: any) {
     this.vcRef = defaultVCRef;
+    this.nFormCmp = nFormCmp;
   }
 }

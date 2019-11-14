@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { forceNextUpdateValueAndValidityWith } from '../utils';
+import { forceNextUpdateValueAndValidityWith } from '../utils/index';
 import { NFormControlTemplateContext } from '../nform/nform';
 
 /**

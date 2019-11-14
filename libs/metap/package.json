@@ -1,4 +1,25 @@
 {
   "name": "@pebula/metap",
-  "version": "1.0.0"
+  "version": "0.0.1-alpha.1",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@pebula/utils": "1.0.1"
+  },
+  "description": "meta-programming tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shlomiassaf/nform.git"
+  },
+  "keywords": [
+    "typescript",
+    "decorator",
+    "meta-programming"
+  ],
+  "author": "Shlomi Assaf",
+  "homepage": "https://github.com/shlomiassaf/nform",
+  "bugs": {
+    "url": "https://github.com/shlomiassaf/nform/issues"
+  }
 }

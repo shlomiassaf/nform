@@ -2,7 +2,7 @@ import { Injectable, Type } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { targetStore } from '@pebula/metap/internal';
 
-import { PropNotifier, PropNotifyHandler } from '../utils';
+import { PropNotifier, PropNotifyHandler } from '../utils/index';
 import { FormModelMetadata, FormPropMetadata } from '../core/index';
 import { NForm, NFormRecordRef } from '../nform/index';
 

@@ -3,11 +3,17 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { NFormArrayComponent, NFormArrayDirective, ForFormArrayDirective, NFormComponent } from './components/index';
-import { NFormOverrideDirective, NFormControlDirective, NFormControlOutletDirective, NFormDirective, PblExplodeChildFormPipe } from './directives/index';
+import {
+  NFormOverrideDirective,
+  NFormControlDirective,
+  NFormControlOutletDirective,
+  NFormDirective,
+  PblExplodeChildFormPipe
+} from './directives/index';
 import { NFormFactoryService } from './services/index';
 
 import { FORM_CONTROL_COMPONENT } from './constants';
-import { DefaultRenderer } from './types';
+import { DefaultRenderer } from './types/index';
 
 @NgModule({
   declarations: [
