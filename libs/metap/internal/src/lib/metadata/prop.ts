@@ -16,7 +16,7 @@ import { targetStore } from './target-store';
 import { RelationMetadata } from './relation';
 import { TypeMetadata, TypeMetadataArgs } from './type';
 
-const PROP_DECORATOR = Symbol('@Prop');
+let PROP_DECORATOR: (target: any, propertyKey?: string | number | symbol, descOrIndex?: number | PropertyDescriptor) => any;
 
 export interface PropMetadataArgs {
   alias?: string | Partial<PropAliasConfig>;
@@ -49,14 +49,14 @@ export interface PropMetadataArgs {
 })
 export class PropMetadata extends BaseMetadata {
 
-  @LazyInit( () => MetaClass.decorator(PropMetadata, true)() )
-  private static [PROP_DECORATOR]: (target: any, propertyKey?: string | number | symbol, descOrIndex?: number | PropertyDescriptor) => any;
-
   static getCreateProp(tMeta: TargetMetadata, info: DecoratorInfo | string): PropMetadata {
     const name = isString(info) ? info : info.name as string;
     const prop = tMeta.getMetaFor(PropMetadata, name);
     if (!prop) {
-      PropMetadata[PROP_DECORATOR](tMeta.target.prototype, name);
+      if (!PROP_DECORATOR) {
+        PROP_DECORATOR =  MetaClass.decorator(PropMetadata, true)();
+      }
+      PROP_DECORATOR(tMeta.target.prototype, name);
       return tMeta.getMetaFor(PropMetadata, name);
     } else {
       return prop;
