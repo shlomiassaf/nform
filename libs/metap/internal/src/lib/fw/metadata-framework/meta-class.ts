@@ -348,7 +348,7 @@ export namespace MetaClass {
                                                       type: 'propMethod'): (def: TMetaArgs) => PropertyDecorator | MethodDecorator;
   export function decorator<TMetaArgs, TMetaClass, Z>(metaClass: Z & MetadataClassStatic<TMetaArgs, TMetaClass>,
                                                       type: 'classPropMethod'): (def: TMetaArgs) => ClassDecorator | PropertyDecorator | MethodDecorator;
-  export function decorator<TMetaArgs, TMetaClass, Z>(metaClass: Z & MetadataClassStatic<TMetaArgs, TMetaClass>): (target: any, propertyKey?: string | number | symbol, descOrIndex?: PropertyDescriptor | number) => any;
+  export function decorator<TMetaArgs, TMetaClass, Z>(metaClass: Z & MetadataClassStatic<TMetaArgs, TMetaClass>): (def: TMetaArgs) => (target: any, propertyKey?: string | number | symbol, descOrIndex?: PropertyDescriptor | number) => any;
 
   export function decorator<TMetaArgs, TMetaClass, Z>(metaClass: Z & MetadataClassStatic<TMetaArgs, TMetaClass>,
                                                       optional: true,
