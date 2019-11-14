@@ -1,11 +1,11 @@
 {
   "name": "@pebula/nform",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^8.0.0",
     "@angular/core": "^8.0.0",
-    "@pebula/metap": "0.0.1-alpha.2"
+    "@pebula/metap": "0.0.1-alpha.3"
   },
   "description": "Angular Forms",
   "repository": {
