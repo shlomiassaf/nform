@@ -26,7 +26,8 @@
     "mdast",
     "pebula",
     "quickthrough",
-    "sortables"
+    "sortables",
+    "unrx"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"
 }

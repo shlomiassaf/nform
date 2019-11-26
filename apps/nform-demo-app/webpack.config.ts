@@ -63,7 +63,9 @@ function updateWebpackConfig(webpackConfig: Configuration): Configuration {
   webpackConfig.plugins.push(dynamicModule);
 
   webpackConfig.plugins.push(new MarkdownPagesWebpackPlugin({
-    docsPath: 'content/**/*.md',
+    docsPath: '**/*.md',
+    docsRoot: '../libs/demo-examples',
+    outputAssetPathRoot: 'md-content',
     remarkPlugins: [
       remarkSlug,
       remarkAutolinkHeadings,
