@@ -83,6 +83,7 @@ export class MarkdownPageViewerComponent implements OnDestroy {
   }
 
   private updateDocument(url: string) {
+    this._clearLiveExamples();
     if (!url) {
       this.renderAdapter.beforeRenderPage();
       this._elementRef.nativeElement.innerHTML = '';
