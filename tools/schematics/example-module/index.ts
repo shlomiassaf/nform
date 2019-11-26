@@ -21,7 +21,7 @@ import { Change, InsertChange } from '@schematics/angular/utility/change';
 import { findNodes, getSourceNodes, addImportToModule, addDeclarationToModule, addEntryComponentToModule, addExportToModule } from '@schematics/angular/utility/ast-utils';
 import { buildRelativePath } from '@schematics/angular/utility/find-module';
 
-const ROOT = '/apps/libs/demo-examples';
+const ROOT = '/apps/nform-demo-app/content';
 
 const stringsExtensions = {
   moduleFile: (name: string) => `${strings.dasherize(name)}.module`,
@@ -208,7 +208,7 @@ export default function(options: { name: string; add?: string; }): Rule {
       {
         path: '${parsedPath.path.substr(ROOT.length + 1).split('/').join('-')}.module',
         pathMatch: 'full',
-        loadChildren: () => import('@pebula/apps/demo-examples/${parsedPath.path.substr(ROOT.length + 1)}/${stringsExtensions.moduleFile(parsedPath.name)}').then( m => m.${stringsExtensions.moduleClassName(parsedPath.name)} ),
+        loadChildren: () => import('./${parsedPath.path.substr(ROOT.length + 1)}/${stringsExtensions.moduleFile(parsedPath.name)}').then( m => m.${stringsExtensions.moduleClassName(parsedPath.name)} ),
       }
       `);
 

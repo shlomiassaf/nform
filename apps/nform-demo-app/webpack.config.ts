@@ -64,7 +64,7 @@ function updateWebpackConfig(webpackConfig: Configuration): Configuration {
 
   webpackConfig.plugins.push(new MarkdownPagesWebpackPlugin({
     docsPath: '**/*.md',
-    docsRoot: '../libs/demo-examples',
+    docsRoot: './content',
     outputAssetPathRoot: 'md-content',
     remarkPlugins: [
       remarkSlug,
@@ -85,7 +85,7 @@ function updateWebpackConfig(webpackConfig: Configuration): Configuration {
   webpackConfig.plugins.push(new MarkdownAppSearchWebpackPlugin({ }));
 
   webpackConfig.plugins.push(new MarkdownCodeExamplesWebpackPlugin({
-    docsPath: '../libs/demo-examples/**/*.ts',
+    docsPath: './content/**/*.ts',
   }));
 
   const angular = require('@angular/core/package.json');

@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { ROUTES } from '@angular/router';
 import { LAZY_MODULE_PRELOADING_MAP, LazyModulePreloader } from '@pebula/apps/shared';
-import { ELEMENT_MODULE_PATHS_AS_ROUTES } from '@pebula/apps/demo-examples/lazy-modules-as-routes';
+import { ELEMENT_MODULE_PATHS_AS_ROUTES } from '../../content/lazy-modules-as-routes';
 
 @NgModule({ })
 export class LazyCodePartsModule {
