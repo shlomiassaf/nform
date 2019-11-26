@@ -170,14 +170,37 @@ export function UnRx<T>(component?: any, handler?: any): ClassDecorator | ( (sou
 }
 
 export namespace UnRx {
+  let invokeTypeStack: any[] = [];
   const originalOnDestroyFunctionStore = new Map<any, () => void>();
 
   function ngOnDestroy(): void {
-    const oldNgOnDestroy = originalOnDestroyFunctionStore.get(this.constructor);
-    if (oldNgOnDestroy) {
-      oldNgOnDestroy.apply(this);
+    const len = invokeTypeStack.length;
+    let type = this.constructor;
+
+    if (len > 0) {
+      const lastType = invokeTypeStack[len - 1];
+      if (type === lastType) {
+        type = Object.getPrototypeOf(type);
+      }
     }
-    unrx.kill(this);
+
+    invokeTypeStack.push(type);
+
+    const oldNgOnDestroy = originalOnDestroyFunctionStore.get(type);
+    if (oldNgOnDestroy) {
+      try {
+        oldNgOnDestroy.apply(this);
+      } catch (err) {
+        invokeTypeStack = [];
+        throw err;
+      }
+    }
+
+    invokeTypeStack.pop();
+
+    if (len === 0) {
+      unrx.kill(this);
+    }
   }
 
   export function decorateComponent(target: any): any {
