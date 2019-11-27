@@ -21,9 +21,6 @@ import 'zone.js/dist/zone-node';
 
 import * as express from 'express';
 import { join } from 'path';
-import { readFileSync, existsSync, writeFileSync } from 'fs';
-import { mkdirpSync } from 'fs-extra';
-import { PageAssetNavEntry } from '@pebula-internal/webpack-markdown-pages/models';
 import { processPages } from './process-pages';
 
 // Express server
