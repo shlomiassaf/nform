@@ -1,0 +1,7 @@
+<pbl-nform [model]="model"></pbl-nform>
+<ng-template #defaultFieldOverrideTpl let-ctx>
+  <div>
+    <span style="display: inline-block; min-width: 200px"><b>{{ctx.item.label}}</b></span>
+    <span>{{ctx.nForm.getValue(ctx.item.getRuntimePath(ctx.fControl)) || 'Not Set'}}</span>
+  </div>
+</ng-template>

@@ -1,1 +1,5 @@
-<pbl-nform [model]="model"></pbl-nform>
+<pbl-nform #nForm class="form-splitting-form" [model]="model"></pbl-nform>
+
+<div class="red-super-power-box">
+  <h3 *nformControlOutlet="'superPower'; let ctx; nFormCmp: nForm" class="red-super-power-title">Super Power Was Here, Now It's In The Red Box</h3>
+</div>

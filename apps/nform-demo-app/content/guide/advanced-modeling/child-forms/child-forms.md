@@ -2,7 +2,7 @@
 title: "Nested Forms: Child Forms"
 path: guide/advanced-modeling/child-forms
 parent: guide/advanced-modeling
-ordinal: 1
+ordinal: 2
 ---
 # Child Forms
 

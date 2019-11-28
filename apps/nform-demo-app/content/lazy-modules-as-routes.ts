@@ -99,4 +99,24 @@ export const ELEMENT_MODULE_PATHS_AS_ROUTES = [
     pathMatch: 'full',
     loadChildren: () => import('./guide/events/value-changes/value-changes.module').then( m => m.ValueChangesExampleModule ),
   },
+  {
+    path: 'guide-basics-template-overrides.module',
+    pathMatch: 'full',
+    loadChildren: () => import('./guide/basics/template-overrides/template-overrides.module').then( m => m.TemplateOverridesExampleModule ),
+  },
+  {
+    path: 'guide-basics-form-splitting.module',
+    pathMatch: 'full',
+    loadChildren: () => import('./guide/basics/form-splitting/form-splitting.module').then( m => m.FormSplittingExampleModule ),
+  },
+  {
+    path: 'guide-basics-form-splitting.module',
+    pathMatch: 'full',
+    loadChildren: () => import('./guide/basics/form-splitting/form-splitting.module').then( m => m.FormSplittingExampleModule ),
+  },
+  {
+    path: 'guide-advanced-modeling-controlling-nform.module',
+    pathMatch: 'full',
+    loadChildren: () => import('./guide/advanced-modeling/controlling-nform/controlling-nform.module').then( m => m.ControllingNFormExampleModule ),
+  },
 ];

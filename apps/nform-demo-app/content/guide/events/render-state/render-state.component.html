@@ -1,1 +1,7 @@
-<pbl-nform [model]="model"></pbl-nform>
+<div class="render-state-form-container">
+  <pbl-nform #nForm [model]="model" style="display: block" (beforeRender)="beforeRender($event)">
+    <div class="ui-block" *ngIf="nForm?.renderState | async">
+      <mat-spinner></mat-spinner>
+    </div>
+  </pbl-nform>
+</div>

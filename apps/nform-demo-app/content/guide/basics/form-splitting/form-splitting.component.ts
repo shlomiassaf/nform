@@ -10,7 +10,7 @@ import { Hero } from './model';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-@Example('pbl-form-splitting-example', { title: 'Form Splitting', additionalFiles: [ './model.ts' ] })
+@Example('pbl-form-splitting-example', { title: 'Control Outlet', additionalFiles: [ './model.ts' ] })
 export class FormSplittingExample {
   model = new Hero();
 }

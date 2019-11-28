@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { PblNFormModule } from '@pebula/nform';
-
+import { PblNFormModule, FORM_CONTROL_COMPONENT } from '@pebula/nform';
+import { PblRowLayoutNformRenderer } from '@pebula/apps/shared-nform';
 import { BindNgModule } from '@pebula/apps/shared';
 import { ExampleCommonModule } from '@pebula/apps/example-common';
 import { ValueChangesExample } from './value-changes.component';
@@ -13,6 +13,9 @@ import { ValueChangesExample } from './value-changes.component';
   ],
   exports: [ ValueChangesExample ],
   entryComponents: [ ValueChangesExample ],
+  providers: [
+    { provide: FORM_CONTROL_COMPONENT, useValue: PblRowLayoutNformRenderer },
+  ],
 })
 @BindNgModule(ValueChangesExample)
 export class ValueChangesExampleModule { }

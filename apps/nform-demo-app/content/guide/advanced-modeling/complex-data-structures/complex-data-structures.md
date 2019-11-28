@@ -2,7 +2,7 @@
 title: Complex Data Structures
 path: guide/advanced-modeling/complex-data-structures
 parent: guide/advanced-modeling
-ordinal: 0
+ordinal: 1
 ---
 # Complex Data Structures
 

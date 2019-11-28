@@ -1,0 +1,10 @@
+<h1>Section: User Name</h1>
+<pbl-nform #nForm
+           [model]="model"
+           filterMode="include"
+           [filter]="['id', 'name']"></pbl-nform>
+<br>
+
+<h1>Section: Other</h1>
+<pbl-nform [slaveOf]="nForm"
+           [filter]="['id', 'name']"></pbl-nform>

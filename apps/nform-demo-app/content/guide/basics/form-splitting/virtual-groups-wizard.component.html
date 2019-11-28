@@ -1,0 +1,12 @@
+<mat-tab-group>
+  <mat-tab label="Step 1">
+    <pbl-nform #nForm [model]="model" filterMode="include" [filter]="['id', 'name']"></pbl-nform>
+  </mat-tab>
+  <mat-tab label="Step 2">
+    <pbl-nform [slaveOf]="nForm"
+               filterMode="include" [filter]="['birth', 'superPower']"></pbl-nform>
+  </mat-tab>
+  <mat-tab label="Step  3">
+    <pbl-nform [slaveOf]="nForm"
+               filterMode="include" [filter]="['bio']"></pbl-nform>
+</mat-tab>

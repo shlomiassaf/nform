@@ -1,1 +1,18 @@
-<pbl-nform [model]="model"></pbl-nform>
+<div class="render-state-form-container">
+  <div *ngIf="!(nForm?.renderState | async)">
+    <mat-form-field>
+      <mat-select [value]="stateFieldType" (selectionChange)="stateFieldType = $event.value">
+        <mat-option value="select">Select</mat-option>
+        <mat-option value="radio">Radio Group</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-button (click)="nForm.redraw()">REDRAW</button>
+    <button mat-button (click)="fieldSync()">FIELD SYNC</button>
+  </div>
+  <pbl-nform #nForm [model]="model" (beforeRender)="beforeRender($event)" style="display: block">
+    <div class="ui-block" *ngIf="nForm?.renderState | async">
+      <mat-spinner></mat-spinner>
+    </div>
+  </pbl-nform>
+</div>

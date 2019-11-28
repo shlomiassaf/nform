@@ -1,1 +1,3 @@
-<pbl-nform [model]="model"></pbl-nform>
+<pbl-nform #nForm [model]="model"
+           [disabledState]="disabledControls"
+           (valueChanges)="valueChanges($event, nForm)"></pbl-nform>

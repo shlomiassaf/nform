@@ -2,7 +2,7 @@
 title: "Nested Forms: Flattening"
 path: guide/advanced-modeling/flattening
 parent: guide/advanced-modeling
-ordinal: 2
+ordinal: 3
 ---
 # Flattening
 

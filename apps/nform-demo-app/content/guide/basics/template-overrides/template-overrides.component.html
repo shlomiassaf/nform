@@ -1,1 +1,14 @@
-<pbl-nform [model]="model"></pbl-nform>
+<pbl-nform [model]="model">
+  <div  *nFormOverride="'name'; let ctx">
+    <textarea matInput [placeholder]="ctx.item.label" [formControl]="ctx.fControl"></textarea>
+  </div>
+  <ng-container *nFormOverride="'*'; let ctx; vType: ['boolean']">
+    <div fxLayout="column">
+      <sub>{{ ctx.item.label }}</sub>
+      <mat-button-toggle-group [formControl]="ctx.fControl">
+        <mat-button-toggle [value]="true">YES</mat-button-toggle>
+        <mat-button-toggle [value]="false">NO</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </ng-container>
+</pbl-nform>
