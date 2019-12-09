@@ -19,11 +19,13 @@ export interface RelationMetadataArgs {
   allowOn: ['member'],
   extend: 'mergeMap',
   // Its possible to set @Relation() without @Prop(), so make sure to create one if not set by the user.
-  onCreated: () => {
+  onCreated: metaClassMetadata => {
     targetStore.on.processType((target: Constructor<any>) => {
       const meta = targetStore.getTargetMeta(target);
 
-      for (const relation of meta.getValues(RelationMetadata)) {
+      // On UMD builds RelationMetadata is not accessible due to some shitty TS closure mods
+      const _RelationMetadata: typeof RelationMetadata = metaClassMetadata.target;
+      for (const relation of meta.getValues(_RelationMetadata)) {
         const prop = PropMetadata.getCreateProp(meta, relation.decoratorInfo);
         RelationMetadata.setRelationship(prop, relation);
 

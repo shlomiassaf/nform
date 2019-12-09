@@ -136,7 +136,8 @@ export function extendSingle(from: ModelMetadata,
   allowOn: ['class'],
   single: true,
   extendSingle,
-  onCreated: () => registerModelExtensions(ModelMetadata),
+  // On UMD builds ModelMetadata is not accessible due to some shitty TS closure mods
+  onCreated: metaClassMetadata => registerModelExtensions(metaClassMetadata.target),
 })
 export class ModelMetadata extends BaseMetadata implements ModelMetadataArgs {
   identity: TdmPropertyKey;
