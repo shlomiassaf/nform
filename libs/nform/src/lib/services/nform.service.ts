@@ -122,7 +122,7 @@ export class NFormFactoryService {
         let name: TdmPropertyKey = p.name;
         let parent: NFormRecordRef;
         const isPrimitive = !(formProp.flatten || formProp.childForm);
-        if (typeMeta && typeMeta.isArray) {
+        if (typeMeta && typeMeta.container === Array) {
           parent = createRecordRef(formProp, name as string, {
             isArray: true,
             isPrimitive,
@@ -163,10 +163,10 @@ export class NFormFactoryService {
     for (let key of Object.keys(props)) {
       const p = props[key];
       const isPrimitive = !(p.flatten || p.childForm);
-      const isArray = p.rtType && p.rtType.isArray;
+      const isArray = p.rtType && p.rtType.container === Array;
       const internalRecords: NFormRecordRef[] = isArray ? [] : records;
 
-      if (p.rtType && p.rtType.isArray) {
+      if (p.rtType && p.rtType.container === Array) {
         parent = createRecordRef(
           p,
           key as string,

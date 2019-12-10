@@ -168,7 +168,7 @@ export class DirectSerializeMapper extends BaseSerializer {
       const p = pMap.prop;
       if (p && targetStore.hasTarget(p.type.ref)) {
         const type: any = p.type.ref;
-        if (p.relation && !p.type.isArray) {
+        if (p.relation && !p.type.container) {
           const idKey = targetStore.getIdentityKey(type);
           // if the rel points to a different fk property name, @tdm will make sure prop.obj is that fk.
           data[pMap.obj] = obj[pMap.cls][idKey];

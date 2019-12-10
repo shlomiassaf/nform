@@ -775,7 +775,7 @@ describe('@pebula/nform', () => {
                   },
                   other: {
                     rtType: {
-                      isArray: true
+                      container: Array,
                     },
                     flatten: { ...basicFlatten },
                   }

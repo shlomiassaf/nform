@@ -31,8 +31,7 @@ export function factory(this: MetaClassMetadata<ExcludeMetadataArgs, ExcludeMeta
                         target: Object | Function,
                         info: DecoratorInfo): MetaClassInstanceDetails<ExcludeMetadataArgs, ExcludeMetadata> | undefined {
   if (info.type === 'class') {
-    targetStore.getTargetMeta(<any>target).model().transformStrategy =
-      'exclusive';
+    targetStore.getTargetMeta(<any>target).model().transformStrategy = 'exclusive';
   } else {
     return {
       info,

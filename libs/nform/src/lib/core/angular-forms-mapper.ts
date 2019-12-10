@@ -306,10 +306,12 @@ export class NgFormsSerializeMapper extends BaseSerializer {
     // deciding if it's an array or not.
     // if it's explicitly marked as not, set false
     // otherwise, check value type then check settings type.
-    const isArray = rtType && rtType.isArray === false
+    const isArray = rtType && !rtType.container
       ? false
-      : Array.isArray(value) || (ignoreArray ? false : rtType && rtType.isArray)
+      : Array.isArray(value) || (ignoreArray ? false : rtType && rtType.container === Array)
     ;
+    // TODO: we're not checking for Set/Map container, although they can be set...
+    // Since their not transform to the forms data structure we need to detect and throw.
 
     let ctrl: AbstractControl;
     const [syncValidator, asyncValidator] = getValidators(formProp, {

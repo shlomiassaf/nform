@@ -14,7 +14,12 @@ export interface TypeDefinition {
   forwardRef?: true;
 
   /**
-   * Is actual type an array of the type in ref?
+   * The type lives inside a container, which can be Array, Set or Map
+   */
+  container?: typeof Array | typeof Set | typeof Map;
+
+  /**
+   * @deprecated use `container` instead (`container = Array`)
    */
   isArray?: boolean;
 }
@@ -115,6 +120,12 @@ export interface TypeDefinition {
  */
 export type TypeMetadataArgs = { (): Constructor<any> } | TypeDefinition;
 
+const CONTAINERS = [Array, Map, Set];
+
+function isContainer(type: any): boolean {
+  return CONTAINERS.indexOf(type) > -1;
+}
+
 // @dynamic
 @MetaClass<TypeMetadataArgs, TypeMetadata>({
   allowOn: ['member'],
@@ -122,8 +133,8 @@ export type TypeMetadataArgs = { (): Constructor<any> } | TypeDefinition;
 })
 export class TypeMetadata extends BaseMetadata {
   readonly ref: Constructor<any>;
-  readonly isArray?: boolean;
   readonly isGetter?: boolean;
+  readonly container?: typeof Array | typeof Set | typeof Map;
 
   constructor(metaArgs: TypeMetadataArgs, info: DecoratorInfo, target?: Constructor<any>) {
     super(info);
@@ -131,23 +142,27 @@ export class TypeMetadata extends BaseMetadata {
     const type = target
       ? reflection.designType(target.prototype, this.name as any)
       : Object;
+    const container = isContainer(type) ? type : undefined
 
     let def: TypeDefinition;
     if (isFunction(metaArgs)) {
-      def = { ref: metaArgs, forwardRef: true, isArray: type === Array };
+      def = { ref: metaArgs, forwardRef: true, container };
     } else if (metaArgs) {
+      if (metaArgs.isArray && !metaArgs.container) {
+        metaArgs.container = Array;
+      }
       def = metaArgs;
-      if (!def.hasOwnProperty('isArray')) {
-        def.isArray = type === Array;
+      if (container && !def.hasOwnProperty('container')) {
+        def.container = container;
       }
       if (!def.ref) {
         def.ref = def.forwardRef === true ? () => Object : Object;
       }
     } else {
-      def = { ref: type === Array ? Object : type, isArray: type === Array };
+      def = { ref: type === Array ? Object : type, container };
     }
 
-    this.isArray = def.isArray;
+    this.container = def.container;
 
     if (def.forwardRef === true) {
       // WHY configurable: true -> see @tdm/data -> meta-class extension

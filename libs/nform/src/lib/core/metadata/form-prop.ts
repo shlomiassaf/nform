@@ -19,10 +19,8 @@ const FORM_MODEL_DECORATOR = Symbol('@FormModel');
 export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof FormElementType> extends RenderDef<T> {
   /**
    * Exclude this property from the form.
-   * By default every class property decorated with @Prop or @FormProp is included in the output of
+   * By default every class property decorated with @FormProp is included in the output of
    * a serialization process. Setting Exclude will make sure it is not part of the form.
-   *
-   * > NOTE: Setting exclude via `@Exclude` or `@Prop` with `exclude` does not exclude the `@FormProp`.
    */
   exclude?: boolean;
 
@@ -105,31 +103,18 @@ export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof Fo
    * Setting type definition overrides any existing type definition, explicit or implicit.
    *
    * ## When to use:
-   * `@tdm` identify the type automatically (implicit) but you can also use the `@Prop` decorator and explicitly set the
-   * type using a type getter or the type directly (see [[PropMetadataArgs.type]]).
+   * The library identifies the type automatically (implicit) but you can also use the `@FormProp` decorator and explicitly set the type.
    *
-   * When `rtType` is not set the form builder will use the existing type information, this is the recommended approach.
+   * When `rType` is not set the library will use the existing type information from typescript's reflection.
+   * This is the recommended approach but it limited since typescript's reflection is not mature enough in certain edge cases.
    *
-   * You would want to use `rtType` when:
-   *   1. The existing type information is not enough AND
-   *   2. The property is not decorated with `@Prop`
-   *
-   * (1) The existing type information is usually enough but in some cases it requires manual definition done in using
-   * the `@Prop` decorator, these are the most common scenarios:
+   * The existing type information is usually enough but in some cases it requires manual definition done in using
+   * the `@FormProp` decorator, these are the most common scenarios:
    *   - Circular module dependency
-   *   SEE https://blog.angularindepth.com/what-is-forwardref-in-angular-and-why-we-need-it-6ecefb417d48
+   *   SEE https://stackoverflow.com/questions/50894571/what-does-do-forwardref-in-angular
    *   - When using `this` or `any` type
    *   - When using Array of T (e.g. `string[]` or `Array<number>`)
    *   SEE https://github.com/Microsoft/TypeScript/issues/7169
-   *
-   * (2)
-   * It is not mandatory to decorate a property with `@Prop` when decorating it with `@FormProp`, i.e. `@FormProp` can
-   * be the only decorator for a property.
-   * An example would be a property in a model/resource that is only required for the form and it is not part of the
-   * resource.
-   *
-   * If both (1) and (2) exist you would need to define a the type information using `rtType`.
-   * If only (1) exists use `@Prop` to define the type information, this will help with consistency.
    *
    * It might be that you will need `rtType` in other scenarios, if so remember that it will override all existing type
    * information for the form builder only.
@@ -234,7 +219,7 @@ export class FormPropMetadata extends BaseMetadata {
       }
 
       if (metaArgs.forceObjectType === true) {
-        this.rtType = new TypeMetadata({ isArray: false }, info, target);
+        this.rtType = new TypeMetadata({ container: undefined }, info, target);
       } else if (metaArgs.rtType) {
         this.rtType = new TypeMetadata(metaArgs.rtType, info, target);
       }

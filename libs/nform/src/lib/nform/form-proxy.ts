@@ -47,7 +47,7 @@ function createProxy<T = any>(context: FormProxyContext, props: Array<[string, F
 
 function createProxyProp(proxy: FormProxy, name: string, formProp: FormPropMetadata, ignoreArray = false) {
   const { flatten, rtType } = formProp;
-  const isArray = !!rtType && !!rtType.isArray;
+  const isArray = !!rtType && rtType.container === Array;
   const context: FormProxyContext = proxy[THIS_FORM_CONTEXT];
 
   if (isArray && !ignoreArray) {

@@ -78,7 +78,7 @@ describe('@pebula/metap', () => {
         const t = type('baseline');
         expect(t.ref).toEqual(String);
         expect(t.isGetter).toBeFalsy();
-        expect(t.isArray).toBeFalsy();
+        expect(t.container).toBeFalsy();
       });
 
       it('should default to Object when no type or any type is set', () => {
@@ -98,14 +98,14 @@ describe('@pebula/metap', () => {
         const t = type('decoratedType');
         expect(t.ref).toEqual(Number);
         expect(t.isGetter).toEqual(true);
-        expect(t.isArray).toBeFalsy();
+        expect(t.container).toBeFalsy();
       });
 
       it('should reflect inline type instructions', () => {
         const t = type('inlineType');
         expect(t.ref).toEqual(Boolean);
         expect(t.isGetter).toEqual(true);
-        expect(t.isArray).toBeFalsy();
+        expect(t.container).toBeFalsy();
       });
 
       it('should prefer decorated over inline', () => {
@@ -129,7 +129,7 @@ describe('@pebula/metap', () => {
         const t = type('anArray');
         expect(t.ref).toEqual(Object);
         expect(t.isGetter).toBeFalsy();
-        expect(t.isArray).toEqual(true);
+        expect(t.container).toBe(Array);
       });
 
       it('should resolve an array type with type information into an array of the typed information', () => {
@@ -138,11 +138,11 @@ describe('@pebula/metap', () => {
 
         expect(decoratedTypedArray.ref).toEqual(User);
         expect(decoratedTypedArray.isGetter).toEqual(true);
-        expect(decoratedTypedArray.isArray).toEqual(true);
+        expect(decoratedTypedArray.container).toBe(Array);
 
         expect(inlineTypedArray.ref).toEqual(User);
         expect(inlineTypedArray.isGetter).toEqual(true);
-        expect(inlineTypedArray.isArray).toEqual(true);
+        expect(inlineTypedArray.container).toBe(Array);
       });
 
       it('should resolve the type for a type defined after decorator init (ts internal) WHEN a type getter is set', () => {
@@ -157,7 +157,7 @@ describe('@pebula/metap', () => {
         const t = type('typeDefString');
         expect(t.ref).toEqual(String);
         expect(t.isGetter).toBeFalsy();
-        expect(t.isArray).toEqual(true);
+        expect(t.container).toBe(Array);
       });
     });
   });
