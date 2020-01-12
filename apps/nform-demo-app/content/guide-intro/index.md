@@ -53,9 +53,6 @@ example and inspect the current state:
 - **JSON View**
   Toggle's (show/hide) real time JSON view of the model or the form.  
   Appears in the **right panel** (we will get to panels in a bit)
-  > If you don't know the difference between JSON view of model and form
-
-  lease read the **Know your framework** section at the bottom.
 
 - **Sync Form**
   Sync the form, this operation will updates the form values and validity status.  
@@ -63,5 +60,3 @@ example and inspect the current state:
 
 - **Commit**
   Takes the current form and commits it to the model.
-  > If you don't understand why we need to commit a form please read
-  the **Know your framework** section at the bottom.

@@ -4,7 +4,7 @@ path: guide/advanced-modeling/controlling-nform
 parent: guide/advanced-modeling
 ordinal: 0
 ---
-# Controlling Nform
+# Controlling NForm
 
 To create a **nForm** component we need an instance of a model which we bind to the [model] attribute.
 

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { PblNFormModule } from '@pebula/nform';
 
 import { BindNgModule } from '@pebula/apps/shared';
@@ -10,6 +11,7 @@ import { GuideIntroExample } from './guide-intro.component';
   imports: [
     ExampleCommonModule,
     PblNFormModule,
+    MatButtonModule,
   ],
   exports: [ GuideIntroExample ],
   entryComponents: [ GuideIntroExample ],

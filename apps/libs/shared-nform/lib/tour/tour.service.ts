@@ -29,7 +29,7 @@ function loadCss(): Promise<void> {
       document.getElementsByTagName('head')[0].appendChild(linkEl);
       linkEl.onload = e => res();
       linkEl.onerror = (event: Event | string, source?: string, lineno?: number, colno?: number, error?: Error) => rej();
-      linkEl.setAttribute('href', 'shepherd.css.js.css');
+      linkEl.setAttribute('href', 'shepherd.css.css');
     }
   });
 }

@@ -22,11 +22,7 @@ export class GuideIntroExample {
   constructor(private tour: TourService, private exampleView: PblExampleFormViewComponent) {  }
 
 
-  ngOnInit(): void {
-    if (localStorage.getItem('pbl-guide-intro-example') === 'true') {
-      // return;
-    }
-
+  startTour(): void {
     this.tour.ready
       .subscribe( Shepherd => {
         const tour = new Shepherd.Tour({
@@ -143,7 +139,6 @@ export class GuideIntroExample {
         });
 
         tour.start();
-        localStorage.setItem('pbl-guide-intro-example', 'true');
       });
   }
 
