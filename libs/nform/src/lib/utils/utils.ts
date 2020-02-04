@@ -66,7 +66,7 @@ export function objectToForm(obj: any, plainMapper?: PlainObjectMapper): FormGro
       const value = serialized[key];
       let ctrl = isPrimitive(value)
         ? new FormControl(value)
-        : plainMapper.serialize(value);
+        : objectToForm(value);
       (data as FormGroup).addControl(key, ctrl);
     });
   }
