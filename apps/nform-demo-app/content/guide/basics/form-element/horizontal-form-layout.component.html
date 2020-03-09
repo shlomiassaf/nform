@@ -1,0 +1,10 @@
+<pbl-nform #nForm [model]="model">
+  <div *nFormOverride="'*'; let ctx" style="display: inline-block; margin-right: 24px;">
+    <material-form-control-renderer [nFormCmp]="nForm"
+                                    [nForm]="ctx.nForm"
+                                    [fArray]="ctx.fArray"
+                                    [fControl]="ctx.fControl"
+                                    [fGroup]="ctx.fGroup"
+                                    [item]="ctx.item"></material-form-control-renderer>
+  </div>
+</pbl-nform>
