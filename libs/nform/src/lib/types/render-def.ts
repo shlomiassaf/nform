@@ -1,4 +1,4 @@
-import { FormElementType } from './form-element-type';
+import { FormElementType, FormElementTypeGlobals } from './form-element-type';
 
 /**
  * Represents render definitions for an element
@@ -36,7 +36,7 @@ export interface RenderDef<T extends keyof FormElementType = keyof FormElementTy
    *   - regex, min/max, etc.. for validation
    *   - options (options) array for a select type
    */
-  data?: FormElementType[T];
+  data?: FormElementType[T] extends never ? FormElementTypeGlobals : FormElementType[T] & FormElementTypeGlobals;
   // TODO: When moving to TS 2.8 apply conditional types to make this property go away when FormElementType[T] is never
   // this way we can define when it is optional and when not (we can also let 'any' be partial, others mandatory)
   // See more in end of this file.

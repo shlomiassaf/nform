@@ -68,8 +68,8 @@ export abstract class NFormArray implements OnChanges {
             } else {
               instance.fControl = <any>c;
             }
-            if (typeof instance.tdmOnControlContextInit === 'function') {
-              instance.tdmOnControlContextInit();
+            if (typeof instance.nFormOnControlContextInit === 'function') {
+              instance.nFormOnControlContextInit();
             }
           }
         }

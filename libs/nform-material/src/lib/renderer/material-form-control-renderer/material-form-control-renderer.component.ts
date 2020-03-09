@@ -76,7 +76,7 @@ export class MaterialFormControlRenderer implements MaterialStoreInstance, NForm
     }
   }
 
-  tdmOnControlContextInit(): void {
+  nFormOnControlContextInit(): void {
     if (!this.template) {
       this.template = storeContainer.store.getTemplate(this.item);
       this.cdr.detectChanges();

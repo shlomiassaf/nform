@@ -28,7 +28,7 @@ import {
   SimpleChange,
   forwardRef,
 } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup, ControlContainer } from '@angular/forms';
 
 import { isFunction } from '@pebula/utils';
 import { FormElementType, ControlRenderer, DefaultRenderer, DefaultRendererMap } from '../../types/index';
@@ -38,6 +38,7 @@ import { NForm, NFormRecordRef } from '../../nform/index';
 import { NFormOverrideDirective, NFormOverrideContext, NFormControlOutletDirective } from '../../directives/index';
 import { NFormFactoryService } from '../../services/index';
 import { BeforeRenderEventHandler, RendererEvent, NFormValuesChange } from '../../events/index';
+import { NFormControlContainer } from './nform-control-container';
 
 export interface NFormRecordRefInternal extends NFormRecordRef {
   /**
@@ -55,17 +56,23 @@ export interface NFormRecordRefInternal extends NFormRecordRef {
 type StateKeys = 'filter' | 'disabled' | 'hidden';
 
 export function nFormComponentSelfFactory(nform: any) { return nform; }
+export function nFormComponentSelfFactory1(nform: any) { return new NFormControlContainer(nform) as any; }
 
 /**
  * Allow rendering a form using @tdm/ngx-dynamic-forms and MaterialFormControlRenderer
  */
 @Component({
-  selector: 'pbl-nform',
+  selector: 'pbl-nform, form[pbl-nform]',
   templateUrl: './nform.component.html',
   providers: [
     {
       provide: NFormComponentToken,
       useFactory: nFormComponentSelfFactory,
+      deps: [forwardRef(() => NFormComponent)],
+    },
+    {
+      provide: ControlContainer,
+      useFactory: nFormComponentSelfFactory1,
       deps: [forwardRef(() => NFormComponent)],
     },
   ],
@@ -92,7 +99,7 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
 
   @ContentChildren(NFormOverrideDirective) overrides: QueryList<NFormOverrideDirective>;
 
-  @ViewChild('formElRef', { static: true }) formElRef: ElementRef;
+  @ViewChild('internalFormElement', { static: false }) internalFormElRef: ElementRef;
 
   /**
    * The CSS class of the `form` element which is also the container of all rendered items.
@@ -342,6 +349,10 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
    */
   _records = new BehaviorSubject<NFormRecordRefInternal[]>([]);
 
+  readonly formElRef: ElementRef<HTMLFormElement>;
+  /** When true, the internal <form> element is used */
+  readonly _internalForm: boolean;
+
   private instance: T;
   private type: Type<T>;
   private subscriptions: Subscription[] = [];
@@ -375,7 +386,8 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
               @Inject(FORM_CONTROL_COMPONENT) controlRenderer: DefaultRenderer,
               private kvDiffers: KeyValueDiffers,
               private itDiffers: IterableDiffers,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,
+              elRef: ElementRef<HTMLElement>) {
     this.renderState = this.rendering$.asObservable();
     this.rendererEvent = this.rendererEvent$.asObservable();
 
@@ -388,6 +400,13 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
       if (!this.defaultControlRenderer) {
         throw new Error('Default control renderer not set.');
       }
+    }
+
+    if (elRef.nativeElement.nodeName.toLowerCase() === 'form') {
+      Object.defineProperty(this, 'formElRef', { value: elRef, configurable: false, writable: false, enumerable: false });
+    } else {
+      Object.defineProperty(this, '_internalForm', { value: true, configurable: false, writable: false, enumerable: false });
+      Object.defineProperty(this, 'formElRef', { get: () => this.internalFormElRef, configurable: false, enumerable: false });
     }
   }
 

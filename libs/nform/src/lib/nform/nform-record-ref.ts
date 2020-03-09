@@ -1,6 +1,6 @@
 import { AbstractControl, FormArray, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { FormPropMetadata } from '../core/metadata/form-prop';
-import { FormElementType, RenderDef } from '../types/index';
+import { FormElementType, RenderDef, FormElementTypeGlobals } from '../types/index';
 import { getValidators } from '../validation';
 import { PropNotify } from '../utils/index';
 
@@ -59,7 +59,7 @@ export class NFormRecordRef<T extends keyof FormElementType = keyof FormElementT
    *   - regex, min/max, etc.. for validation
    *   - options (options) array for a select type
    */
-  data: FormElementType[T];
+  data: FormElementType[T] extends never ? FormElementTypeGlobals : FormElementType[T] & FormElementTypeGlobals;
 
   /**
    * When set indicated this is form control flattened from a nested object.

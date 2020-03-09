@@ -78,6 +78,16 @@ export class TargetStore {
     return this.namedTargets.get(name);
   }
 
+  getTargetsFor(metaClassType: Constructor<any>): Constructor<any>[] {
+    const targets = [];
+    for (const [target, metaMap] of Array.from(this.targets.entries())) {
+      if (metaMap.has(metaClassType)) {
+        targets.push(target);
+      }
+    }
+    return targets;
+  }
+
   getTargetMeta(target: Constructor<any>): TargetMetadata | undefined {
     let meta = this.builtTargets.get(target);
     if (!meta) {

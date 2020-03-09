@@ -15,7 +15,7 @@ export interface NFormControlTemplateContext {
   fArray?: FormArray | undefined;
   fControl?: FormControl | undefined;
   fGroup?: FormGroup | undefined;
-  tdmOnControlContextInit?(): void;
+  nFormOnControlContextInit?(): void;
 }
 
 function getFormIsNotArrayErrorMessage(value: AbstractControl | undefined): string {

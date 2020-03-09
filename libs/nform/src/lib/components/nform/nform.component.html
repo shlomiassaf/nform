@@ -1,6 +1,13 @@
-<form #formElRef [formGroup]="nForm.form" [class]="formClass">
+<form *ngIf="_internalForm" #internalFormElement [formGroup]="nForm.form" [class]="formClass">
   <ng-container *ngFor="let item of _records | async; trackBy: nForm.trackBy">
     <ng-container *nFormControl="item"></ng-container>
   </ng-container>
   <ng-content></ng-content>
 </form>
+
+<ng-container *ngIf="!_internalForm" [formGroup]="nForm.form">
+  <ng-container *ngFor="let item of _records | async; trackBy: nForm.trackBy">
+    <ng-container *nFormControl="item"></ng-container>
+  </ng-container>
+  <ng-content></ng-content>
+</ng-container>

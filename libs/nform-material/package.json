@@ -1,8 +1,8 @@
 {
   "name": "@pebula/nform-material",
-  "version": "0.0.1-alpha.8",
+  "version": "0.0.1-alpha.9",
   "peerDependencies": {
     "@angular/material": "^8.0.0",
-    "@pebula/nform": "0.0.1-alpha.8"
+    "@pebula/nform": "0.0.1-alpha.9"
   }
 }

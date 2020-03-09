@@ -1,4 +1,4 @@
-export { FormElementType, RenderDef, ControlRenderer, DefaultRenderer, DefaultRendererMap } from './types/index';
+export { FormElementType, FormElementTypeGlobals, RenderDef, ControlRenderer, DefaultRenderer, DefaultRendererMap } from './types/index';
 
 export {
   FormModel,

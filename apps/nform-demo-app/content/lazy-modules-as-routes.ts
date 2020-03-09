@@ -119,4 +119,9 @@ export const ELEMENT_MODULE_PATHS_AS_ROUTES = [
     pathMatch: 'full',
     loadChildren: () => import('./guide/advanced-modeling/controlling-nform/controlling-nform.module').then( m => m.ControllingNFormExampleModule ),
   },
+  {
+    path: 'guide-basics-form-element.module',
+    pathMatch: 'full',
+    loadChildren: () => import('./guide/basics/form-element/form-element.module').then( m => m.FormElementExampleModule ),
+  },
 ];

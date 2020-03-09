@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Directive,
   Input,
   ViewContainerRef,
@@ -59,8 +60,8 @@ export class NFormControlDirective {
         const componentFactory = resolver.resolveComponentFactory(component);
         this.cmpRef = this.defaultVCRef.createComponent<NFormControlTemplateContext>(componentFactory, this.defaultVCRef.length, injector);
         this.nFormCmp.nForm.bindRenderingData(this.cmpRef.instance, value);
-        if (typeof this.cmpRef.instance.tdmOnControlContextInit === 'function') {
-          this.cmpRef.instance.tdmOnControlContextInit();
+        if (typeof this.cmpRef.instance.nFormOnControlContextInit === 'function') {
+          this.cmpRef.instance.nFormOnControlContextInit();
         }
         if (outlet) {
           this.cmpRef.hostView.detectChanges();
@@ -74,7 +75,7 @@ export class NFormControlDirective {
   private cmpRef: ComponentRef<NFormControlTemplateContext>;
   private vcRef: ViewContainerRef;
 
-  constructor(private defaultVCRef: ViewContainerRef, @Inject(NFormComponentToken) nFormCmp: any) {
+  constructor(private defaultVCRef: ViewContainerRef, private cdr: ChangeDetectorRef, @Inject(NFormComponentToken) nFormCmp: any) {
     this.vcRef = defaultVCRef;
     this.nFormCmp = nFormCmp;
   }
