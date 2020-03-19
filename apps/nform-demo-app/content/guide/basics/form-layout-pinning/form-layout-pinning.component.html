@@ -1,0 +1,20 @@
+<form pbl-nform #nForm [model]="model"
+      fxLayout="column" fxLayoutGap="16px">
+
+  <nform-pin controlName="superPower"></nform-pin>
+  <div fxLayout="row">
+    <nform-pin controlName="id"></nform-pin>
+    <nform-pin controlName="name"></nform-pin>
+  </div>
+  <nform-pin controlName="bio"></nform-pin>
+  <nform-pin controlName="birth"></nform-pin>
+
+  <div *nFormOverride="'*'; let ctx" fxFlex="0 1 30%" style="padding-bottom: 32px;">
+    <material-form-control-renderer [nFormCmp]="nForm"
+                                    [nForm]="ctx.nForm"
+                                    [fArray]="ctx.fArray"
+                                    [fControl]="ctx.fControl"
+                                    [fGroup]="ctx.fGroup"
+                                    [item]="ctx.item"></material-form-control-renderer>
+  </div>
+</form>

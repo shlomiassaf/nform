@@ -29,7 +29,7 @@ export {
   createChildFormEvent,
 } from './events/index';
 
-export { NFormComponent, NFormArrayComponent, ForFormArrayDirective } from './components/index';
+export { NFormComponent, NFormArrayComponent, ForFormArrayDirective, NFormPinComponent } from './components/index';
 
 export {
   NFormDirective,

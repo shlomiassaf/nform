@@ -2,7 +2,7 @@
 title: Form Layout
 path: guide/basics/form-layout
 parent: guide/basics
-tags: form,layout
+tags: form,layout,order,ordinal
 ordinal: 1
 ---
 # Form Layout
@@ -112,3 +112,68 @@ And in a custom template override:
 ```
 
 As previously mentioned, with **renderers** this can be fully automated, scoped and encapsulated, without the need of custom template overrides. (think plugin, addon, mini library)
+
+## Control Rendering Order
+
+The entire layout methods we've covered allow us to control the space a control will take but not the position.  
+The layout is declared by templates, we use templates to define a container that renders a control but when, where and
+in what order are they rendered?
+
+**nGrid** controls the rendering of components and it does that in the order defined in the metadata.  
+If order is not explicitly defined, the default order is the order of the properties defined on the class (top to bottom).
+
+To define the order, use the `ordinal` property provided in `FormPropMetadataArgs`.
+
+```typescript
+@FormModel()
+export class Hero {
+  @FormProp({
+    vType: 'number',
+  })
+  id: number;                         // I Will be third, i'm unordered but i'm the first unordered!!!
+
+  @FormProp({
+    ordinal: 1,                        // I Will be second!!!
+    vType: 'text',
+  })
+  name: string;
+
+  @FormProp({
+    ordinal: 0,                        // I Will be first!!!
+    vType: 'date',
+  })
+  birth: string;
+
+  @FormProp({
+    vType: 'boolean',
+  })
+  hasTracking: boolean;
+
+  @FormProp({
+    vType: 'slideToggle',
+  })
+  doubleAgent: boolean;
+}
+```
+
+In the example above, the rendering order of the controls will be:
+
+- birth
+- name
+- id
+- hasTracking
+- doubleAgent
+
+I> Unordered controls are always set AFTER ordered controls, if there are multiple unordered controls their order is based on the order their respective
+properties were defined on the class.
+
+## Breaking the Layout
+
+**nGrid** will render controls one after the other, in the order they are defined, can we break it?
+
+Yes, we can break the layout and we should do it if:
+
+- We want to position control in an arbitrary order inside the form
+- We need a complex layout, with internal structures (i.e. flex with nested columns/rows).
+
+To see how, visit [Form Layout Pinning](../form-layout-pinning)

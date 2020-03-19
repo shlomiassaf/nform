@@ -21,4 +21,4 @@ import { FlexFormLayoutExample } from './flex-form-layout.component';
   entryComponents: [ VerticalFormLayoutExample, HorizontalFormLayoutExample, FlexFormLayoutExample ],
 })
 @BindNgModule(VerticalFormLayoutExample, HorizontalFormLayoutExample, FlexFormLayoutExample)
-export class FormElementExampleModule { }
+export class FormLayoutExampleModule { }

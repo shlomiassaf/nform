@@ -115,8 +115,13 @@ export const ELEMENT_MODULE_PATHS_AS_ROUTES = [
     loadChildren: () => import('./guide/advanced-modeling/controlling-nform/controlling-nform.module').then( m => m.ControllingNFormExampleModule ),
   },
   {
-    path: 'guide-basics-form-element.module',
+    path: 'guide-basics-form-layout.module',
     pathMatch: 'full',
-    loadChildren: () => import('./guide/basics/form-element/form-element.module').then( m => m.FormElementExampleModule ),
+    loadChildren: () => import('./guide/basics/form-layout/form-layout.module').then( m => m.FormLayoutExampleModule ),
+  },
+  {
+    path: 'guide-basics-form-layout-pinning.module',
+    pathMatch: 'full',
+    loadChildren: () => import('./guide/basics/form-layout-pinning/form-layout-pinning.module').then( m => m.FormLayoutPinningExampleModule ),
   },
 ];

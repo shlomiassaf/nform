@@ -2,7 +2,7 @@ import { ANALYZE_FOR_ENTRY_COMPONENTS, NgModule, ModuleWithProviders } from '@an
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { NFormArrayComponent, NFormArrayDirective, ForFormArrayDirective, NFormComponent } from './components/index';
+import { NFormArrayComponent, NFormArrayDirective, ForFormArrayDirective, NFormComponent, NFormPinComponent } from './components/index';
 import {
   NFormOverrideDirective,
   NFormControlDirective,
@@ -24,6 +24,7 @@ import { DefaultRenderer } from './types/index';
     NFormArrayComponent,
     NFormArrayDirective,
     ForFormArrayDirective,
+    NFormPinComponent,
     NFormComponent,
     PblExplodeChildFormPipe,
   ],
@@ -36,6 +37,7 @@ import { DefaultRenderer } from './types/index';
     NFormArrayComponent,
     NFormArrayDirective,
     ForFormArrayDirective,
+    NFormPinComponent,
     NFormComponent,
     PblExplodeChildFormPipe,
   ]

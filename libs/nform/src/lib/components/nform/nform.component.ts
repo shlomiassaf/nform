@@ -35,10 +35,11 @@ import { FormElementType, ControlRenderer, DefaultRenderer, DefaultRendererMap }
 import { coerceBooleanProperty, PropNotifyHandler, PropChanges  } from '../../utils/index';
 import { NFormComponentToken, FORM_CONTROL_COMPONENT } from '../../constants';
 import { NForm, NFormRecordRef } from '../../nform/index';
-import { NFormOverrideDirective, NFormOverrideContext, NFormControlOutletDirective } from '../../directives/index';
+import { NFormOverrideDirective, NFormOverrideContext } from '../../directives/index';
 import { NFormFactoryService } from '../../services/index';
 import { BeforeRenderEventHandler, RendererEvent, NFormValuesChange } from '../../events/index';
 import { NFormControlContainer } from './nform-control-container';
+import { NFormControlOutlet } from '../../directives/control-selector-base';
 
 export interface NFormRecordRefInternal extends NFormRecordRef {
   /**
@@ -363,9 +364,9 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
   private rendering$ = new BehaviorSubject<boolean>(false);
   private _ngNativeValidate: any = false;
   private slaveMode: boolean;
-  private outlets: Set<NFormControlOutletDirective> = new Set<NFormControlOutletDirective>();
+  private outlets: Set<NFormControlOutlet> = new Set<NFormControlOutlet>();
   private overrideMap = new Map<NFormRecordRef, NFormOverrideDirective>();
-  private outletMap = new Map<NFormRecordRef, NFormControlOutletDirective>();
+  private outletMap = new Map<NFormRecordRef, NFormControlOutlet>();
   private wildOverride: NFormOverrideDirective;
   private rendererEvent$ = new EventEmitter<RendererEvent>();
   private recordRefs: NFormRecordRef[];
@@ -416,11 +417,11 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
       : this.controlRenderer[rd.vType] || this.defaultControlRenderer;
   }
 
-  attachControlOutlet(outlet: NFormControlOutletDirective): void {
+  attachControlOutlet(outlet: NFormControlOutlet): void {
     this.outlets.add(outlet);
   }
 
-  detachControlOutlet(outlet: NFormControlOutletDirective): boolean {
+  detachControlOutlet(outlet: NFormControlOutlet): boolean {
     return this.outlets.delete(outlet);
   }
 
@@ -448,7 +449,7 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
     return this.overrideMap.get(item);
   }
 
-  getOutlet(item: NFormRecordRef): NFormControlOutletDirective | undefined {
+  getOutlet(item: NFormRecordRef): NFormControlOutlet | undefined {
     return this.outletMap.get(item);
   }
 

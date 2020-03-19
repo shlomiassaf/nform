@@ -37,14 +37,14 @@ export class NFormControlDirective {
 
     this.vcRef.clear();
     const outlet = this.nFormCmp.getOutlet(value);
-    this.vcRef = outlet ? outlet._vcRef : this.defaultVCRef;
+    this.vcRef = outlet ? outlet.vcRef : this.defaultVCRef;
     this.vcRef.clear();
 
-    if (outlet && outlet._tRef) {
+    if (outlet && outlet.tRef) {
       this.defaultVCRef.clear();
       const $implicit: NFormControlTemplateContext = <any>{};
       this.nFormCmp.nForm.bindRenderingData($implicit, value);
-      this.defaultVCRef.createEmbeddedView(outlet._tRef, { $implicit });
+      this.defaultVCRef.createEmbeddedView(outlet.tRef, { $implicit });
     }
 
     if (value) {
@@ -52,7 +52,7 @@ export class NFormControlDirective {
       if (override) {
         const $implicit: NFormControlTemplateContext = <any>{};
         this.nFormCmp.nForm.bindRenderingData($implicit, value);
-        this.vcRef.createEmbeddedView(override.template, { $implicit });
+        this.vcRef.createEmbeddedView(override.template, { $implicit }).detectChanges();
       } else {
         const injector = this.defaultVCRef.injector;
         const resolver = injector.get(ComponentFactoryResolver);

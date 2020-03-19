@@ -1,5 +1,4 @@
 import { FormModel, FormProp } from '@pebula/nform';
-import { Prop } from '@pebula/metap';
 
 @FormModel()
 export class Hero {

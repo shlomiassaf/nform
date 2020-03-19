@@ -187,7 +187,7 @@ export class FormPropMetadata extends BaseMetadata {
 
   constructor(metaArgs: FormPropMetadataArgs, info: DecoratorInfo, target?: Constructor<any>) {
     super(info);
-    this.render = Object.create(BASE_RENDERER);
+    this.render = { ...BASE_RENDERER };
     if (metaArgs) {
       this.transform = metaArgs.transform;
       this.exclude = metaArgs.exclude;

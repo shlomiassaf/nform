@@ -10,28 +10,21 @@ import {
 } from '@angular/core';
 
 import { FormElementType } from '../types';
-import { NFormOverrideContext, ControlSelectorBase } from './nform-override.directive';
+import { NFormOverrideContext } from './nform-override.directive';
+import { ControlSelectorBase, NFormControlOutlet } from './control-selector-base';
 
 @Directive({
   selector: '[nformControlOutlet]',
   exportAs: 'nformControlOutlet'
 })
-export class NFormControlOutletDirective extends ControlSelectorBase implements OnChanges, OnDestroy {
+export class NFormControlOutletDirective extends ControlSelectorBase implements OnChanges, OnDestroy, NFormControlOutlet {
 
   @Input('nformControlOutlet') controlName: string | string[];
   @Input('nformControlOutletNFormCmp') nFormCmp: import('../components/nform/nform.component').NFormComponent;
   @Input('nformControlOutletVType') vType: keyof FormElementType | Array<keyof FormElementType>;
 
-  /**
-   * @internal
-   */
-  _vcRef: ViewContainerRef;
-  _tRef?: TemplateRef<NFormOverrideContext>;
-
-  constructor(vcRef: ViewContainerRef, @Optional() tRef: TemplateRef<NFormOverrideContext>) {
+  constructor(public readonly vcRef: ViewContainerRef, @Optional() public readonly tRef?: TemplateRef<NFormOverrideContext>) {
     super();
-    this._vcRef = vcRef;
-    this._tRef = tRef;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
