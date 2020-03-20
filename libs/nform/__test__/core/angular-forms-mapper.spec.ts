@@ -103,15 +103,20 @@ describe('@pebula/nform', () => {
       class TransformationFormCases {
         @FormProp({
           vType: 'none',
-          transform: () => 'test'
+          transform: (value: any, dir: 'form' | 'model') => dir === 'form' ? JSON.stringify(value) : JSON.parse(value),
         })
-        alwaysTest: string;
+        alwaysTest: object;
       }
 
       const instance = new TransformationFormCases();
-      expect(instance.alwaysTest).toBeUndefined();
-      const formGroup = serialize(new TransformationFormCases());
-      expect(deserialize(formGroup, TransformationFormCases).alwaysTest).toEqual('test');
+      instance.alwaysTest = { a: 'b', c: 1 };
+
+      const formGroup = serialize(instance);
+      expect(formGroup.get('alwaysTest').value).toBe(JSON.stringify(instance.alwaysTest));
+
+      const newValue = { d: 'e', f: 3 };
+      formGroup.get('alwaysTest').setValue(JSON.stringify(newValue))
+      expect(deserialize(formGroup, TransformationFormCases).alwaysTest).toEqual(newValue);
     });
 
     it('should apply defaultValue logic', () => {

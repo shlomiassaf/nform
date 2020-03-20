@@ -25,10 +25,15 @@ export interface FormPropMetadataArgs<T extends keyof FormElementType = keyof Fo
   exclude?: boolean;
 
   /**
-   * Transform the value
-   * @param value
+   * Transform the value before it serialize or deserialize.
+   * Use the `direction` to determine the operation (serialize / deserialize).
+   *
+   *   - form: Direction is from model to form (serialization). The value comes from the model instance.
+   *   - model: Direction is from form to model (deserialization). The value comes from the form control (i.e. when committing)
+   *
+   * > Note that when defined on an array, the transform function will trigger for every array item and not the array itself.
    */
-  transform?: (value: any) => any;
+  transform?: (value: any, direction: 'form' | 'model') => any;
 
   /**
    * Sugar for adding a required validator
@@ -174,7 +179,7 @@ export class FormPropMetadata extends BaseMetadata {
   @LazyInit( () => MetaClass.decorator(FormModelMetadata, true)() )
   private static [FORM_MODEL_DECORATOR]: (target: any) => any;
 
-  transform: (value: any) => any;
+  transform: (value: any, direction: 'form' | 'model') => any;
   exclude: boolean;
   required: boolean;
   defaultValue: any;

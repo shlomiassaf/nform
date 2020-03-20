@@ -58,10 +58,9 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
 
   getValue(key: string, prop?: PropMetadata): any {
     const control = this.formGroup.get(key);
+    const formProp = (this.formModel && this.formModel.getProp(key as string)) || FormPropMetadata.EMPTY;
+
     if (control instanceof FormArray) {
-      const formProp =
-        (this.formModel && this.formModel.getProp(key as string)) ||
-        FormPropMetadata.EMPTY;
       // TODO: we can omit this, maybe protect against but rtType should ne set at this point.
       if (!formProp.rtType && prop && prop.type) {
         formProp.rtType = prop.type;
@@ -84,24 +83,18 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
          this.getCache(type.ref, value) || this.deserialize(<any> control, prop);
       */
 
-      const formProp =
-        (this.formModel && this.formModel.getProp(key as string)) ||
-        FormPropMetadata.EMPTY;
       // TODO: we can omit this, maybe protect against but rtType should ne set at this point.
       if (!formProp.rtType && prop && prop.type) {
         formProp.rtType = prop.type;
       }
-      return this.parseFormGroup(control, key, formProp);
+      const value = this.parseFormGroup(control, key, formProp);
+      return this.resolveValue(value, formProp);
     } else {
-      return control.value;
+      return this.resolveValue(control.value, formProp);
     }
   }
 
-  protected parseFormArray(
-    control: FormArray,
-    key: string,
-    formProp: FormPropMetadata
-  ): any {
+  protected parseFormArray(control: FormArray, key: string, formProp: FormPropMetadata): any {
     if (formProp.flatten) {
       return this.deserializeFlattened(control, formProp, key);
     } else {
@@ -112,7 +105,7 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
         } else if (c instanceof FormGroup) {
           value.push(this.parseFormGroup(c, key, formProp));
         } else {
-          value.push(c.value);
+          value.push(this.resolveValue(c.value, formProp));
         }
       }
       return value;
@@ -175,7 +168,7 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
           // null is also used to force serialization of all controls, not only the dirty one's.
           result.push(this.deserializeFlattened(c, formProp, null));
         } else {
-          result.push(c.value);
+          result.push(this.resolveValue(c.value, formProp));
         }
       }
       return result;
@@ -196,17 +189,14 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
           }
         } else if (forceSerialize || childCtrl.dirty) {
           value = true;
-        } else if (
-          p.hasOwnProperty('defaultValue') &&
-          p.defaultValue === control.get(key).value
-        ) {
+        } else if (p.hasOwnProperty('defaultValue') && p.defaultValue === control.get(key).value) {
           value = true;
         }
         switch (value) {
           case keys:
             break;
           case true:
-            result[key] = control.get(key).value;
+            result[key] = this.resolveValue(control.get(key).value, p);
             break;
           default:
             if (result[key]) {
@@ -219,6 +209,10 @@ export class NgFormsDeserializeMapper extends DirectDeserializeMapper {
       }
       return result;
     }
+  }
+
+  private resolveValue(value: any, formProp: FormPropMetadata): any {
+    return isFunction(formProp.transform) ? formProp.transform(value, 'model') : value;
   }
 }
 
@@ -290,7 +284,7 @@ export class NgFormsSerializeMapper extends BaseSerializer {
     }
 
     if (isFunction(formProp.transform)) {
-      value = formProp.transform(value);
+      value = formProp.transform(value, 'form');
     }
 
     if (isUndefined(value)) {
