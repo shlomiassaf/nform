@@ -143,7 +143,7 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "lerna": "^3.13.4",
     "lerna-semantic-release": "^9.1.0",
-    "marked": "^0.6.0",
+    "marked": "^0.7.0",
     "merge2": "^1.2.3",
     "ng-cli-packagr-tasks": "^4.0.0",
     "ngrx-store-freeze": "0.2.4",
