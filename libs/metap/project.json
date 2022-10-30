@@ -1,0 +1,60 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "metap",
+  "tags": [
+    "name:metap",
+    "type:lib"
+  ],
+  "sourceRoot": "libs/metap/src",
+  "projectType": "library",
+  "prefix": "pbl",
+  "targets": {
+    "build": {
+      "executor": "ng-cli-packagr-tasks:build",
+      "outputs": ["dist/@pebula/metap"],
+      "options": {
+        "tsConfig": "libs/metap/tsconfig.lib.json",
+        "project": "libs/metap/ng-package.json",
+        "tasks": {
+          "config": "tools/ng-packagr.transformers/metap.transformers.ts",
+          "tsConfig": "tools/tsconfig.json",
+          "data": {
+            "analyseSourcesWorkaround": {},
+            "copyFile": {
+              "assets": [
+                {
+                  "glob": "README.md",
+                  "input": "./libs/metap",
+                  "output": "dist/@pebula/metap"
+                },
+                {
+                  "glob": "LICENSE",
+                  "input": ".",
+                  "output": "dist/@pebula/metap"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/metap/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/metap/tsconfig.lib.json"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/metap"
+      ],
+      "options": {
+        "jestConfig": "libs/metap/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

@@ -11,13 +11,12 @@ import {
   ViewContainerRef,
   Injector,
   NgZone,
-  Type,
   Optional,
   HostListener,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ComponentPortal, DomPortalHost } from '@angular/cdk/portal';
-import { MetaService } from '@ngx-meta/core';
+import { Meta, MetaDefinition, Title } from '@angular/platform-browser';
+import { ComponentPortal, DomPortalOutlet } from '@angular/cdk/portal';
 
 import { UnRx } from '@pebula/utils';
 import { PageFileAsset } from '@pebula-internal/webpack-markdown-pages';
@@ -45,10 +44,11 @@ export class MarkdownPageViewerComponent implements OnDestroy {
   page: PageFileAsset;
   readonly hasContainer: boolean;
 
-  private _portalHosts: DomPortalHost[] = [];
+  private _portalHosts: DomPortalOutlet[] = [];
 
   constructor(private mdPages: MarkdownPagesService,
-              private meta: MetaService,
+              private metaService: Meta,
+              private titleService: Title,
               private locationService: LocationService,
               route: ActivatedRoute,
               private _elementRef: ElementRef,
@@ -83,16 +83,18 @@ export class MarkdownPageViewerComponent implements OnDestroy {
   }
 
   private updateDocument(url: string) {
+    this.page = undefined;
     this._clearLiveExamples();
     if (!url) {
-      this.renderAdapter.beforeRenderPage();
-      this._elementRef.nativeElement.innerHTML = '';
+      this.titleService.setTitle(``);
+      this.addOrModifyTag({ property: 'og:title', content: `` });
       return;
     }
     this.mdPages.getPage(url)
       .then( p => {
         this.page = p;
-        this.renderAdapter.beforeRenderPage(p);
+        this.titleService.setTitle(`NForm: ${p.title}`);
+        this.addOrModifyTag({ property: 'og:title', content: `NGrid: ${p.title}` });
         this._elementRef.nativeElement.innerHTML = p.contents;
 
         if (typeof this._elementRef.nativeElement.getBoundingClientRect === 'function') {
@@ -115,7 +117,7 @@ export class MarkdownPageViewerComponent implements OnDestroy {
 
       const cfr = instructions.componentFactoryResolver || this._componentFactoryResolver;
       const injector = instructions.injector || this._injector;
-      const portalHost = new DomPortalHost(element, cfr, this._appRef, injector);
+      const portalHost = new DomPortalOutlet(element, cfr, this._appRef, injector);
       const cmpPortal = new ComponentPortal(instructions.cmp, this._viewContainerRef, injector, cfr);
       const cmpRef = portalHost.attach(cmpPortal);
 
@@ -138,6 +140,12 @@ export class MarkdownPageViewerComponent implements OnDestroy {
   private _clearLiveExamples() {
     this._portalHosts.forEach(h => h.dispose());
     this._portalHosts = [];
+  }
+
+  private addOrModifyTag(tag: MetaDefinition) {
+    if (!this.metaService.updateTag(tag)) {
+      this.metaService.addTag(tag);
+    }
   }
 
   ngOnDestroy(): void {

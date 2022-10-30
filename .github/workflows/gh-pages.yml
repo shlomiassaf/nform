@@ -1,0 +1,87 @@
+name: GH Pages on release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Define branch name'
+        required: true
+        default: 'master'
+      docsVersion:
+        description: 'Docs Major Version'
+        required: true
+        default: '2'
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        id: workflowVariables
+        with:
+          script: |
+            const CURRENT_VERSION = {
+              branch: '${{ github.event.inputs.branch}}' || 'master',
+              packageManager: 'yarn install',
+              nodeVer: 14,
+              urlSuffix: '',
+              projectName: 'nform-demo-app',
+              clean: true,
+              cleanExclude: ['v1'],
+            };
+            const OLD_VERSIONS = {
+              '1': {
+                branch: '1.0.x',
+                packageManager: 'yarn install',
+                nodeVer: 14,
+                urlSuffix: 'v1/',
+                projectName: 'nform-demo-app',
+                clean: false,
+                cleanExclude: [],
+              }
+            };
+            const docsVersion = OLD_VERSIONS['${{ github.event.inputs.docsVersion }}'] || CURRENT_VERSION;
+            return {
+              urlSuffix: docsVersion.urlSuffix,
+              branch: docsVersion.branch,
+              packageManager: docsVersion.packageManager,
+              nodeVer: docsVersion.nodeVer,
+              projectName: docsVersion.projectName,
+              clean: docsVersion.clean,
+              cleanExclude: JSON.stringify(docsVersion.cleanExclude),
+            };
+      - name: Workflow Variables
+        env:
+          WORKFLOW_VARS: ${{ steps.workflowVariables.outputs.result }}
+        run: |
+          echo -e "\033[31;1;4mDumpWorkflow Variables\033[0m"
+          echo -e "$WORKFLOW_VARS\n"
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ fromJson(steps.workflowVariables.outputs.result).branch }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ fromJson(steps.workflowVariables.outputs.result).nodeVer }}
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: ${{ fromJson(steps.workflowVariables.outputs.result).packageManager }}
+      - run: mkdir /home/runner/work/nform/nform/.cache
+      - run: ./node_modules/.bin/nx run nform-demo-app:ghPages:ci
+      - uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: dist/browser
+          BASE_BRANCH: ${{ fromJson(steps.workflowVariables.outputs.result).branch }}
+          TARGET_FOLDER: ${{fromJson(steps.workflowVariables.outputs.result).urlSuffix}}
+          CLEAN: ${{fromJson(steps.workflowVariables.outputs.result).clean}}
+          CLEAN_EXCLUDE: ${{fromJson(steps.workflowVariables.outputs.result).cleanExclude}}
+
+

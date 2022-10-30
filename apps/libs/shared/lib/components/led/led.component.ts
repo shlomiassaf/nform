@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, SimpleChanges, OnChanges } from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'pbl-led',
@@ -9,8 +9,8 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 })
 export class PblLedComponent implements OnChanges {
   @Input() color: 'red' | 'blue' | 'yellow' | 'green';
-  @Input() disabled: boolean;
-  @Input() blink: boolean;
+  @Input() disabled: BooleanInput;
+  @Input() blink: BooleanInput;
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('disabled' in changes) {

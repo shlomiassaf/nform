@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'div[ng-custom-logo]',
@@ -10,7 +10,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 })
 export class NgCustomLogoComponent {
   @Input() color: string;
-  @Input() set flat(value: boolean) {
+  @Input() set flat(value: BooleanInput) {
     this._flat = coerceBooleanProperty(value);
   }
 

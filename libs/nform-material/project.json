@@ -1,0 +1,89 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "nform-material",
+  "tags": [
+    "name:nform-material",
+    "type:lib"
+  ],
+  "sourceRoot": "libs/nform-material/src",
+  "projectType": "library",
+  "prefix": "pbl",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "targets": {
+    "build": {
+      "executor": "ng-cli-packagr-tasks:build",
+      "outputs": ["dist/@pebula/nform-material"],
+      "options": {
+        "tsConfig": "libs/nform-material/tsconfig.lib.json",
+        "project": "libs/nform-material/ng-package.json",
+        "tasks": {
+          "config": "tools/ng-packagr.transformers/nform-material.transformers.ts",
+          "tsConfig": "tools/tsconfig.json",
+          "data": {
+            "analyseSourcesWorkaround": {},
+            "copyFile": {
+              "assets": [
+                {
+                  "glob": "README.md",
+                  "input": ".",
+                  "output": "dist/@pebula/nform-material"
+                },
+                {
+                  "glob": "LICENSE",
+                  "input": ".",
+                  "output": "dist/@pebula/nform-material"
+                },
+                {
+                  "glob": "*.scss",
+                  "input": "libs/nform-material",
+                  "output": "dist/@pebula/nform-material"
+                },
+                {
+                  "glob": "**/*.scss",
+                  "input": "libs/nform-material/theming",
+                  "output": "dist/@pebula/nform-material/theming"
+                },
+                {
+                  "glob": "*/theming/**/*.scss",
+                  "input": "libs/nform-material",
+                  "output": "dist/@pebula/nform-material"
+                }
+              ]
+            },
+            "sassCompile": {
+              "entries": [
+                {
+                  "glob": "*.scss",
+                  "input": "libs/nform-material/theming/prebuilt",
+                  "output": "dist/@pebula/nform-material/themes"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/nform-material/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/nform-material/tsconfig.lib.json"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/nform-material"
+      ],
+      "options": {
+        "jestConfig": "libs/nform-material/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

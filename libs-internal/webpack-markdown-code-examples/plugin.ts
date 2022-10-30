@@ -7,11 +7,12 @@ const remarkPrismJs = require('gatsby-remark-prismjs');
 
 const { util: { createHash } } = webpack as any;
 
-import { DynamicModuleUpdater } from '@pebula-internal/webpack-dynamic-module';
+import { PebulaDynamicDictionaryWebpackPlugin } from '@pebula-internal/webpack-dynamic-dictionary';
+import { PebulaNoCleanIfAnyWebpackPlugin } from '@pebula-internal/webpack-no-clean-if-any';
 import { ParsedExampleMetadata, ExampleFileAsset } from './models';
 import { createInitialExampleFileAssets, parseExampleTsFile } from './utils';
 
-declare module '@pebula-internal/webpack-dynamic-module/plugin' {
+declare module '@pebula-internal/webpack-dynamic-dictionary/plugin' {
   interface DynamicExportedObject {
     markdownCodeExamples: string;
   }
@@ -20,51 +21,72 @@ declare module '@pebula-internal/webpack-dynamic-module/plugin' {
 const pluginName = 'markdown-code-examples-webpack-plugin';
 
 export interface MarkdownCodeExamplesWebpackPluginOptions {
+  context: string;
   docsPath: string | string[];
 }
 
-export class MarkdownCodeExamplesWebpackPlugin implements webpack.Plugin {
+export class MarkdownCodeExamplesWebpackPlugin {
 
   startTime = Date.now();
   prevTimestamps = new Map<string, number>();
 
   private options: MarkdownCodeExamplesWebpackPluginOptions;
   private cache = new Map<string, ParsedExampleMetadata>();
+  private urlCache = new Map<string, ParsedExampleMetadata>();
+  private lastNavEntriesAssetPath: string;
   private firstRun = true;
-  private compiler: webpack.Compiler;
+  private compiler: webpack.Compiler & { watchMode?: boolean };
+  private watchMode?: boolean;
 
   constructor(options: MarkdownCodeExamplesWebpackPluginOptions) {
     this.options = { ...options };
   }
 
-  apply(compiler: webpack.Compiler): void {
+  apply(compiler: webpack.Compiler & { watchMode?: boolean }): void {
     this.compiler = compiler;
-    compiler.hooks.pebulaDynamicModuleUpdater.tap(pluginName, notifier => {
-      compiler.hooks.run.tapPromise(pluginName, async () => { await this.run(compiler); });
-      compiler.hooks.watchRun.tapPromise(pluginName, async () => { await this.run(compiler); });
-      compiler.hooks.compilation.tap(pluginName, compilation => { this.emit(compilation, notifier) });
-      compiler.hooks.afterCompile.tapPromise(pluginName, async compilation => {
-        for (let obj of Array.from(this.cache.values())) {
+    compiler.hooks.run.tapPromise(pluginName, async () => { await this.run(compiler); });
+    compiler.hooks.watchRun.tapPromise(pluginName, async () => { await this.run(compiler); });
+    PebulaNoCleanIfAnyWebpackPlugin.getCompilationHooks(this.compiler).keep.tap(pluginName, asset => this.lastNavEntriesAssetPath === asset || this.urlCache.has(asset));
+    compiler.hooks.thisCompilation.tap(pluginName, compilation => {
+      this.emit(compilation);
+
+      compilation.hooks.fullHash.tap(pluginName, hash => {
+        hash.update(this.lastNavEntriesAssetPath);
+      });
+
+      compilation.hooks.afterSeal.tapPromise(pluginName, async () => {
+        for (const obj of Array.from(this.cache.values())) {
           for (const fullPath of Array.from(obj.pathAssets.keys())) {
             compilation.fileDependencies.add(fullPath);
           }
         }
-        this.prevTimestamps = compilation.fileTimestamps;
+        this.prevTimestamps = compilation.fileSystemInfo.getDeprecatedFileTimestamps();
       });
-
     });
   }
 
-  private emit(compilation: webpack.compilation.Compilation, notifier: DynamicModuleUpdater) {
-    let changedFiles: Set<string>;
+  private emit(compilation: webpack.Compilation) {
+    let changedFiles: Set<ParsedExampleMetadata>;
 
-    if (!this.firstRun && this.compiler.options.watch) {
-      changedFiles = new Set<string>();
-      for (const watchFile of Array.from(compilation.fileTimestamps.keys())) {
-        if ( (this.prevTimestamps.get(watchFile) || this.startTime) < (compilation.fileTimestamps.get(watchFile) || Infinity) ) {
-          changedFiles.add(watchFile);
+    if (!this.firstRun && this.watchMode) {
+      changedFiles = new Set<ParsedExampleMetadata>();
+      for (const obj of Array.from(this.cache.values())) {
+        if (obj.forceRender || !obj.postRenderMetadata) {
+          changedFiles.add(obj);
+        } else {
+          for (const watchFile of Array.from(obj.pathAssets.keys())) {
+            if ( (this.prevTimestamps.get(watchFile) || this.startTime) < (compilation.fileSystemInfo.getDeprecatedFileTimestamps().get(watchFile) || Infinity) ) {
+              changedFiles.add(obj);
+            }
+          }
         }
       }
+    } else {
+      changedFiles = new Set(this.cache.values());
+    }
+
+    if (changedFiles.size === 0) {
+      return;
     }
 
     const { hashFunction, hashDigest, hashDigestLength } = compilation.outputOptions;
@@ -80,10 +102,17 @@ export class MarkdownCodeExamplesWebpackPlugin implements webpack.Plugin {
       hash.update(source);
       outputAssetPath = `${obj.selector}-${hash.digest(hashDigest).substring(0, hashDigestLength)}.json`;
 
-      compilation.assets[outputAssetPath] = {
-        source: () => source,
-        size: () => source.length
-      };
+      if (!this.urlCache.has(outputAssetPath))
+      {
+        var prev = obj.postRenderMetadata?.outputAssetPath;
+        if (!!prev && this.urlCache.has(prev))
+        {
+          this.urlCache.delete(prev);
+        }
+
+        this.urlCache.set(outputAssetPath, obj);
+        compilation.emitAsset(outputAssetPath, new webpack.sources.RawSource(source));
+      }
 
       obj.postRenderMetadata = {
         outputAssetPath,
@@ -94,43 +123,48 @@ export class MarkdownCodeExamplesWebpackPlugin implements webpack.Plugin {
 
     for (let obj of Array.from(this.cache.values())) {
 
-      if (obj.forceRender || !obj.postRenderMetadata || !changedFiles) {
+      if (changedFiles.has(obj)) {
+        if (!obj.forceRender && !!obj.postRenderMetadata) {
+          obj = this.processFile(obj.cacheId);
+        }
         obj.forceRender = false;
         renderPage(obj);
-      } else if (changedFiles) {
-        for (const fullPath of Array.from(obj.pathAssets.keys())) {
-          if (changedFiles.has(fullPath)) {
-            obj = this.processFile(obj.cacheId);
-            obj.forceRender = false;
-            renderPage(obj);
-            break;
-          }
-        }
       }
 
       if (obj.postRenderMetadata.outputAssetPath) {
         navMetadata[obj.selector] = obj.postRenderMetadata.outputAssetPath;
       }
+
+      const now = Date.now();
+      for (const watchFile of Array.from(obj.pathAssets.keys())) {
+        compilation.fileSystemInfo.getDeprecatedFileTimestamps().set(watchFile, now);
+        this.prevTimestamps.set(watchFile, now);
+      }
+
     }
+
+    this.firstRun = false;
+
 
     const navEntriesSource = JSON.stringify(navMetadata);
     const hash = createHash(hashFunction);
     hash.update(navEntriesSource);
-    const navEntriesAssetPath = `${hash.digest(hashDigest).substring(0, hashDigestLength)}.json`;
 
-    // TODO: Remove previous asset
-    compilation.assets[navEntriesAssetPath] = {
-      source: () => navEntriesSource,
-      size: () => navEntriesSource.length
-    };
-    notifier('markdownCodeExamples', navEntriesAssetPath);
+    const lastNavEntriesAssetPath = this.lastNavEntriesAssetPath;
+    this.lastNavEntriesAssetPath = `${hash.digest(hashDigest).substring(0, hashDigestLength)}.json`;
+    if (lastNavEntriesAssetPath === this.lastNavEntriesAssetPath)
+      return;
 
-    this.firstRun = false;
+    compilation.emitAsset(this.lastNavEntriesAssetPath, new webpack.sources.RawSource(navEntriesSource));
+
+    PebulaDynamicDictionaryWebpackPlugin.find(this.compiler).update('markdownCodeExamples', this.lastNavEntriesAssetPath);
   }
 
-  private async run(compiler: webpack.Compiler) {
+  private async run(compiler: webpack.Compiler & { watchMode?: boolean }) {
+    // Store watch mode; assume true if not present (webpack < 4.23.0)
+    this.watchMode = compiler.watchMode ?? true;
     const paths = await globby(this.options.docsPath, {
-      cwd: compiler.options.context
+      cwd: this.options.context
     });
 
     for (const p of paths) {
@@ -141,44 +175,41 @@ export class MarkdownCodeExamplesWebpackPlugin implements webpack.Plugin {
   }
 
   private processFile(file: string) {
-    const fullPath = Path.join(this.compiler.options.context, file);
+    const fullPath = Path.join(this.options.context, file);
     const source = FS.readFileSync(fullPath, { encoding: 'utf-8' });
     const root = Path.dirname(fullPath);
     const primary = parseExampleTsFile(fullPath, source);
 
     if (primary) {
-      const [ primaryAsset, ...assets ] = createInitialExampleFileAssets(fullPath, primary);
+      const assets = createInitialExampleFileAssets(fullPath, primary);
       const pathAssets = new Map<string, ExampleFileAsset>();
-
-      const renderCodeContent = (asset: ExampleFileAsset) => {
-        const markdownAST = {
-          lang: asset.lang,
-          value: asset.source,
-          type: 'code',
-        };
-
-        remarkPrismJs({ markdownAST });
-        asset.contents = markdownAST.value;
-      };
-
-      primaryAsset.source = source;
-      pathAssets.set(fullPath, primaryAsset);
-      renderCodeContent(primaryAsset);
-
       for (const asset of assets) {
-        const secondaryFullPath = Path.join(root, asset.file);
-        asset.source = FS.readFileSync(secondaryFullPath, { encoding: 'utf-8' });
-        pathAssets.set(secondaryFullPath, asset);
-        renderCodeContent(asset);
+        if (asset.parent === primary.component && asset.lang === 'typescript') {
+          asset.source = source.split('\n').filter( line => !line.startsWith('@Example(') && !(line.startsWith('import') && line.includes(' Example '))).join('\n');
+          pathAssets.set(fullPath, asset);
+        } else {
+          const secondaryFullPath = Path.join(root, asset.file);
+          asset.source = FS.readFileSync(secondaryFullPath, { encoding: 'utf-8' });
+          if (asset.source) {
+            pathAssets.set(secondaryFullPath, asset);
+          }
+        }
+        if (asset.source) {
+          const markdownAST = {
+            lang: asset.lang,
+            value: asset.source,
+            type: 'code',
+          };
+          remarkPrismJs({ markdownAST });
+          asset.contents = markdownAST.value;
+        }
       }
-
-      assets.unshift(primaryAsset);
 
       const parsedExample: ParsedExampleMetadata = {
         cacheId: file,
         selector: primary.selector,
         root,
-        assets,
+        assets: assets.filter( a => !!a.source ),
         pathAssets,
         forceRender: true,
       };

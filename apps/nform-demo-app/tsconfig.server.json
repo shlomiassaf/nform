@@ -3,6 +3,15 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc"
   },
+  "exclude": [
+    "src/test-setup.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "./build/**/*.ts",
+    "src/app/app.browser.module.ts",
+    "src/main.ts",
+    "../libs/shared-data/**/*.worker.ts"
+  ],
   "angularCompilerOptions": {
     "entryModule": "./src/app/app.server.module#AppServerModule"
   }

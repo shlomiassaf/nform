@@ -1,5 +1,4 @@
 import { Type, Injector, ComponentFactoryResolver } from '@angular/core';
-import { PageFileAsset } from '@pebula-internal/webpack-markdown-pages';
 
 import { MarkdownDynamicComponentPortal } from '../markdown-dynamic-component-portal';
 
@@ -14,8 +13,6 @@ export class MarkdownPageViewerRenderAdapter {
 
   readonly dynamicComponents: ReadonlyArray<MarkdownPageViewerRenderInstructions>;
 
-
-  beforeRenderPage(page?: PageFileAsset): void {}
 
   beforeRenderComponent<T extends MarkdownDynamicComponentPortal>(instance: T, cmp: Type<T>, element: HTMLElement): void {
   }

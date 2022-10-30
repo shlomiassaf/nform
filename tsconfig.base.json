@@ -1,0 +1,30 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": ["node_modules/@types", "libs-internal/local-types"],
+    "types": ["dev-mode-types"],
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@pebula-internal/nx-repo-plugins": ["libs-internal/nx-repo-plugins/src/index.ts"],
+      "@pebula-internal/*": ["libs-internal/*/src/index.ts", "libs-internal/*"],
+      "@pebula/apps/*": ["apps/libs/*", "apps/libs/*/src/index.ts"],
+      "@pebula/nform/lib/*": ["libs/nform/src/lib/*"],
+      "@pebula/nform-material/lib/*": ["libs/nform-material/src/lib/*"],
+      "@pebula/metap/internal/lib/*": ["libs/metap/internal/src/lib/*"],
+      "@pebula/*": ["libs/*/src/index.ts", "libs/*"]
+    }
+  },
+  "exclude": ["dist", "node_modules", "tmp"]
+}

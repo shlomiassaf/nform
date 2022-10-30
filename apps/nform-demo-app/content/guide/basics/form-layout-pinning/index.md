@@ -7,7 +7,7 @@ ordinal: 2
 ---
 # Form Layout Pinning
 
-In [Form Layout](../form-layout) we've learned that **nGrid** will layout the controls
+In [Form Layout](../form-layout) we've learned that **nForm** will layout the controls
 one after the other, in the order they were defined.  
 We can customize the layout by wrapping the controls with containers and styling them but
 each of them will be rendered in sequence.
@@ -31,7 +31,7 @@ We want to display a single-column form, with one column holding 2 controls, lik
 
 <div pbl-example-view="pbl-form-layout-pinning-example"></div>
 
-By using `<nform-pin controlName="id"></nform-pin>` create a pin for **nGrid** to render the control in, ignoring the layout.
+By using `<nform-pin controlName="id"></nform-pin>` create a pin for **nForm** to render the control in, ignoring the layout.
 
 ## Location Only
 

@@ -31,9 +31,9 @@
     <textarea matInput
               [formControl]="ctx.fControl"
               [placeholder]="showLabels && ctx.item.label"
-              matTextareaAutosize
-              [matAutosizeMinRows]="ctx.item.data?.autoSize ? ctx.item.data.minRows : 1"
-              [matAutosizeMaxRows]="ctx.item.data?.autoSize ? ctx.item.data.maxRows : 1"></textarea>
+              cdkTextareaAutosize
+              [cdkAutosizeMinRows]="ctx.item.data?.autoSize ? ctx.item.data.minRows : 1"
+              [cdkAutosizeMaxRows]="ctx.item.data?.autoSize ? ctx.item.data.maxRows : 1"></textarea>
     <mat-error *ngIf="self.hasError('required', ctx)">Required</mat-error>
   </mat-form-field>
 </ng-template>

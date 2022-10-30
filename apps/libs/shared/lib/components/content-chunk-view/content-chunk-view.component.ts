@@ -1,8 +1,9 @@
 import {
   Component,
-  Type,
   InjectionToken,
   Inject,
+  INJECTOR,
+  Injector,
 } from '@angular/core';
 
 import { UnRx } from '@pebula/utils';
@@ -26,7 +27,8 @@ export interface LiveContentChunk {
 export class ContentChunkViewComponent extends MarkdownDynamicComponentPortal {
   contentChunkData: LiveContentChunk;
 
-  constructor(@Inject(CONTENT_CHUNKS_COMPONENTS) private contentChunks: {[key: string]: LiveContentChunk} ) { super(); }
+  constructor(@Inject(INJECTOR) injector: Injector,
+              @Inject(CONTENT_CHUNKS_COMPONENTS) private contentChunks: {[key: string]: LiveContentChunk} ) { super(injector); }
 
   getRenderTypes(selector: string) {
     this.contentChunkData = this.contentChunks[selector];

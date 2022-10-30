@@ -1,6 +1,6 @@
 {
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../../dist/libs/@pebula/metap/internal",
+  "dest": "../../../dist/@pebula/nform/internal",
   "lib": {
     "entryFile": "src/index.ts"
   }

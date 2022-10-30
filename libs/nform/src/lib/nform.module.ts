@@ -1,4 +1,4 @@
-import { ANALYZE_FOR_ENTRY_COMPONENTS, NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -46,16 +46,11 @@ export class PblNFormModule {
   /**
    * Registers the module with and required services and with the default form control renderer.
    */
-  static forRoot(formComponent: DefaultRenderer): ModuleWithProviders {
+  static forRoot(formComponent: DefaultRenderer): ModuleWithProviders<PblNFormModule> {
     return {
       ngModule: PblNFormModule,
       providers: [
         NFormFactoryService,
-        {
-          provide: ANALYZE_FOR_ENTRY_COMPONENTS,
-          multi: true,
-          useValue: [{ component: formComponent }]
-        },
         { provide: FORM_CONTROL_COMPONENT, useValue: formComponent }
       ]
     };
@@ -65,15 +60,10 @@ export class PblNFormModule {
    * Registers the module with the default form control renderer.
    * Use this when adding to child modules which requires a different renderer.
    */
-  static forChild(formComponent: DefaultRenderer): ModuleWithProviders {
+  static forChild(formComponent: DefaultRenderer): ModuleWithProviders<PblNFormModule> {
     return {
       ngModule: PblNFormModule,
       providers: [
-        {
-          provide: ANALYZE_FOR_ENTRY_COMPONENTS,
-          multi: true,
-          useValue: [{ component: formComponent }]
-        },
         { provide: FORM_CONTROL_COMPONENT, useValue: formComponent }
       ]
     };

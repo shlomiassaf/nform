@@ -119,7 +119,7 @@ The entire layout methods we've covered allow us to control the space a control 
 The layout is declared by templates, we use templates to define a container that renders a control but when, where and
 in what order are they rendered?
 
-**nGrid** controls the rendering of components and it does that in the order defined in the metadata.  
+**nForm** controls the rendering of components and it does that in the order defined in the metadata.  
 If order is not explicitly defined, the default order is the order of the properties defined on the class (top to bottom).
 
 To define the order, use the `ordinal` property provided in `FormPropMetadataArgs`.
@@ -169,7 +169,7 @@ properties were defined on the class.
 
 ## Breaking the Layout
 
-**nGrid** will render controls one after the other, in the order they are defined, can we break it?
+**nForm** will render controls one after the other, in the order they are defined, can we break it?
 
 Yes, we can break the layout and we should do it if:
 

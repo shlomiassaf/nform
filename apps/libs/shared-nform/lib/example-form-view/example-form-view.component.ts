@@ -8,7 +8,7 @@ import { ExampleViewComponent } from '@pebula/apps/shared';
 import { AbstractControl } from '@angular/forms';
 import { NFormComponent } from '@pebula/nform';
 
-import * as hljs from 'highlight.js/lib/highlight';
+import * as hljs from 'highlight.js';
 hljs.registerLanguage('json', require(`highlight.js/lib/languages/json.js`));
 
 @Component({

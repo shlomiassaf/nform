@@ -1,26 +1,15 @@
 {
-  "extends": "../../tsconfig.lib.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
+    "rootDir": ".",
+    "paths": {
+      "@pebula/*": ["dist/@pebula/*"]
+    },
     "outDir": "../../dist/out-tsc",
-    "target": "es2015",
-    "module": "es2015",
-    "moduleResolution": "node",
     "declaration": true,
-    "sourceMap": true,
+    "declarationMap": true,
     "inlineSources": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "types": [],
-    "lib": ["dom", "es2018"]
+    "types": ["dev-mode-types"]
   },
-  "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-    "enableResourceInlining": true
-  },
-  "exclude": ["src/test.ts", "**/*.spec.ts"]
+  "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.test.ts"]
 }
