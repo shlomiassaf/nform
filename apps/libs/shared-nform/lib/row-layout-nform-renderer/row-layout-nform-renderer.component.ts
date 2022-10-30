@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { FormGroup, FormArray, FormControl } from '@angular/forms';
 import { NFormComponent, NFormRecordRef, NForm, NFormControlTemplateContext } from '@pebula/nform';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'row-layout-nform-renderer',
@@ -10,7 +10,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PblRowLayoutNformRenderer implements NFormControlTemplateContext, OnChanges {
-  @Input() custom: boolean;
+  @Input() custom: BooleanInput;
   @Input() nFormCmp: NFormComponent;
   @Input() item: NFormRecordRef;
   @Input() nForm: NForm<any>;

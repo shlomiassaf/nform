@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "paths": {
+      "@pebula-internal/*": ["libs-internal/*/src/index.ts", "libs-internal/*"],
+      "@pebula/apps/*": ["apps/libs/*", "apps/libs/*/src/index.ts"],
+      "@pebula/utils/lib/*": ["dist/@pebula/utils/lib/*"],
+      "@pebula/metap/lib/*": ["dist/@pebula/metap/lib/*"],
+      "@pebula/nform/lib/*": ["dist/@pebula/nform/lib/*"],
+      "@pebula/nform-material/lib/*": ["dist/@pebula/nform-material/lib/*"],
+      "@pebula/*": ["dist/@pebula/*"]
+    }
+  }
+}

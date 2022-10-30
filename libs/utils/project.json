@@ -1,0 +1,60 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "utils",
+  "tags": [
+    "name:utils",
+    "type:lib"
+  ],
+  "sourceRoot": "libs/utils/src",
+  "projectType": "library",
+  "prefix": "pbl",
+  "targets": {
+    "build": {
+      "executor": "ng-cli-packagr-tasks:build",
+      "outputs": ["dist/@pebula/utils"],
+      "options": {
+        "tsConfig": "libs/utils/tsconfig.lib.json",
+        "project": "libs/utils/ng-package.json",
+        "tasks": {
+          "config": "tools/ng-packagr.transformers/utils.transformers.ts",
+          "tsConfig": "tools/tsconfig.json",
+          "data": {
+            "analyseSourcesWorkaround": {},
+            "copyFile": {
+              "assets": [
+                {
+                  "glob": "README.md",
+                  "input": "./libs/utils",
+                  "output": "dist/@pebula/utils"
+                },
+                {
+                  "glob": "LICENSE",
+                  "input": ".",
+                  "output": "dist/@pebula/utils"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/utils/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/utils/tsconfig.lib.json"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/utils"
+      ],
+      "options": {
+        "jestConfig": "libs/utils/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

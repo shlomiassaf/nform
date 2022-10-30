@@ -1,0 +1,89 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "nform",
+  "tags": [
+    "name:nform",
+    "type:lib"
+  ],
+  "sourceRoot": "libs/nform/src",
+  "projectType": "library",
+  "prefix": "pbl",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "targets": {
+    "build": {
+      "executor": "ng-cli-packagr-tasks:build",
+      "outputs": ["dist/@pebula/nform"],
+      "options": {
+        "tsConfig": "libs/nform/tsconfig.lib.json",
+        "project": "libs/nform/ng-package.json",
+        "tasks": {
+          "config": "tools/ng-packagr.transformers/nform.transformers.ts",
+          "tsConfig": "tools/tsconfig.json",
+          "data": {
+            "analyseSourcesWorkaround": {},
+            "copyFile": {
+              "assets": [
+                {
+                  "glob": "README.md",
+                  "input": ".",
+                  "output": "dist/@pebula/nform"
+                },
+                {
+                  "glob": "LICENSE",
+                  "input": ".",
+                  "output": "dist/@pebula/nform"
+                },
+                {
+                  "glob": "*.scss",
+                  "input": "libs/nform",
+                  "output": "dist/@pebula/nform"
+                },
+                {
+                  "glob": "**/*.scss",
+                  "input": "libs/nform/theming",
+                  "output": "dist/@pebula/nform/theming"
+                },
+                {
+                  "glob": "*/theming/**/*.scss",
+                  "input": "libs/nform",
+                  "output": "dist/@pebula/nform"
+                }
+              ]
+            },
+            "sassCompile": {
+              "entries": [
+                {
+                  "glob": "*.scss",
+                  "input": "libs/nform/theming/prebuilt",
+                  "output": "dist/@pebula/nform/themes"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/nform/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/nform/tsconfig.lib.json"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/nform"
+      ],
+      "options": {
+        "jestConfig": "libs/nform/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

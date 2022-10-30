@@ -29,13 +29,15 @@ export {
   createChildFormEvent,
 } from './events/index';
 
-export { NFormComponent, NFormArrayComponent, ForFormArrayDirective, NFormPinComponent } from './components/index';
+export { NFormComponent, NFormArrayComponent, ForFormArrayDirective, NFormPinComponent, NFormArrayDirective } from './components/index';
 
 export {
   NFormDirective,
   NFormControlDirective,
   NFormOverrideDirective,
   NFormOverrideContext,
+  NFormControlOutletDirective,
+  PblExplodeChildFormPipe,
 } from './directives/index';
 
 export { NFormFactoryService } from './services/index';

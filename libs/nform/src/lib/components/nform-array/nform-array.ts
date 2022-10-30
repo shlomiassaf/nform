@@ -1,10 +1,11 @@
 
-import { ComponentFactoryResolver, ViewContainerRef, OnChanges, SimpleChanges } from '@angular/core';
+import { ComponentFactoryResolver, ViewContainerRef, SimpleChanges, Directive, OnChanges } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 
 import { NForm, NFormRecordRef, NFormControlTemplateContext } from '../../nform/index';
 import { NFormComponent } from '../nform/nform.component';
 
+@Directive()
 export abstract class NFormArray implements OnChanges {
   nFormCmp: NFormComponent;
   fArray: FormArray;

@@ -473,7 +473,7 @@ export function deepGetFormProp<T, Z>(type: Z & Constructor<T>, prop: keyof T | 
   const key = path.shift();
   let formProp = formModel.getProp(key as any);
   if (!formProp) {
-    throw new Error(`Target '${stringify(type)}' does not have a PropForm decorator for property ${key}`);
+    throw new Error(`Target '${stringify(type)}' does not have a PropForm decorator for property ${String(key)}`);
   }
 
   /*  At this point there are several scenarios:
@@ -509,7 +509,7 @@ export function deepGetFormProp<T, Z>(type: Z & Constructor<T>, prop: keyof T | 
     } else if (formProp.childForm) {
       if (!formProp.rtType) {
         // tslint:disable-next-line
-        throw new Error(`Error trying deep access to a flatten declaration, "rtType" is not set but "childForm" is in section "${key}"`);
+        throw new Error(`Error trying deep access to a flatten declaration, "rtType" is not set but "childForm" is in section "${String(key)}"`);
       }
     }
   }
@@ -522,7 +522,7 @@ export function deepGetFormProp<T, Z>(type: Z & Constructor<T>, prop: keyof T | 
   if (formProp.childForm && path.length > 0) {
     if (!targetStore.hasTarget(typeMeta.ref)) {
       // tslint:disable-next-line
-      throw new Error(`Error trying deep access with a "childForm" found in path section "${key}", "${typeMeta.ref}" is not a registered model`);
+      throw new Error(`Error trying deep access with a "childForm" found in path section "${String(key)}", "${typeMeta.ref}" is not a registered model`);
     }
     return deepGetFormProp(typeMeta.ref, [path.shift(), path.join('.')] as any);
   }

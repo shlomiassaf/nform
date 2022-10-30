@@ -673,7 +673,7 @@ export class NFormComponent<T = any> implements PropNotifyHandler,
       new Promise(resolve =>
         setTimeout(() => {
           this.emitRenderingState(true);
-          resolve();
+          resolve(undefined);
         })
       )
     ];

@@ -104,9 +104,12 @@ function createControlFromContext(context: FormProxyContext, value: any): FormGr
 }
 
 function createFormArrayProxy<T = any>(context: FormProxyContext, formProp: FormPropMetadata): Array<T> {
-  const arrayChangeHandler = {
-    get: function(target: FormProxy<Array<T>>, property: string | number, receiver: FormProxy<Array<T>>) {
-      if (typeof property === 'number' || property.match(/^\d/)) {
+  const arrayChangeHandler: ProxyHandler<FormProxy<Array<T>>> = {
+    get: function(target: FormProxy<Array<T>>, property: string | symbol | number, receiver: FormProxy<Array<T>>) {
+      if (typeof property === 'symbol')
+        property = String(property);
+
+      if (typeof property === 'number' || (property as any).match(/^\d/)) {
         if (property >= target.length) {
           createProxyProp(target, property as any, formProp, true);
         }
@@ -170,7 +173,10 @@ function createFormArrayProxy<T = any>(context: FormProxyContext, formProp: Form
         }
       }
     },
-    set: function(target: FormProxy<Array<T>>, property: string | number, value: T, receiver: FormProxy<Array<T>>) {
+    set: function(target: FormProxy<Array<T>>, property: string | symbol | number, value: T, receiver: FormProxy<Array<T>>) {
+      if (typeof property === 'symbol')
+        property = String(property);
+
       if (typeof property === 'number' || property.match(/^\d/)) {
         if (property >= target.length) {
           const ctrl = createControlFromContext(context, value);
@@ -190,5 +196,5 @@ function createFormArrayProxy<T = any>(context: FormProxyContext, formProp: Form
 
   const proxy: FormProxy<Array<T>> = [] as any;
   Object.defineProperty(proxy, THIS_FORM_CONTEXT, { value: context, enumerable: false, writable: false, configurable: false });
-  return new Proxy<FormProxy<Array<T>>>(proxy, arrayChangeHandler );
+  return new Proxy<FormProxy<Array<T>>>(proxy, arrayChangeHandler);
 }

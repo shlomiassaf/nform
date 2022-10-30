@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { NFormControlTemplateContext, NFormRecordRef } from '../nform/index';
-import { NFormComponent } from '../components/nform/nform.component';
+import type { NFormComponent } from '../components/nform/nform.component';
 import { NFormComponentToken } from '../constants';
 
 /**

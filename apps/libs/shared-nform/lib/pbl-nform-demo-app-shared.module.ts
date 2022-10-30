@@ -45,7 +45,7 @@ import { PblNformCreateNotify, PblNformCreateNotifier } from './pbl-nform-create
   entryComponents: [ PblExampleFormViewComponent, PblRowLayoutNformRenderer ],
 })
 export class PblNformDemoAppSharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<PblNformDemoAppSharedModule> {
     return {
       ngModule: PblNformDemoAppSharedModule,
       providers: [

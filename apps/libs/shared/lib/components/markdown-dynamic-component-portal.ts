@@ -1,6 +1,6 @@
 import { BehaviorSubject, timer, race } from 'rxjs';
 import { filter, mapTo } from 'rxjs/operators';
-import { ComponentRef, Type, Injector, StaticProvider } from '@angular/core';
+import { ComponentRef, Inject, INJECTOR, Injector, StaticProvider, Type } from '@angular/core';
 import { ComponentPortal, CdkPortalOutletAttachedRef } from '@angular/cdk/portal';
 
 import { UnRx } from '@pebula/utils';
@@ -19,16 +19,17 @@ export abstract class MarkdownDynamicComponentPortal {
   inputParams: any;
   containerClass: string;
 
-  constructor(private lazyModuleStore?: LazyModuleStoreService) {  }
+  constructor(@Inject(INJECTOR) private _injector: Injector) {  }
 
   abstract getRenderTypes(selector: string): { component?: Type<any>; moduleType?: Type<any>; } | undefined;
 
   render(...providers: StaticProvider[]): void {
     UnRx.kill(this, 'render');
     const { component, moduleType } = this.getRenderTypes(this.componentName) || <any>{};
+    const lazyModuleStore = this._injector.get(LazyModuleStoreService, null);
     if (component) {
-      const ngModule = this.lazyModuleStore && this.lazyModuleStore.get(moduleType);
-      let injector = ngModule ? ngModule.injector : null;
+      const ngModule = lazyModuleStore && lazyModuleStore.get(moduleType);
+      let injector = ngModule ? ngModule.injector : null as Injector;
       if (providers.length > 0) {
         injector = Injector.create({ providers, parent: injector });
       }
@@ -36,10 +37,10 @@ export abstract class MarkdownDynamicComponentPortal {
       this.selectedPortal$.next(new ComponentPortal(component, null, injector, componentFactoryResolver));
     } else {
       this.selectedPortal$.next(null);
-      if (this.lazyModuleStore) {
+      if (lazyModuleStore) {
         const timeout = {};
         const time$ = timer(COMPONENT_WAIT_TIMEOUT).pipe(mapTo(timeout), UnRx(this, 'render'));
-        const init$ = this.lazyModuleStore.moduleInit.pipe(
+        const init$ = lazyModuleStore.moduleInit.pipe(
           filter( () => !!this.getRenderTypes(this.componentName) ),
           UnRx(this, 'render')
         );

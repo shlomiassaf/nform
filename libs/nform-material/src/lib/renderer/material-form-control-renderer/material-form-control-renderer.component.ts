@@ -9,7 +9,7 @@ import {
   ChangeDetectorRef,
   Optional
 } from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 
@@ -54,7 +54,7 @@ export class MaterialFormControlRenderer implements MaterialStoreInstance, NForm
     }
   }
 
-  @Input() showLabels: boolean = true;
+  @Input() showLabels: BooleanInput = true;
   @Input() item: NFormRecordRef;
   @Input() nForm: NForm<any>;
 

@@ -3,7 +3,7 @@ import { debounceTime, map, distinctUntilChanged } from 'rxjs/operators';
 import { AfterContentInit, Directive, ElementRef, Input, OnDestroy, Optional } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { TocHeadDirective } from './toc-head.directive';
 import { tocLinkfromStaticElement } from './toc-link';
 import { TOC_AREA_DIRECTIVE_TOKEN } from './toc-area.token';
@@ -89,7 +89,7 @@ export class TocAreaDirective implements AfterContentInit, OnDestroy {
    * angular elements will comes before or after static elements. (before on first route rendering,
    * after on 2nd route rendering [same route, different params])
    */
-  @Input() staticHtmlMode: boolean | Promise<any>;
+  @Input() staticHtmlMode: BooleanInput | Promise<any>;
 
   /**
    * The selector to use when `staticHtmlMode` is true.

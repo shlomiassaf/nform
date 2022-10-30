@@ -1,0 +1,42 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "nform-demo-app-e2e",
+  "tags": [
+    "type:e2e-app",
+    "parent:nform-demo-app"
+  ],
+  "sourceRoot": "apps/nform-demo-app-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/nform-demo-app-e2e/cypress.config.ts",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "development": {
+          "devServerTarget": "nform-demo-app:serve:development"
+        },
+        "development-dist": {
+          "devServerTarget": "nform-demo-app:serve:development-dist"
+        },
+        "production": {
+          "devServerTarget": "nform-demo-app:serve:production"
+        },
+        "production-dist": {
+          "devServerTarget": "nform-demo-app:serve:production-dist"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/nform-demo-app-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "implicitDependencies": ["nform-demo-app"]
+}

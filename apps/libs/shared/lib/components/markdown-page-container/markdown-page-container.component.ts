@@ -10,7 +10,7 @@ import { MarkdownPagesMenuService } from '../../services/markdown-pages-menu.ser
 
 declare const ANGULAR_VERSION: string;
 declare const CDK_VERSION: string;
-declare const LIB_VERSION: string;
+declare const NFORM_VERSION: string;
 declare const BUILD_VERSION: string;
 
 @Component({
@@ -29,7 +29,7 @@ export class MarkdownPageContainerComponent implements OnDestroy {
 
   ngVersion = ANGULAR_VERSION;
   cdkVersion = CDK_VERSION;
-  libVersion = LIB_VERSION;
+  libVersion = NFORM_VERSION;
   buildVersion = BUILD_VERSION;
 
   constructor(private mdPagesMenu: MarkdownPagesMenuService, private route: ActivatedRoute, private cdr: ChangeDetectorRef) { }

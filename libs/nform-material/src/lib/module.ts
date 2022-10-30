@@ -36,7 +36,7 @@ export class PblNformMaterialModule {
     }
   }
 
-  static forRoot(defaultRenderer?: DefaultRenderer): ModuleWithProviders {
+  static forRoot(defaultRenderer?: DefaultRenderer): ModuleWithProviders<PblNformMaterialModule> {
     // if (defaultRenderer && !isFunction(defaultRenderer)) {
     //   if ( !('*' in defaultRenderer) ) {
     //     defaultRenderer['*'] = MaterialFormControlRenderer;

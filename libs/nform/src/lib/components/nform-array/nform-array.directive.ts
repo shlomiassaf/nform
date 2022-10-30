@@ -57,7 +57,6 @@ export class ForFormArrayDirective extends NgForOf<NFormControlTemplateContext>
   // tslint:disable
   @Input('forFormArrayOf') fArray: FormArray;
   @Input('forFormArrayTrackBy')
-  ngForTrackBy: TrackByFunction<NFormControlTemplateContext>;
 
   @Input('forFormArrayNFormCmp') nFormCmp: NFormComponent;
   @Input('forFormArrayFGroup') fGroup: FormGroup;
