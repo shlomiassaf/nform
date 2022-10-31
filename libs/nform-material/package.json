@@ -2,7 +2,33 @@
   "name": "@pebula/nform-material",
   "version": "0.0.1-alpha.11",
   "peerDependencies": {
-    "@angular/material": "^8.0.0",
-    "@pebula/nform": "0.0.1-alpha.11"
+    "@angular/material": "^14.0.0",
+    "@pebula/nform": "2.0.0"
+  },
+  "exports": {
+    ".": {
+      "sass": "./_theming.scss"
+    },
+    "./theming": {
+      "sass": "./_theming.scss"
+    },
+    "./_theming": {
+      "sass": "./_theming.scss"
+    },
+    "./themes/deeppurple-amber.css": {
+      "style": "./themes/deeppurple-amber.css"
+    },
+    "./themes/indigo-pink.css": {
+      "style": "./themes/indigo-pink.css"
+    },
+    "./themes/pink-bluegrey.css": {
+      "style": "./themes/pink-bluegrey.css"
+    },
+    "./themes/purple-green.css": {
+      "style": "./themes/purple-green.css"
+    },
+    "./themes/*": {
+      "style": "./themes/*.css"
+    }
   }
 }
