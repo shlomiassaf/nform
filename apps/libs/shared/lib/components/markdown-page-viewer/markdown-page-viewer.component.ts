@@ -94,7 +94,7 @@ export class MarkdownPageViewerComponent implements OnDestroy {
       .then( p => {
         this.page = p;
         this.titleService.setTitle(`NForm: ${p.title}`);
-        this.addOrModifyTag({ property: 'og:title', content: `NGrid: ${p.title}` });
+        this.addOrModifyTag({ property: 'og:title', content: `nForm: ${p.title}` });
         this._elementRef.nativeElement.innerHTML = p.contents;
 
         if (typeof this._elementRef.nativeElement.getBoundingClientRect === 'function') {

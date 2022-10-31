@@ -1,5 +1,5 @@
 {
-  "name": "pebula",
+  "name": "@pebula/nform",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -164,5 +164,28 @@
     "typescript-formatter": "^7.2.2",
     "unified": "^7.1.0",
     "webpack-cli": "^4.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shlomiassaf/nform.git"
+  },
+  "keywords": [
+    "angular",
+    "forms"
+  ],
+  "author": "Shlomi Assaf",
+  "homepage": "https://github.com/shlomiassaf/nform",
+  "bugs": {
+    "url": "https://github.com/shlomiassaf/nform/issues"
+  },
+  "packageConfig": {
+    "defaultCommitProejct": "nform",
+    "angularPackageVersion": "^14.0.0",
+    "releasePackages": [
+      "utils",
+      "metap",
+      "nform",
+      "nform-material"
+    ]
   }
 }
