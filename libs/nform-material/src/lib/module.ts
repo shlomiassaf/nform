@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Injector, ModuleWithProviders, NgModule } from '@angular/core';
+import { createComponent, EnvironmentInjector, Injector, ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -26,11 +26,10 @@ import { GlobalMaterialFormControlDirective, MaterialTemplateStoreComponent, Mat
   entryComponents: [MaterialTemplateStoreComponent, MaterialFormControlRenderer]
 })
 export class PblNformMaterialModule {
-  constructor(injector: Injector, cfr: ComponentFactoryResolver) {
+  constructor(injector: Injector) {
     if (!storeContainer.store) {
       // we use a static store, there is no point of using DI if it's always the same store.
-      const factory = cfr.resolveComponentFactory(MaterialTemplateStoreComponent);
-      const cmpRef = factory.create(injector);
+      const cmpRef = createComponent(MaterialTemplateStoreComponent, { environmentInjector: injector.get(EnvironmentInjector) });
       cmpRef.changeDetectorRef.detectChanges();
       storeContainer.store = cmpRef.instance;
     }
