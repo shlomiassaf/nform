@@ -10,7 +10,7 @@
     "lint": "./node_modules/.bin/nx lint && ng lint",
     "e2e": "ng e2e",
     "e2e:watch": "ng e2e --watch",
-    "stage-release": "./node_modules/.bin/ts-node -P ./tsconfig.node.json tools/tasks/release/stage-release.ts",
+    "stage-release": "./node_modules/.bin/ts-node -P tools/tasks/release/tsconfig.json tools/tasks/release/stage-release.ts",
     "affected:apps": "./node_modules/.bin/nx affected:apps",
     "affected:build": "./node_modules/.bin/nx affected:build",
     "affected:e2e": "./node_modules/.bin/nx affected:e2e",

@@ -312,7 +312,7 @@ class StageReleaseTask extends BaseReleaseTask {
     } else if (typeof(repo) === 'object')
     {
       url = repo.url;
-      let match = /^https?:\/\/.+\/(.+)\/(.+)\.git$/.exec(repo);
+      let match = /^https?:\/\/.+\/(.+)\/(.+)\.git$/.exec(url);
       if (match === null)
       {
         throw new Error(`Invalid repository object in package.json.`);
