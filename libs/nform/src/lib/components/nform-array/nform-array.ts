@@ -1,5 +1,5 @@
 
-import { ComponentFactoryResolver, ViewContainerRef, SimpleChanges, Directive, OnChanges } from '@angular/core';
+import { ViewContainerRef, SimpleChanges, Directive, OnChanges } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 
 import { NForm, NFormRecordRef, NFormControlTemplateContext } from '../../nform/index';
@@ -16,7 +16,7 @@ export abstract class NFormArray implements OnChanges {
 
   private ready: boolean = false;
 
-  constructor(private cfr: ComponentFactoryResolver, nFormCmp: NFormComponent<any>) {
+  constructor(nFormCmp: NFormComponent<any>) {
     if (nFormCmp) {
       this.nFormCmp = nFormCmp;
     }
@@ -44,7 +44,6 @@ export abstract class NFormArray implements OnChanges {
     this.vcRef.clear();
     if (this.ready) {
       const component = this.nFormCmp.getComponentRenderer(this.item);
-      const componentFactory = this.cfr.resolveComponentFactory(component);
 
       for (let childControl of this.fArray.controls) {
         for (let childItem of this.item.children) {
@@ -59,7 +58,7 @@ export abstract class NFormArray implements OnChanges {
             };
             this.vcRef.createEmbeddedView(override.template, { $implicit });
           } else {
-            const cmpRef = this.vcRef.createComponent<NFormControlTemplateContext>(componentFactory, this.vcRef.length);
+            const cmpRef = this.vcRef.createComponent<NFormControlTemplateContext>(component, { index: this.vcRef.length });
             const { instance } = cmpRef;
             instance.item = childItem;
             instance.fGroup = this.fGroup;

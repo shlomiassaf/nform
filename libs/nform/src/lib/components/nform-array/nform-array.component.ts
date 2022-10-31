@@ -1,4 +1,4 @@
-import { ComponentFactoryResolver, Component, Input, ViewContainerRef, ViewChild } from '@angular/core';
+import { Component, Input, ViewContainerRef, ViewChild } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 
 import { NForm, NFormRecordRef } from '../../nform/index';
@@ -19,7 +19,7 @@ export class NFormArrayComponent extends NFormArray {
 
   @ViewChild('viewRef', { read: ViewContainerRef, static: true }) vcRef: ViewContainerRef;
 
-  constructor(cfr: ComponentFactoryResolver, nFormCmp: NFormComponent<any>) {
-    super(cfr, nFormCmp);
+  constructor(nFormCmp: NFormComponent<any>) {
+    super(nFormCmp);
   }
 }

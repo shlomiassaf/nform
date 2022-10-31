@@ -1,5 +1,4 @@
 import {
-  ComponentFactoryResolver,
   Directive,
   Input,
   ViewContainerRef,
@@ -8,7 +7,6 @@ import {
   SimpleChanges,
   IterableDiffers,
   IterableDiffer,
-  TrackByFunction,
   SimpleChange,
   OnChanges,
   IterableChanges,
@@ -43,8 +41,8 @@ export class NFormArrayDirective extends NFormArray {
 
   vcRef: ViewContainerRef;
 
-  constructor(vcRef: ViewContainerRef, cfr: ComponentFactoryResolver, nFormCmp: NFormComponent<any>) {
-    super(cfr, nFormCmp);
+  constructor(vcRef: ViewContainerRef, nFormCmp: NFormComponent<any>) {
+    super(nFormCmp);
     this.vcRef = vcRef;
   }
 }

@@ -3,9 +3,9 @@ import {
   Directive,
   Input,
   ViewContainerRef,
-  ComponentFactoryResolver,
   ComponentRef,
   Inject,
+  EnvironmentInjector,
 } from '@angular/core';
 
 import { NFormControlTemplateContext, NFormRecordRef } from '../nform/index';
@@ -55,10 +55,13 @@ export class NFormControlDirective {
         this.vcRef.createEmbeddedView(override.template, { $implicit }).detectChanges();
       } else {
         const injector = this.defaultVCRef.injector;
-        const resolver = injector.get(ComponentFactoryResolver);
         const component = this.nFormCmp.getComponentRenderer(value);
-        const componentFactory = resolver.resolveComponentFactory(component);
-        this.cmpRef = this.defaultVCRef.createComponent<NFormControlTemplateContext>(componentFactory, this.defaultVCRef.length, injector);
+        this.cmpRef = this.defaultVCRef.createComponent(component, {
+          environmentInjector: injector.get(EnvironmentInjector),
+          index: this.defaultVCRef.length,
+          injector: injector,
+        });
+
         this.nFormCmp.nForm.bindRenderingData(this.cmpRef.instance, value);
         if (typeof this.cmpRef.instance.nFormOnControlContextInit === 'function') {
           this.cmpRef.instance.nFormOnControlContextInit();
